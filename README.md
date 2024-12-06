@@ -13,17 +13,47 @@ Raylib LuaJit 5.5
 
 ##### PROS:
 
-- Single file (except for the compiled Raylib binaries/libraries)
+- Single file (except for the compiled Raylib binaries/libraries and the header)
 - Works as an actual lib instead of a runner
+- No build required in order to use this
+- Really easy to update
 
 ##### CONS:
 
 - You need the LuaJIT and Raylib compiled binaries/libraries
+- Building a binary to distribute is a chore
 
 ## Running
 
-1. Download your Raylib release and toss everything from `lib` into the root of this folder
-1. Run `luajit main.lua`
+- Install Raylib globally. I used `brew install raylib` on OSX, or
+- Download your Raylib release and toss everything from `lib/` into the `./raylib` folder
+- Create a file in the root with the following code:
+
+```lua
+-- save as main.lua
+-- run with `luajit main.lua`
+local rl = require('raylib')
+
+rl.SetConfigFlags(rl.FLAG_VSYNC_HINT)
+
+rl.InitWindow(800, 450, "raylib [core] example - basic window")
+
+while not rl.WindowShouldClose() do
+  rl.BeginDrawing()
+  rl.ClearBackground(rl.RAYWHITE)
+  rl.DrawText("Congrats! You created your first window!", 190, 200, 20, rl.LIGHTGRAY)
+  rl.EndDrawing()
+end
+
+rl.CloseWindow()
+
+```
+
+- Run `luajit main.lua`
+
+## Examples
+
+Run `luajit examples/core_basic_window.lua`
 
 ## Generating API files
 

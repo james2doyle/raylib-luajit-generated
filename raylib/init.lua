@@ -1,7 +1,7 @@
 local ffi = require("ffi")
 local lib = ffi.load("libraylib")
 
-local generated = io.open("generated.h", "r")
+local generated = io.open("raylib/generated.h", "r")
 
 if generated == nil then
   error("Cannot find generated.h")
