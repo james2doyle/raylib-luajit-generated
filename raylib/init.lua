@@ -100,6 +100,246 @@ rl.MAGENTA = { 255, 0, 255, 255 }
 --- My own White (raylib logo)
 rl.RAYWHITE = { 245, 245, 245, 255 }
 
+---@class Vector2
+---@field x number Vector x component
+---@field y number Vector y component
+
+---@class Vector3
+---@field x number Vector x component
+---@field y number Vector y component
+---@field z number Vector z component
+
+---@class Vector4
+---@field x number Vector x component
+---@field y number Vector y component
+---@field z number Vector z component
+---@field w number Vector w component
+
+---@class Matrix
+---@field m0 number Matrix first row (4 components)
+---@field m4 number Matrix first row (4 components)
+---@field m8 number Matrix first row (4 components)
+---@field m12 number Matrix first row (4 components)
+---@field m1 number Matrix second row (4 components)
+---@field m5 number Matrix second row (4 components)
+---@field m9 number Matrix second row (4 components)
+---@field m13 number Matrix second row (4 components)
+---@field m2 number Matrix third row (4 components)
+---@field m6 number Matrix third row (4 components)
+---@field m10 number Matrix third row (4 components)
+---@field m14 number Matrix third row (4 components)
+---@field m3 number Matrix fourth row (4 components)
+---@field m7 number Matrix fourth row (4 components)
+---@field m11 number Matrix fourth row (4 components)
+---@field m15 number Matrix fourth row (4 components)
+
+---@class Color
+---@field r string Color red value
+---@field g string Color green value
+---@field b string Color blue value
+---@field a string Color alpha value
+
+---@class Rectangle
+---@field x number Rectangle top-left corner position x
+---@field y number Rectangle top-left corner position y
+---@field width number Rectangle width
+---@field height number Rectangle height
+
+---@class Image
+---@field data void Image raw data
+---@field width integer Image base width
+---@field height integer Image base height
+---@field mipmaps integer Mipmap levels, 1 by default
+---@field format integer Data format (PixelFormat type)
+
+---@class Texture
+---@field id integer OpenGL texture id
+---@field width integer Texture base width
+---@field height integer Texture base height
+---@field mipmaps integer Mipmap levels, 1 by default
+---@field format integer Data format (PixelFormat type)
+
+---@class RenderTexture
+---@field id integer OpenGL framebuffer object id
+---@field texture Texture Color buffer attachment texture
+---@field depth Texture Depth buffer attachment texture
+
+---@class NPatchInfo
+---@field source Rectangle Texture source rectangle
+---@field left integer Left border offset
+---@field top integer Top border offset
+---@field right integer Right border offset
+---@field bottom integer Bottom border offset
+---@field layout integer Layout of the n-patch: 3x3, 1x3 or 3x1
+
+---@class GlyphInfo
+---@field value integer Character value (Unicode)
+---@field offsetX integer Character offset X when drawing
+---@field offsetY integer Character offset Y when drawing
+---@field advanceX integer Character advance position X
+---@field image Image Character image data
+
+---@class Font
+---@field baseSize integer Base size (default chars height)
+---@field glyphCount integer Number of glyph characters
+---@field glyphPadding integer Padding around the glyph characters
+---@field texture Texture2D Texture atlas containing the glyphs
+---@field recs Rectangle * Rectangles in texture for the glyphs
+---@field glyphs GlyphInfo * Glyphs info data
+
+---@class Camera
+---@field position Vector3 Camera position
+---@field target Vector3 Camera target it looks-at
+---@field up Vector3 Camera up vector (rotation over its axis)
+---@field fovy number Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic
+---@field projection integer Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC
+
+---@class Camera2D
+---@field offset Vector2 Camera offset (displacement from target)
+---@field target Vector2 Camera target (rotation and zoom origin)
+---@field rotation number Camera rotation in degrees
+---@field zoom number Camera zoom (scaling), should be 1.0f by default
+
+---@class Mesh
+---@field vertexCount integer Number of vertices stored in arrays
+---@field triangleCount integer Number of triangles stored (indexed or not)
+---@field vertices number Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+---@field texcoords number Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+---@field texcoords2 number Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
+---@field normals number Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
+---@field tangents number Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4)
+---@field colors string Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+---@field indices string Vertex indices (in case vertex data comes indexed)
+---@field animVertices number Animated vertex positions (after bones transformations)
+---@field animNormals number Animated normals (after bones transformations)
+---@field boneIds string Vertex bone ids, max 255 bone ids, up to 4 bones influence by vertex (skinning) (shader-location = 6)
+---@field boneWeights number Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7)
+---@field boneMatrices Matrix * Bones animated transformation matrices
+---@field boneCount integer Number of bones
+---@field vaoId integer OpenGL Vertex Array Object id
+---@field vboId unsigned int * OpenGL Vertex Buffer Objects id (default vertex data)
+
+---@class Shader
+---@field id integer Shader program id
+---@field locs integer Shader locations array (RL_MAX_SHADER_LOCATIONS)
+
+---@class MaterialMap
+---@field texture Texture2D Material map texture
+---@field color Color Material map color
+---@field value number Material map value
+
+---@class Material
+---@field shader Shader Material shader
+---@field maps MaterialMap * Material maps array (MAX_MATERIAL_MAPS)
+---@field params float[4] Material generic parameters (if required)
+
+---@class Transform
+---@field translation Vector3 Translation
+---@field rotation Quaternion Rotation
+---@field scale Vector3 Scale
+
+---@class Bone
+---@field name char[32] Bone name
+---@field parent integer Bone parent
+
+---@class Model
+---@field transform Matrix Local transform matrix
+---@field meshCount integer Number of meshes
+---@field materialCount integer Number of materials
+---@field meshes Mesh * Meshes array
+---@field materials Material * Materials array
+---@field meshMaterial integer Mesh material number
+---@field boneCount integer Number of bones
+---@field bones BoneInfo * Bones information (skeleton)
+---@field bindPose Transform * Bones base transformation (pose)
+
+---@class ModelAnimation
+---@field boneCount integer Number of bones
+---@field frameCount integer Number of animation frames
+---@field bones BoneInfo * Bones information (skeleton)
+---@field framePoses Transform ** Poses array by frame
+---@field name char[32] Animation name
+
+---@class Ray
+---@field position Vector3 Ray position (origin)
+---@field direction Vector3 Ray direction (normalized)
+
+---@class RayCollision
+---@field hit boolean Did the ray hit something?
+---@field distance number Distance to the nearest hit
+---@field point Vector3 Point of the nearest hit
+---@field normal Vector3 Surface normal of hit
+
+---@class BoundingBox
+---@field min Vector3 Minimum vertex box-corner
+---@field max Vector3 Maximum vertex box-corner
+
+---@class Wave
+---@field frameCount integer Total number of frames (considering channels)
+---@field sampleRate integer Frequency (samples per second)
+---@field sampleSize integer Bit depth (bits per sample): 8, 16, 32 (24 not supported)
+---@field channels integer Number of channels (1-mono, 2-stereo, ...)
+---@field data void Buffer data pointer
+
+---@class AudioStream
+---@field buffer rAudioBuffer * Pointer to internal data used by the audio system
+---@field processor rAudioProcessor * Pointer to internal data processor, useful for audio effects
+---@field sampleRate integer Frequency (samples per second)
+---@field sampleSize integer Bit depth (bits per sample): 8, 16, 32 (24 not supported)
+---@field channels integer Number of channels (1-mono, 2-stereo, ...)
+
+---@class Sound
+---@field stream AudioStream Audio stream
+---@field frameCount integer Total number of frames (considering channels)
+
+---@class Music
+---@field stream AudioStream Audio stream
+---@field frameCount integer Total number of frames (considering channels)
+---@field looping boolean Music looping enable
+---@field ctxType integer Type of music context (audio filetype)
+---@field ctxData void Audio context data, depends on type
+
+---@class VrDeviceInfo
+---@field hResolution integer Horizontal resolution in pixels
+---@field vResolution integer Vertical resolution in pixels
+---@field hScreenSize number Horizontal size in meters
+---@field vScreenSize number Vertical size in meters
+---@field eyeToScreenDistance number Distance between eye and display in meters
+---@field lensSeparationDistance number Lens separation distance in meters
+---@field interpupillaryDistance number IPD (distance between pupils) in meters
+---@field lensDistortionValues float[4] Lens distortion constant parameters
+---@field chromaAbCorrection float[4] Chromatic aberration correction parameters
+
+---@class VrStereoConfig
+---@field projection Matrix[2] VR projection matrices (per eye)
+---@field viewOffset Matrix[2] VR view offset matrices (per eye)
+---@field leftLensCenter float[2] VR left lens center
+---@field rightLensCenter float[2] VR right lens center
+---@field leftScreenCenter float[2] VR left screen center
+---@field rightScreenCenter float[2] VR right screen center
+---@field scale float[2] VR distortion scale
+---@field scaleIn float[2] VR distortion scale in
+
+---@class File path list
+---@field capacity integer Filepaths max entries
+---@field count integer Filepaths entries count
+---@field paths string Filepaths entries
+
+---@class Automation event
+---@field frame integer Event frame
+---@field type integer Event type (AutomationEventType)
+---@field params int[4] Event parameters (if required)
+
+---@class Automation event list
+---@field capacity integer Events max entries (MAX_AUTOMATION_EVENTS)
+---@field count integer Events entries count
+---@field events AutomationEvent * Events entries
+
+---@alias Camera3D Camera
+---@alias Texture2D Texture
+---@alias TextureCubemap Texture
+---@alias Quaternion Vector4
+---@alias RenderTexture2D RenderTexture
 
 --- Vector2, 2 components
 ---@param x number Vector x component
@@ -335,7 +575,7 @@ function rl.Ray(position, direction)
 end
 
 --- RayCollision, ray hit information
----@param hit bool Did the ray hit something?
+---@param hit boolean Did the ray hit something?
 ---@param distance number Distance to the nearest hit
 ---@param point Vector3 Point of the nearest hit
 ---@param normal Vector3 Surface normal of hit
@@ -380,7 +620,7 @@ end
 --- Music, audio stream, anything longer than ~10 seconds should be streamed
 ---@param stream AudioStream Audio stream
 ---@param frameCount integer Total number of frames (considering channels)
----@param looping bool Music looping enable
+---@param looping boolean Music looping enable
 ---@param ctxType integer Type of music context (audio filetype)
 ---@param ctxData void Audio context data, depends on type
 function rl.Music(stream, frameCount, looping, ctxType, ctxData)
@@ -1135,48 +1375,48 @@ function rl.CloseWindow()
   return lib.CloseWindow()
 end
 --- Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)
----@return bool
+---@return boolean
 function rl.WindowShouldClose()
   return lib.WindowShouldClose()
 end
 --- Check if window has been initialized successfully
----@return bool
+---@return boolean
 function rl.IsWindowReady()
   return lib.IsWindowReady()
 end
 --- Check if window is currently fullscreen
----@return bool
+---@return boolean
 function rl.IsWindowFullscreen()
   return lib.IsWindowFullscreen()
 end
 --- Check if window is currently hidden
----@return bool
+---@return boolean
 function rl.IsWindowHidden()
   return lib.IsWindowHidden()
 end
 --- Check if window is currently minimized
----@return bool
+---@return boolean
 function rl.IsWindowMinimized()
   return lib.IsWindowMinimized()
 end
 --- Check if window is currently maximized
----@return bool
+---@return boolean
 function rl.IsWindowMaximized()
   return lib.IsWindowMaximized()
 end
 --- Check if window is currently focused
----@return bool
+---@return boolean
 function rl.IsWindowFocused()
   return lib.IsWindowFocused()
 end
 --- Check if window has been resized last frame
----@return bool
+---@return boolean
 function rl.IsWindowResized()
   return lib.IsWindowResized()
 end
 --- Check if one specific window flag is enabled
 ---@param flag integer
----@return bool
+---@return boolean
 function rl.IsWindowState(flag)
   return lib.IsWindowState(flag)
 end
@@ -1282,37 +1522,37 @@ function rl.SetWindowFocused()
   return lib.SetWindowFocused()
 end
 --- Get native window handle
----@return void *
+---@return void
 function rl.GetWindowHandle()
   return lib.GetWindowHandle()
 end
 --- Get current screen width
----@return int
+---@return integer
 function rl.GetScreenWidth()
   return lib.GetScreenWidth()
 end
 --- Get current screen height
----@return int
+---@return integer
 function rl.GetScreenHeight()
   return lib.GetScreenHeight()
 end
 --- Get current render width (it considers HiDPI)
----@return int
+---@return integer
 function rl.GetRenderWidth()
   return lib.GetRenderWidth()
 end
 --- Get current render height (it considers HiDPI)
----@return int
+---@return integer
 function rl.GetRenderHeight()
   return lib.GetRenderHeight()
 end
 --- Get number of connected monitors
----@return int
+---@return integer
 function rl.GetMonitorCount()
   return lib.GetMonitorCount()
 end
 --- Get current monitor where window is placed
----@return int
+---@return integer
 function rl.GetCurrentMonitor()
   return lib.GetCurrentMonitor()
 end
@@ -1324,31 +1564,31 @@ function rl.GetMonitorPosition(monitor)
 end
 --- Get specified monitor width (current video mode used by monitor)
 ---@param monitor integer
----@return int
+---@return integer
 function rl.GetMonitorWidth(monitor)
   return lib.GetMonitorWidth(monitor)
 end
 --- Get specified monitor height (current video mode used by monitor)
 ---@param monitor integer
----@return int
+---@return integer
 function rl.GetMonitorHeight(monitor)
   return lib.GetMonitorHeight(monitor)
 end
 --- Get specified monitor physical width in millimetres
 ---@param monitor integer
----@return int
+---@return integer
 function rl.GetMonitorPhysicalWidth(monitor)
   return lib.GetMonitorPhysicalWidth(monitor)
 end
 --- Get specified monitor physical height in millimetres
 ---@param monitor integer
----@return int
+---@return integer
 function rl.GetMonitorPhysicalHeight(monitor)
   return lib.GetMonitorPhysicalHeight(monitor)
 end
 --- Get specified monitor refresh rate
 ---@param monitor integer
----@return int
+---@return integer
 function rl.GetMonitorRefreshRate(monitor)
   return lib.GetMonitorRefreshRate(monitor)
 end
@@ -1364,7 +1604,7 @@ function rl.GetWindowScaleDPI()
 end
 --- Get the human-readable, UTF-8 encoded name of the specified monitor
 ---@param monitor integer
----@return const char *
+---@return string
 function rl.GetMonitorName(monitor)
   return lib.GetMonitorName(monitor)
 end
@@ -1375,7 +1615,7 @@ function rl.SetClipboardText(text)
   return lib.SetClipboardText(text)
 end
 --- Get clipboard text content
----@return const char *
+---@return string
 function rl.GetClipboardText()
   return lib.GetClipboardText()
 end
@@ -1405,7 +1645,7 @@ function rl.HideCursor()
   return lib.HideCursor()
 end
 --- Check if cursor is not visible
----@return bool
+---@return boolean
 function rl.IsCursorHidden()
   return lib.IsCursorHidden()
 end
@@ -1420,7 +1660,7 @@ function rl.DisableCursor()
   return lib.DisableCursor()
 end
 --- Check if cursor is on the screen
----@return bool
+---@return boolean
 function rl.IsCursorOnScreen()
   return lib.IsCursorOnScreen()
 end
@@ -1548,21 +1788,21 @@ function rl.LoadShaderFromMemory(vsCode, fsCode)
 end
 --- Check if a shader is valid (loaded on GPU)
 ---@param shader Shader
----@return bool
+---@return boolean
 function rl.IsShaderValid(shader)
   return lib.IsShaderValid(shader)
 end
 --- Get shader uniform location
 ---@param shader Shader
 ---@param uniformName string
----@return int
+---@return integer
 function rl.GetShaderLocation(shader, uniformName)
   return lib.GetShaderLocation(shader, uniformName)
 end
 --- Get shader attribute location
 ---@param shader Shader
 ---@param attribName string
----@return int
+---@return integer
 function rl.GetShaderLocationAttrib(shader, attribName)
   return lib.GetShaderLocationAttrib(shader, attribName)
 end
@@ -1672,17 +1912,17 @@ function rl.SetTargetFPS(fps)
   return lib.SetTargetFPS(fps)
 end
 --- Get time in seconds for last frame drawn (delta time)
----@return float
+---@return number
 function rl.GetFrameTime()
   return lib.GetFrameTime()
 end
 --- Get elapsed time in seconds since InitWindow()
----@return double
+---@return number
 function rl.GetTime()
   return lib.GetTime()
 end
 --- Get current FPS
----@return int
+---@return integer
 function rl.GetFPS()
   return lib.GetFPS()
 end
@@ -1697,7 +1937,7 @@ function rl.PollInputEvents()
   return lib.PollInputEvents()
 end
 --- Wait for some time (halt program execution)
----@param seconds double
+---@param seconds number
 ---@return void
 function rl.WaitTime(seconds)
   return lib.WaitTime(seconds)
@@ -1711,7 +1951,7 @@ end
 --- Get a random value between min and max (both included)
 ---@param min integer
 ---@param max integer
----@return int
+---@return integer
 function rl.GetRandomValue(min, max)
   return lib.GetRandomValue(min, max)
 end
@@ -1719,7 +1959,7 @@ end
 ---@param count integer
 ---@param min integer
 ---@param max integer
----@return int *
+---@return integer
 function rl.LoadRandomSequence(count, min, max)
   return lib.LoadRandomSequence(count, min, max)
 end
@@ -1763,14 +2003,14 @@ function rl.SetTraceLogLevel(logLevel)
 end
 --- Internal memory allocator
 ---@param size integer
----@return void *
+---@return void
 function rl.MemAlloc(size)
   return lib.MemAlloc(size)
 end
 --- Internal memory reallocator
 ---@param ptr void
 ---@param size integer
----@return void *
+---@return void
 function rl.MemRealloc(ptr, size)
   return lib.MemRealloc(ptr, size)
 end
@@ -1813,7 +2053,7 @@ end
 --- Load file data as byte array (read)
 ---@param fileName string
 ---@param dataSize integer
----@return unsigned char *
+---@return string
 function rl.LoadFileData(fileName, dataSize)
   return lib.LoadFileData(fileName, dataSize)
 end
@@ -1827,7 +2067,7 @@ end
 ---@param fileName string
 ---@param data void
 ---@param dataSize integer
----@return bool
+---@return boolean
 function rl.SaveFileData(fileName, data, dataSize)
   return lib.SaveFileData(fileName, data, dataSize)
 end
@@ -1835,13 +2075,13 @@ end
 ---@param data string
 ---@param dataSize integer
 ---@param fileName string
----@return bool
+---@return boolean
 function rl.ExportDataAsCode(data, dataSize, fileName)
   return lib.ExportDataAsCode(data, dataSize, fileName)
 end
 --- Load text data from file (read), returns a '\0' terminated string
 ---@param fileName string
----@return char *
+---@return string
 function rl.LoadFileText(fileName)
   return lib.LoadFileText(fileName)
 end
@@ -1854,96 +2094,96 @@ end
 --- Save text data to file (write), string must be '\0' terminated, returns true on success
 ---@param fileName string
 ---@param text string
----@return bool
+---@return boolean
 function rl.SaveFileText(fileName, text)
   return lib.SaveFileText(fileName, text)
 end
 --- Check if file exists
 ---@param fileName string
----@return bool
+---@return boolean
 function rl.FileExists(fileName)
   return lib.FileExists(fileName)
 end
 --- Check if a directory path exists
 ---@param dirPath string
----@return bool
+---@return boolean
 function rl.DirectoryExists(dirPath)
   return lib.DirectoryExists(dirPath)
 end
 --- Check file extension (including point: .png, .wav)
 ---@param fileName string
 ---@param ext string
----@return bool
+---@return boolean
 function rl.IsFileExtension(fileName, ext)
   return lib.IsFileExtension(fileName, ext)
 end
 --- Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)
 ---@param fileName string
----@return int
+---@return integer
 function rl.GetFileLength(fileName)
   return lib.GetFileLength(fileName)
 end
 --- Get pointer to extension for a filename string (includes dot: '.png')
 ---@param fileName string
----@return const char *
+---@return string
 function rl.GetFileExtension(fileName)
   return lib.GetFileExtension(fileName)
 end
 --- Get pointer to filename for a path string
 ---@param filePath string
----@return const char *
+---@return string
 function rl.GetFileName(filePath)
   return lib.GetFileName(filePath)
 end
 --- Get filename string without extension (uses static string)
 ---@param filePath string
----@return const char *
+---@return string
 function rl.GetFileNameWithoutExt(filePath)
   return lib.GetFileNameWithoutExt(filePath)
 end
 --- Get full path for a given fileName with path (uses static string)
 ---@param filePath string
----@return const char *
+---@return string
 function rl.GetDirectoryPath(filePath)
   return lib.GetDirectoryPath(filePath)
 end
 --- Get previous directory path for a given path (uses static string)
 ---@param dirPath string
----@return const char *
+---@return string
 function rl.GetPrevDirectoryPath(dirPath)
   return lib.GetPrevDirectoryPath(dirPath)
 end
 --- Get current working directory (uses static string)
----@return const char *
+---@return string
 function rl.GetWorkingDirectory()
   return lib.GetWorkingDirectory()
 end
 --- Get the directory of the running application (uses static string)
----@return const char *
+---@return string
 function rl.GetApplicationDirectory()
   return lib.GetApplicationDirectory()
 end
 --- Create directories (including full path requested), returns 0 on success
 ---@param dirPath string
----@return int
+---@return integer
 function rl.MakeDirectory(dirPath)
   return lib.MakeDirectory(dirPath)
 end
 --- Change working directory, return true on success
 ---@param dir string
----@return bool
+---@return boolean
 function rl.ChangeDirectory(dir)
   return lib.ChangeDirectory(dir)
 end
 --- Check if a given path is a file or a directory
 ---@param path string
----@return bool
+---@return boolean
 function rl.IsPathFile(path)
   return lib.IsPathFile(path)
 end
 --- Check if fileName is valid for the platform/OS
 ---@param fileName string
----@return bool
+---@return boolean
 function rl.IsFileNameValid(fileName)
   return lib.IsFileNameValid(fileName)
 end
@@ -1956,7 +2196,7 @@ end
 --- Load directory filepaths with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result
 ---@param basePath string
 ---@param filter string
----@param scanSubdirs bool
+---@param scanSubdirs boolean
 ---@return FilePathList
 function rl.LoadDirectoryFilesEx(basePath, filter, scanSubdirs)
   return lib.LoadDirectoryFilesEx(basePath, filter, scanSubdirs)
@@ -1968,7 +2208,7 @@ function rl.UnloadDirectoryFiles(files)
   return lib.UnloadDirectoryFiles(files)
 end
 --- Check if a file has been dropped into window
----@return bool
+---@return boolean
 function rl.IsFileDropped()
   return lib.IsFileDropped()
 end
@@ -1993,7 +2233,7 @@ end
 ---@param data string
 ---@param dataSize integer
 ---@param compDataSize integer
----@return unsigned char *
+---@return string
 function rl.CompressData(data, dataSize, compDataSize)
   return lib.CompressData(data, dataSize, compDataSize)
 end
@@ -2001,7 +2241,7 @@ end
 ---@param compData string
 ---@param compDataSize integer
 ---@param dataSize integer
----@return unsigned char *
+---@return string
 function rl.DecompressData(compData, compDataSize, dataSize)
   return lib.DecompressData(compData, compDataSize, dataSize)
 end
@@ -2009,21 +2249,21 @@ end
 ---@param data string
 ---@param dataSize integer
 ---@param outputSize integer
----@return char *
+---@return string
 function rl.EncodeDataBase64(data, dataSize, outputSize)
   return lib.EncodeDataBase64(data, dataSize, outputSize)
 end
 --- Decode Base64 string data, memory must be MemFree()
 ---@param data string
 ---@param outputSize integer
----@return unsigned char *
+---@return string
 function rl.DecodeDataBase64(data, outputSize)
   return lib.DecodeDataBase64(data, outputSize)
 end
 --- Compute CRC32 hash code
 ---@param data string
 ---@param dataSize integer
----@return unsigned int
+---@return integer
 function rl.ComputeCRC32(data, dataSize)
   return lib.ComputeCRC32(data, dataSize)
 end
@@ -2056,7 +2296,7 @@ end
 --- Export automation events list as text file
 ---@param list AutomationEventList
 ---@param fileName string
----@return bool
+---@return boolean
 function rl.ExportAutomationEventList(list, fileName)
   return lib.ExportAutomationEventList(list, fileName)
 end
@@ -2090,41 +2330,41 @@ function rl.PlayAutomationEvent(event)
 end
 --- Check if a key has been pressed once
 ---@param key integer
----@return bool
+---@return boolean
 function rl.IsKeyPressed(key)
   return lib.IsKeyPressed(key)
 end
 --- Check if a key has been pressed again
 ---@param key integer
----@return bool
+---@return boolean
 function rl.IsKeyPressedRepeat(key)
   return lib.IsKeyPressedRepeat(key)
 end
 --- Check if a key is being pressed
 ---@param key integer
----@return bool
+---@return boolean
 function rl.IsKeyDown(key)
   return lib.IsKeyDown(key)
 end
 --- Check if a key has been released once
 ---@param key integer
----@return bool
+---@return boolean
 function rl.IsKeyReleased(key)
   return lib.IsKeyReleased(key)
 end
 --- Check if a key is NOT being pressed
 ---@param key integer
----@return bool
+---@return boolean
 function rl.IsKeyUp(key)
   return lib.IsKeyUp(key)
 end
 --- Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
----@return int
+---@return integer
 function rl.GetKeyPressed()
   return lib.GetKeyPressed()
 end
 --- Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
----@return int
+---@return integer
 function rl.GetCharPressed()
   return lib.GetCharPressed()
 end
@@ -2136,65 +2376,65 @@ function rl.SetExitKey(key)
 end
 --- Check if a gamepad is available
 ---@param gamepad integer
----@return bool
+---@return boolean
 function rl.IsGamepadAvailable(gamepad)
   return lib.IsGamepadAvailable(gamepad)
 end
 --- Get gamepad internal name id
 ---@param gamepad integer
----@return const char *
+---@return string
 function rl.GetGamepadName(gamepad)
   return lib.GetGamepadName(gamepad)
 end
 --- Check if a gamepad button has been pressed once
 ---@param gamepad integer
 ---@param button integer
----@return bool
+---@return boolean
 function rl.IsGamepadButtonPressed(gamepad, button)
   return lib.IsGamepadButtonPressed(gamepad, button)
 end
 --- Check if a gamepad button is being pressed
 ---@param gamepad integer
 ---@param button integer
----@return bool
+---@return boolean
 function rl.IsGamepadButtonDown(gamepad, button)
   return lib.IsGamepadButtonDown(gamepad, button)
 end
 --- Check if a gamepad button has been released once
 ---@param gamepad integer
 ---@param button integer
----@return bool
+---@return boolean
 function rl.IsGamepadButtonReleased(gamepad, button)
   return lib.IsGamepadButtonReleased(gamepad, button)
 end
 --- Check if a gamepad button is NOT being pressed
 ---@param gamepad integer
 ---@param button integer
----@return bool
+---@return boolean
 function rl.IsGamepadButtonUp(gamepad, button)
   return lib.IsGamepadButtonUp(gamepad, button)
 end
 --- Get the last gamepad button pressed
----@return int
+---@return integer
 function rl.GetGamepadButtonPressed()
   return lib.GetGamepadButtonPressed()
 end
 --- Get gamepad axis count for a gamepad
 ---@param gamepad integer
----@return int
+---@return integer
 function rl.GetGamepadAxisCount(gamepad)
   return lib.GetGamepadAxisCount(gamepad)
 end
 --- Get axis movement value for a gamepad axis
 ---@param gamepad integer
 ---@param axis integer
----@return float
+---@return number
 function rl.GetGamepadAxisMovement(gamepad, axis)
   return lib.GetGamepadAxisMovement(gamepad, axis)
 end
 --- Set internal gamepad mappings (SDL_GameControllerDB)
 ---@param mappings string
----@return int
+---@return integer
 function rl.SetGamepadMappings(mappings)
   return lib.SetGamepadMappings(mappings)
 end
@@ -2209,35 +2449,35 @@ function rl.SetGamepadVibration(gamepad, leftMotor, rightMotor, duration)
 end
 --- Check if a mouse button has been pressed once
 ---@param button integer
----@return bool
+---@return boolean
 function rl.IsMouseButtonPressed(button)
   return lib.IsMouseButtonPressed(button)
 end
 --- Check if a mouse button is being pressed
 ---@param button integer
----@return bool
+---@return boolean
 function rl.IsMouseButtonDown(button)
   return lib.IsMouseButtonDown(button)
 end
 --- Check if a mouse button has been released once
 ---@param button integer
----@return bool
+---@return boolean
 function rl.IsMouseButtonReleased(button)
   return lib.IsMouseButtonReleased(button)
 end
 --- Check if a mouse button is NOT being pressed
 ---@param button integer
----@return bool
+---@return boolean
 function rl.IsMouseButtonUp(button)
   return lib.IsMouseButtonUp(button)
 end
 --- Get mouse position X
----@return int
+---@return integer
 function rl.GetMouseX()
   return lib.GetMouseX()
 end
 --- Get mouse position Y
----@return int
+---@return integer
 function rl.GetMouseY()
   return lib.GetMouseY()
 end
@@ -2273,7 +2513,7 @@ function rl.SetMouseScale(scaleX, scaleY)
   return lib.SetMouseScale(scaleX, scaleY)
 end
 --- Get mouse wheel movement for X or Y, whichever is larger
----@return float
+---@return number
 function rl.GetMouseWheelMove()
   return lib.GetMouseWheelMove()
 end
@@ -2289,12 +2529,12 @@ function rl.SetMouseCursor(cursor)
   return lib.SetMouseCursor(cursor)
 end
 --- Get touch position X for touch point 0 (relative to screen size)
----@return int
+---@return integer
 function rl.GetTouchX()
   return lib.GetTouchX()
 end
 --- Get touch position Y for touch point 0 (relative to screen size)
----@return int
+---@return integer
 function rl.GetTouchY()
   return lib.GetTouchY()
 end
@@ -2306,12 +2546,12 @@ function rl.GetTouchPosition(index)
 end
 --- Get touch point identifier for given index
 ---@param index integer
----@return int
+---@return integer
 function rl.GetTouchPointId(index)
   return lib.GetTouchPointId(index)
 end
 --- Get number of touch points
----@return int
+---@return integer
 function rl.GetTouchPointCount()
   return lib.GetTouchPointCount()
 end
@@ -2323,17 +2563,17 @@ function rl.SetGesturesEnabled(flags)
 end
 --- Check if a gesture have been detected
 ---@param gesture integer
----@return bool
+---@return boolean
 function rl.IsGestureDetected(gesture)
   return lib.IsGestureDetected(gesture)
 end
 --- Get latest detected gesture
----@return int
+---@return integer
 function rl.GetGestureDetected()
   return lib.GetGestureDetected()
 end
 --- Get gesture hold time in seconds
----@return float
+---@return number
 function rl.GetGestureHoldDuration()
   return lib.GetGestureHoldDuration()
 end
@@ -2343,7 +2583,7 @@ function rl.GetGestureDragVector()
   return lib.GetGestureDragVector()
 end
 --- Get gesture drag angle
----@return float
+---@return number
 function rl.GetGestureDragAngle()
   return lib.GetGestureDragAngle()
 end
@@ -2353,7 +2593,7 @@ function rl.GetGesturePinchVector()
   return lib.GetGesturePinchVector()
 end
 --- Get gesture pinch angle
----@return float
+---@return number
 function rl.GetGesturePinchAngle()
   return lib.GetGesturePinchAngle()
 end
@@ -2883,7 +3123,7 @@ end
 --- Check collision between two rectangles
 ---@param rec1 Rectangle
 ---@param rec2 Rectangle
----@return bool
+---@return boolean
 function rl.CheckCollisionRecs(rec1, rec2)
   return lib.CheckCollisionRecs(rec1, rec2)
 end
@@ -2892,7 +3132,7 @@ end
 ---@param radius1 number
 ---@param center2 Vector2
 ---@param radius2 number
----@return bool
+---@return boolean
 function rl.CheckCollisionCircles(center1, radius1, center2, radius2)
   return lib.CheckCollisionCircles(center1, radius1, center2, radius2)
 end
@@ -2900,7 +3140,7 @@ end
 ---@param center Vector2
 ---@param radius number
 ---@param rec Rectangle
----@return bool
+---@return boolean
 function rl.CheckCollisionCircleRec(center, radius, rec)
   return lib.CheckCollisionCircleRec(center, radius, rec)
 end
@@ -2909,14 +3149,14 @@ end
 ---@param radius number
 ---@param p1 Vector2
 ---@param p2 Vector2
----@return bool
+---@return boolean
 function rl.CheckCollisionCircleLine(center, radius, p1, p2)
   return lib.CheckCollisionCircleLine(center, radius, p1, p2)
 end
 --- Check if point is inside rectangle
 ---@param point Vector2
 ---@param rec Rectangle
----@return bool
+---@return boolean
 function rl.CheckCollisionPointRec(point, rec)
   return lib.CheckCollisionPointRec(point, rec)
 end
@@ -2924,7 +3164,7 @@ end
 ---@param point Vector2
 ---@param center Vector2
 ---@param radius number
----@return bool
+---@return boolean
 function rl.CheckCollisionPointCircle(point, center, radius)
   return lib.CheckCollisionPointCircle(point, center, radius)
 end
@@ -2933,7 +3173,7 @@ end
 ---@param p1 Vector2
 ---@param p2 Vector2
 ---@param p3 Vector2
----@return bool
+---@return boolean
 function rl.CheckCollisionPointTriangle(point, p1, p2, p3)
   return lib.CheckCollisionPointTriangle(point, p1, p2, p3)
 end
@@ -2942,7 +3182,7 @@ end
 ---@param p1 Vector2
 ---@param p2 Vector2
 ---@param threshold integer
----@return bool
+---@return boolean
 function rl.CheckCollisionPointLine(point, p1, p2, threshold)
   return lib.CheckCollisionPointLine(point, p1, p2, threshold)
 end
@@ -2950,7 +3190,7 @@ end
 ---@param point Vector2
 ---@param points const Vector2 *
 ---@param pointCount integer
----@return bool
+---@return boolean
 function rl.CheckCollisionPointPoly(point, points, pointCount)
   return lib.CheckCollisionPointPoly(point, points, pointCount)
 end
@@ -2960,7 +3200,7 @@ end
 ---@param startPos2 Vector2
 ---@param endPos2 Vector2
 ---@param collisionPoint Vector2 *
----@return bool
+---@return boolean
 function rl.CheckCollisionLines(startPos1, endPos1, startPos2, endPos2, collisionPoint)
   return lib.CheckCollisionLines(startPos1, endPos1, startPos2, endPos2, collisionPoint)
 end
@@ -3024,7 +3264,7 @@ function rl.LoadImageFromScreen()
 end
 --- Check if an image is valid (data and parameters)
 ---@param image Image
----@return bool
+---@return boolean
 function rl.IsImageValid(image)
   return lib.IsImageValid(image)
 end
@@ -3037,7 +3277,7 @@ end
 --- Export image data to file, returns true on success
 ---@param image Image
 ---@param fileName string
----@return bool
+---@return boolean
 function rl.ExportImage(image, fileName)
   return lib.ExportImage(image, fileName)
 end
@@ -3045,14 +3285,14 @@ end
 ---@param image Image
 ---@param fileType string
 ---@param fileSize integer
----@return unsigned char *
+---@return string
 function rl.ExportImageToMemory(image, fileType, fileSize)
   return lib.ExportImageToMemory(image, fileType, fileSize)
 end
 --- Export image as code file defining an array of bytes, returns true on success
 ---@param image Image
 ---@param fileName string
----@return bool
+---@return boolean
 function rl.ExportImageAsCode(image, fileName)
   return lib.ExportImageAsCode(image, fileName)
 end
@@ -3637,7 +3877,7 @@ function rl.LoadRenderTexture(width, height)
 end
 --- Check if a texture is valid (loaded in GPU)
 ---@param texture Texture2D
----@return bool
+---@return boolean
 function rl.IsTextureValid(texture)
   return lib.IsTextureValid(texture)
 end
@@ -3649,7 +3889,7 @@ function rl.UnloadTexture(texture)
 end
 --- Check if a render texture is valid (loaded in GPU)
 ---@param target RenderTexture2D
----@return bool
+---@return boolean
 function rl.IsRenderTextureValid(target)
   return lib.IsRenderTextureValid(target)
 end
@@ -3755,7 +3995,7 @@ end
 --- Check if two colors are equal
 ---@param col1 Color
 ---@param col2 Color
----@return bool
+---@return boolean
 function rl.ColorIsEqual(col1, col2)
   return lib.ColorIsEqual(col1, col2)
 end
@@ -3768,7 +4008,7 @@ function rl.Fade(color, alpha)
 end
 --- Get hexadecimal value for a Color (0xRRGGBBAA)
 ---@param color Color
----@return int
+---@return integer
 function rl.ColorToInt(color)
   return lib.ColorToInt(color)
 end
@@ -3867,7 +4107,7 @@ end
 ---@param width integer
 ---@param height integer
 ---@param format integer
----@return int
+---@return integer
 function rl.GetPixelDataSize(width, height, format)
   return lib.GetPixelDataSize(width, height, format)
 end
@@ -3912,7 +4152,7 @@ function rl.LoadFontFromMemory(fileType, fileData, dataSize, fontSize, codepoint
 end
 --- Check if a font is valid (font data loaded, WARNING: GPU texture not checked)
 ---@param font Font
----@return bool
+---@return boolean
 function rl.IsFontValid(font)
   return lib.IsFontValid(font)
 end
@@ -3954,7 +4194,7 @@ end
 --- Export font as code file, returns true on success
 ---@param font Font
 ---@param fileName string
----@return bool
+---@return boolean
 function rl.ExportFontAsCode(font, fileName)
   return lib.ExportFontAsCode(font, fileName)
 end
@@ -4030,7 +4270,7 @@ end
 --- Measure string width for default font
 ---@param text string
 ---@param fontSize integer
----@return int
+---@return integer
 function rl.MeasureText(text, fontSize)
   return lib.MeasureText(text, fontSize)
 end
@@ -4046,7 +4286,7 @@ end
 --- Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found
 ---@param font Font
 ---@param codepoint integer
----@return int
+---@return integer
 function rl.GetGlyphIndex(font, codepoint)
   return lib.GetGlyphIndex(font, codepoint)
 end
@@ -4067,7 +4307,7 @@ end
 --- Load UTF-8 text encoded from codepoints array
 ---@param codepoints const int *
 ---@param length integer
----@return char *
+---@return string
 function rl.LoadUTF8(codepoints, length)
   return lib.LoadUTF8(codepoints, length)
 end
@@ -4080,7 +4320,7 @@ end
 --- Load all codepoints from a UTF-8 text string, codepoints count returned by parameter
 ---@param text string
 ---@param count integer
----@return int *
+---@return integer
 function rl.LoadCodepoints(text, count)
   return lib.LoadCodepoints(text, count)
 end
@@ -4092,62 +4332,62 @@ function rl.UnloadCodepoints(codepoints)
 end
 --- Get total number of codepoints in a UTF-8 encoded string
 ---@param text string
----@return int
+---@return integer
 function rl.GetCodepointCount(text)
   return lib.GetCodepointCount(text)
 end
 --- Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 ---@param text string
 ---@param codepointSize integer
----@return int
+---@return integer
 function rl.GetCodepoint(text, codepointSize)
   return lib.GetCodepoint(text, codepointSize)
 end
 --- Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 ---@param text string
 ---@param codepointSize integer
----@return int
+---@return integer
 function rl.GetCodepointNext(text, codepointSize)
   return lib.GetCodepointNext(text, codepointSize)
 end
 --- Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure
 ---@param text string
 ---@param codepointSize integer
----@return int
+---@return integer
 function rl.GetCodepointPrevious(text, codepointSize)
   return lib.GetCodepointPrevious(text, codepointSize)
 end
 --- Encode one codepoint into UTF-8 byte array (array length returned as parameter)
 ---@param codepoint integer
 ---@param utf8Size integer
----@return const char *
+---@return string
 function rl.CodepointToUTF8(codepoint, utf8Size)
   return lib.CodepointToUTF8(codepoint, utf8Size)
 end
 --- Copy one string to another, returns bytes copied
 ---@param dst string
 ---@param src string
----@return int
+---@return integer
 function rl.TextCopy(dst, src)
   return lib.TextCopy(dst, src)
 end
 --- Check if two text string are equal
 ---@param text1 string
 ---@param text2 string
----@return bool
+---@return boolean
 function rl.TextIsEqual(text1, text2)
   return lib.TextIsEqual(text1, text2)
 end
 --- Get text length, checks for '\0' ending
 ---@param text string
----@return unsigned int
+---@return integer
 function rl.TextLength(text)
   return lib.TextLength(text)
 end
 --- Text formatting with variables (sprintf() style)
 ---@param text string
 ---@param args ...
----@return const char *
+---@return string
 function rl.TextFormat(text, args)
   return lib.TextFormat(text, args)
 end
@@ -4155,7 +4395,7 @@ end
 ---@param text string
 ---@param position integer
 ---@param length integer
----@return const char *
+---@return string
 function rl.TextSubtext(text, position, length)
   return lib.TextSubtext(text, position, length)
 end
@@ -4163,7 +4403,7 @@ end
 ---@param text string
 ---@param replace string
 ---@param by string
----@return char *
+---@return string
 function rl.TextReplace(text, replace, by)
   return lib.TextReplace(text, replace, by)
 end
@@ -4171,7 +4411,7 @@ end
 ---@param text string
 ---@param insert string
 ---@param position integer
----@return char *
+---@return string
 function rl.TextInsert(text, insert, position)
   return lib.TextInsert(text, insert, position)
 end
@@ -4179,7 +4419,7 @@ end
 ---@param textList string
 ---@param count integer
 ---@param delimiter string
----@return const char *
+---@return string
 function rl.TextJoin(textList, count, delimiter)
   return lib.TextJoin(textList, count, delimiter)
 end
@@ -4187,7 +4427,7 @@ end
 ---@param text string
 ---@param delimiter char
 ---@param count integer
----@return const char **
+---@return string
 function rl.TextSplit(text, delimiter, count)
   return lib.TextSplit(text, delimiter, count)
 end
@@ -4202,49 +4442,49 @@ end
 --- Find first text occurrence within a string
 ---@param text string
 ---@param find string
----@return int
+---@return integer
 function rl.TextFindIndex(text, find)
   return lib.TextFindIndex(text, find)
 end
 --- Get upper case version of provided string
 ---@param text string
----@return const char *
+---@return string
 function rl.TextToUpper(text)
   return lib.TextToUpper(text)
 end
 --- Get lower case version of provided string
 ---@param text string
----@return const char *
+---@return string
 function rl.TextToLower(text)
   return lib.TextToLower(text)
 end
 --- Get Pascal case notation version of provided string
 ---@param text string
----@return const char *
+---@return string
 function rl.TextToPascal(text)
   return lib.TextToPascal(text)
 end
 --- Get Snake case notation version of provided string
 ---@param text string
----@return const char *
+---@return string
 function rl.TextToSnake(text)
   return lib.TextToSnake(text)
 end
 --- Get Camel case notation version of provided string
 ---@param text string
----@return const char *
+---@return string
 function rl.TextToCamel(text)
   return lib.TextToCamel(text)
 end
 --- Get integer value from text (negative values not supported)
 ---@param text string
----@return int
+---@return integer
 function rl.TextToInteger(text)
   return lib.TextToInteger(text)
 end
 --- Get float value from text (negative values not supported)
 ---@param text string
----@return float
+---@return number
 function rl.TextToFloat(text)
   return lib.TextToFloat(text)
 end
@@ -4456,7 +4696,7 @@ function rl.LoadModelFromMesh(mesh)
 end
 --- Check if a model is valid (loaded in GPU, VAO/VBOs)
 ---@param model Model
----@return bool
+---@return boolean
 function rl.IsModelValid(model)
   return lib.IsModelValid(model)
 end
@@ -4576,7 +4816,7 @@ function rl.DrawBillboardPro(camera, texture, source, position, up, size, origin
 end
 --- Upload mesh vertex data in GPU and provide VAO/VBO ids
 ---@param mesh Mesh *
----@param dynamic bool
+---@param dynamic boolean
 ---@return void
 function rl.UploadMesh(mesh, dynamic)
   return lib.UploadMesh(mesh, dynamic)
@@ -4629,14 +4869,14 @@ end
 --- Export mesh data to file, returns true on success
 ---@param mesh Mesh
 ---@param fileName string
----@return bool
+---@return boolean
 function rl.ExportMesh(mesh, fileName)
   return lib.ExportMesh(mesh, fileName)
 end
 --- Export mesh as code file (.h) defining multiple arrays of vertex attributes
 ---@param mesh Mesh
 ---@param fileName string
----@return bool
+---@return boolean
 function rl.ExportMeshAsCode(mesh, fileName)
   return lib.ExportMeshAsCode(mesh, fileName)
 end
@@ -4742,7 +4982,7 @@ function rl.LoadMaterialDefault()
 end
 --- Check if a material is valid (shader assigned, map textures loaded in GPU)
 ---@param material Material
----@return bool
+---@return boolean
 function rl.IsMaterialValid(material)
   return lib.IsMaterialValid(material)
 end
@@ -4807,7 +5047,7 @@ end
 --- Check model animation skeleton match
 ---@param model Model
 ---@param anim ModelAnimation
----@return bool
+---@return boolean
 function rl.IsModelAnimationValid(model, anim)
   return lib.IsModelAnimationValid(model, anim)
 end
@@ -4816,14 +5056,14 @@ end
 ---@param radius1 number
 ---@param center2 Vector3
 ---@param radius2 number
----@return bool
+---@return boolean
 function rl.CheckCollisionSpheres(center1, radius1, center2, radius2)
   return lib.CheckCollisionSpheres(center1, radius1, center2, radius2)
 end
 --- Check collision between two bounding boxes
 ---@param box1 BoundingBox
 ---@param box2 BoundingBox
----@return bool
+---@return boolean
 function rl.CheckCollisionBoxes(box1, box2)
   return lib.CheckCollisionBoxes(box1, box2)
 end
@@ -4831,7 +5071,7 @@ end
 ---@param box BoundingBox
 ---@param center Vector3
 ---@param radius number
----@return bool
+---@return boolean
 function rl.CheckCollisionBoxSphere(box, center, radius)
   return lib.CheckCollisionBoxSphere(box, center, radius)
 end
@@ -4888,7 +5128,7 @@ function rl.CloseAudioDevice()
   return lib.CloseAudioDevice()
 end
 --- Check if audio device has been initialized successfully
----@return bool
+---@return boolean
 function rl.IsAudioDeviceReady()
   return lib.IsAudioDeviceReady()
 end
@@ -4899,7 +5139,7 @@ function rl.SetMasterVolume(volume)
   return lib.SetMasterVolume(volume)
 end
 --- Get master volume (listener)
----@return float
+---@return number
 function rl.GetMasterVolume()
   return lib.GetMasterVolume()
 end
@@ -4919,7 +5159,7 @@ function rl.LoadWaveFromMemory(fileType, fileData, dataSize)
 end
 --- Checks if wave data is valid (data loaded and parameters)
 ---@param wave Wave
----@return bool
+---@return boolean
 function rl.IsWaveValid(wave)
   return lib.IsWaveValid(wave)
 end
@@ -4943,7 +5183,7 @@ function rl.LoadSoundAlias(source)
 end
 --- Checks if a sound is valid (data loaded and buffers initialized)
 ---@param sound Sound
----@return bool
+---@return boolean
 function rl.IsSoundValid(sound)
   return lib.IsSoundValid(sound)
 end
@@ -4976,14 +5216,14 @@ end
 --- Export wave data to file, returns true on success
 ---@param wave Wave
 ---@param fileName string
----@return bool
+---@return boolean
 function rl.ExportWave(wave, fileName)
   return lib.ExportWave(wave, fileName)
 end
 --- Export wave sample data to code (.h), returns true on success
 ---@param wave Wave
 ---@param fileName string
----@return bool
+---@return boolean
 function rl.ExportWaveAsCode(wave, fileName)
   return lib.ExportWaveAsCode(wave, fileName)
 end
@@ -5013,7 +5253,7 @@ function rl.ResumeSound(sound)
 end
 --- Check if a sound is currently playing
 ---@param sound Sound
----@return bool
+---@return boolean
 function rl.IsSoundPlaying(sound)
   return lib.IsSoundPlaying(sound)
 end
@@ -5063,7 +5303,7 @@ function rl.WaveFormat(wave, sampleRate, sampleSize, channels)
 end
 --- Load samples data from wave as a 32bit float data array
 ---@param wave Wave
----@return float *
+---@return number
 function rl.LoadWaveSamples(wave)
   return lib.LoadWaveSamples(wave)
 end
@@ -5089,7 +5329,7 @@ function rl.LoadMusicStreamFromMemory(fileType, data, dataSize)
 end
 --- Checks if a music stream is valid (context and buffers initialized)
 ---@param music Music
----@return bool
+---@return boolean
 function rl.IsMusicValid(music)
   return lib.IsMusicValid(music)
 end
@@ -5107,7 +5347,7 @@ function rl.PlayMusicStream(music)
 end
 --- Check if music is playing
 ---@param music Music
----@return bool
+---@return boolean
 function rl.IsMusicStreamPlaying(music)
   return lib.IsMusicStreamPlaying(music)
 end
@@ -5165,13 +5405,13 @@ function rl.SetMusicPan(music, pan)
 end
 --- Get music time length (in seconds)
 ---@param music Music
----@return float
+---@return number
 function rl.GetMusicTimeLength(music)
   return lib.GetMusicTimeLength(music)
 end
 --- Get current music time played (in seconds)
 ---@param music Music
----@return float
+---@return number
 function rl.GetMusicTimePlayed(music)
   return lib.GetMusicTimePlayed(music)
 end
@@ -5185,7 +5425,7 @@ function rl.LoadAudioStream(sampleRate, sampleSize, channels)
 end
 --- Checks if an audio stream is valid (buffers initialized)
 ---@param stream AudioStream
----@return bool
+---@return boolean
 function rl.IsAudioStreamValid(stream)
   return lib.IsAudioStreamValid(stream)
 end
@@ -5205,7 +5445,7 @@ function rl.UpdateAudioStream(stream, data, frameCount)
 end
 --- Check if any audio stream buffers requires refill
 ---@param stream AudioStream
----@return bool
+---@return boolean
 function rl.IsAudioStreamProcessed(stream)
   return lib.IsAudioStreamProcessed(stream)
 end
@@ -5229,7 +5469,7 @@ function rl.ResumeAudioStream(stream)
 end
 --- Check if audio stream is playing
 ---@param stream AudioStream
----@return bool
+---@return boolean
 function rl.IsAudioStreamPlaying(stream)
   return lib.IsAudioStreamPlaying(stream)
 end
@@ -5299,4 +5539,257 @@ end
 function rl.DetachAudioMixedProcessor(processor)
   return lib.DetachAudioMixedProcessor(processor)
 end
+--- check if the given value is of type "Vector2"
+---@param check any the value to compare
+---@return boolean
+function rl.IsVector2(check)
+  return type(check) == "cdata" and ffi.istype("struct Vector2", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Vector3"
+---@param check any the value to compare
+---@return boolean
+function rl.IsVector3(check)
+  return type(check) == "cdata" and ffi.istype("struct Vector3", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Vector4"
+---@param check any the value to compare
+---@return boolean
+function rl.IsVector4(check)
+  return type(check) == "cdata" and ffi.istype("struct Vector4", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Matrix"
+---@param check any the value to compare
+---@return boolean
+function rl.IsMatrix(check)
+  return type(check) == "cdata" and ffi.istype("struct Matrix", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Color"
+---@param check any the value to compare
+---@return boolean
+function rl.IsColor(check)
+  return type(check) == "cdata" and ffi.istype("struct Color", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Rectangle"
+---@param check any the value to compare
+---@return boolean
+function rl.IsRectangle(check)
+  return type(check) == "cdata" and ffi.istype("struct Rectangle", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Image"
+---@param check any the value to compare
+---@return boolean
+function rl.IsImage(check)
+  return type(check) == "cdata" and ffi.istype("struct Image", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Texture"
+---@param check any the value to compare
+---@return boolean
+function rl.IsTexture(check)
+  return type(check) == "cdata" and ffi.istype("struct Texture", ffi.typeof(check))
+end
+
+--- check if the given value is of type "RenderTexture"
+---@param check any the value to compare
+---@return boolean
+function rl.IsRenderTexture(check)
+  return type(check) == "cdata" and ffi.istype("struct RenderTexture", ffi.typeof(value))
+end
+
+--- val if the given value is of type "NPatchInfo"
+---@param check any the value to compare
+---@return boolean
+function rl.IsNPatchInfo(check)
+  return type(check) == "cdata" and ffi.istype("struct NPatchInfo", ffi.typeof(check))
+end
+
+--- check if the given value is of type "GlyphInfo"
+---@param check any the value to compare
+---@return boolean
+function rl.IsGlyphInfo(check)
+  return type(check) == "cdata" and ffi.istype("struct GlyphInfo", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Font"
+---@param check any the value to compare
+---@return boolean
+function rl.IsFont(check)
+  return type(check) == "cdata" and ffi.istype("struct Font", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Camera3D"
+---@param check any the value to compare
+---@return boolean
+function rl.IsCamera3D(check)
+  return type(check) == "cdata" and ffi.istype("struct Camera3D", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Camera2D"
+---@param check any the value to compare
+---@return boolean
+function rl.IsCamera2D(check)
+  return type(check) == "cdata" and ffi.istype("struct Camera2D", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Mesh"
+---@param check any the value to compare
+---@return boolean
+function rl.IsMesh(check)
+  return type(check) == "cdata" and ffi.istype("struct Mesh", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Shader"
+---@param check any the value to compare
+---@return boolean
+function rl.IsShader(check)
+  return type(check) == "cdata" and ffi.istype("struct Shader", ffi.typeof(check))
+end
+
+--- check if the given value is of type "MaterialMap"
+---@param check any the value to compare
+---@return boolean
+function rl.IsMaterialMap(check)
+  return type(check) == "cdata" and ffi.istype("struct MaterialMap", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Material"
+---@param check any the value to compare
+---@return boolean
+function rl.IsMaterial(check)
+  return type(check) == "cdata" and ffi.istype("struct Material", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Transform"
+---@param check any the value to compare
+---@return boolean
+function rl.IsTransform(check)
+  return type(check) == "cdata" and ffi.istype("struct Transform", ffi.typeof(check))
+end
+
+--- check if the given value is of type "BoneInfo"
+---@param check any the value to compare
+---@return boolean
+function rl.IsBoneInfo(check)
+  return type(check) == "cdata" and ffi.istype("struct BoneInfo", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Model"
+---@param check any the value to compare
+---@return boolean
+function rl.IsModel(check)
+  return type(check) == "cdata" and ffi.istype("struct Model", ffi.typeof(check))
+end
+
+--- check if the given value is of type "ModelAnimation"
+---@param check any the value to compare
+---@return boolean
+function rl.IsModelAnimation(check)
+  return type(check) == "cdata" and ffi.istype("struct ModelAnimation", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Ray"
+---@param check any the value to compare
+---@return boolean
+function rl.IsRay(check)
+  return type(check) == "cdata" and ffi.istype("struct Ray", ffi.typeof(check))
+end
+
+--- check if the given value is of type "RayCollision"
+---@param check any the value to compare
+---@return boolean
+function rl.IsRayCollision(check)
+  return type(check) == "cdata" and ffi.istype("struct RayCollision", ffi.typeof(check))
+end
+
+--- check if the given value is of type "BoundingBox"
+---@param check any the value to compare
+---@return boolean
+function rl.IsBoundingBox(check)
+  return type(check) == "cdata" and ffi.istype("struct BoundingBox", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Wave"
+---@param check any the value to compare
+---@return boolean
+function rl.IsWave(check)
+  return type(check) == "cdata" and ffi.istype("struct Wave", ffi.typeof(check))
+end
+
+--- check if the given value is of type "rAudioBuffer"
+---@param check any the value to compare
+---@return boolean
+function rl.IsrAudioBuffer(check)
+  return type(check) == "cdata" and ffi.istype("struct rAudioBuffer", ffi.typeof(check))
+end
+
+--- check if the given value is of type "rAudioProcessor"
+---@param check any the value to compare
+---@return boolean
+function rl.IsrAudioProcessor(check)
+  return type(check) == "cdata" and ffi.istype("struct rAudioProcessor", ffi.typeof(check))
+end
+
+--- check if the given value is of type "AudioStream"
+---@param check any the value to compare
+---@return boolean
+function rl.IsAudioStream(check)
+  return type(check) == "cdata" and ffi.istype("struct AudioStream", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Sound"
+---@param check any the value to compare
+---@return boolean
+function rl.IsSound(check)
+  return type(check) == "cdata" and ffi.istype("struct Sound", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Music"
+---@param check any the value to compare
+---@return boolean
+function rl.IsMusic(check)
+  return type(check) == "cdata" and ffi.istype("struct Music", ffi.typeof(check))
+end
+
+--- check if the given value is of type "VrDeviceInfo"
+---@param check any the value to compare
+---@return boolean
+function rl.IsVrDeviceInfo(check)
+  return type(check) == "cdata" and ffi.istype("struct VrDeviceInfo", ffi.typeof(check))
+end
+
+--- check if the given value is of type "VrStereoConfig"
+---@param check any the value to compare
+---@return boolean
+function rl.IsVrStereoConfig(check)
+  return type(check) == "cdata" and ffi.istype("struct VrStereoConfig", ffi.typeof(check))
+end
+
+--- check if the given value is of type "FilePathList"
+---@param check any the value to compare
+---@return boolean
+function rl.IsFilePathList(check)
+  return type(check) == "cdata" and ffi.istype("struct FilePathList", ffi.typeof(check))
+end
+
+--- check if the given value is of type "AutomationEvent"
+---@param check any the value to compare
+---@return boolean
+function rl.IsAutomationEvent(check)
+  return type(check) == "cdata" and ffi.istype("struct AutomationEvent", ffi.typeof(check))
+end
+
+--- check if the given value is of type "AutomationEventList"
+---@param check any the value to compare
+---@return boolean
+function rl.IsAutomationEventList(check)
+  return type(check) == "cdata" and ffi.istype("struct AutomationEventList", ffi.typeof(check))
+end
+
+
 return rl
