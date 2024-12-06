@@ -53,6 +53,8 @@ rl.CloseWindow()
 
 ## Examples
 
+*Examples are pulled from [TSnake41/raylib-lua](https://github.com/TSnake41/raylib-lua/tree/master/examples)*
+
 Run `luajit examples/core_basic_window.lua`
 
 ## Generating API files
@@ -64,18 +66,20 @@ You can use [the Raylib parser](https://github.com/raysan5/raylib/tree/master/pa
 ./raylib_parser -i ../src/raylib.h -f LUA -o raylib_api.lua
 ./raylib_parser -i ../src/raymath.h -f LUA -o raymath_api.lua
 ./raylib_parser -i ../src/rlgl.h -f LUA -o rlgl_api.lua
-./raylib_parser -i ../src/raygui.h -f LUA -o raygui_api.lua
+# requires the raygui in the raylib source folder
+./raylib_parser -i ../raygui/src/raygui.h -f LUA -o raygui_api.lua
 ```
 
-## Building `raylib.lua` from API files
+## Building `raylib/init.lua` from API files
 
 This is a work in progress as well. It uses [Lune (a luau script runtime)](https://lune-org.github.io/docs) to generate the file as it allows for string interpolation and a few other nice additions.
 
-It is super rough right now but it does work and generates a `raylib.lua` file with comments and docblocks!
+It is super rough right now but it does work and generates a `init.lua` file with comments and docblocks!
 
 You don't need Lune or Luau installed to use this library
 
 ```sh
+cd raylib/
 lune run generate.luau
 ```
 
