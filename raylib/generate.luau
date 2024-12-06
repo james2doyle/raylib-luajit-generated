@@ -189,6 +189,259 @@ end
 
 local output = output .. [[
 
+--- check if the given value is of type "Vector2"
+---@param check any the value to compare
+---@return boolean
+function rl.IsVector2(check)
+  return type(check) == "cdata" and ffi.istype("struct Vector2", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Vector3"
+---@param check any the value to compare
+---@return boolean
+function rl.IsVector3(check)
+  return type(check) == "cdata" and ffi.istype("struct Vector3", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Vector4"
+---@param check any the value to compare
+---@return boolean
+function rl.IsVector4(check)
+  return type(check) == "cdata" and ffi.istype("struct Vector4", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Matrix"
+---@param check any the value to compare
+---@return boolean
+function rl.IsMatrix(check)
+  return type(check) == "cdata" and ffi.istype("struct Matrix", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Color"
+---@param check any the value to compare
+---@return boolean
+function rl.IsColor(check)
+  return type(check) == "cdata" and ffi.istype("struct Color", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Rectangle"
+---@param check any the value to compare
+---@return boolean
+function rl.IsRectangle(check)
+  return type(check) == "cdata" and ffi.istype("struct Rectangle", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Image"
+---@param check any the value to compare
+---@return boolean
+function rl.IsImage(check)
+  return type(check) == "cdata" and ffi.istype("struct Image", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Texture"
+---@param check any the value to compare
+---@return boolean
+function rl.IsTexture(check)
+  return type(check) == "cdata" and ffi.istype("struct Texture", ffi.typeof(check))
+end
+
+--- check if the given value is of type "RenderTexture"
+---@param check any the value to compare
+---@return boolean
+function rl.IsRenderTexture(check)
+  return type(check) == "cdata" and ffi.istype("struct RenderTexture", ffi.typeof(value))
+end
+
+--- val if the given value is of type "NPatchInfo"
+---@param check any the value to compare
+---@return boolean
+function rl.IsNPatchInfo(check)
+  return type(check) == "cdata" and ffi.istype("struct NPatchInfo", ffi.typeof(check))
+end
+
+--- check if the given value is of type "GlyphInfo"
+---@param check any the value to compare
+---@return boolean
+function rl.IsGlyphInfo(check)
+  return type(check) == "cdata" and ffi.istype("struct GlyphInfo", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Font"
+---@param check any the value to compare
+---@return boolean
+function rl.IsFont(check)
+  return type(check) == "cdata" and ffi.istype("struct Font", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Camera3D"
+---@param check any the value to compare
+---@return boolean
+function rl.IsCamera3D(check)
+  return type(check) == "cdata" and ffi.istype("struct Camera3D", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Camera2D"
+---@param check any the value to compare
+---@return boolean
+function rl.IsCamera2D(check)
+  return type(check) == "cdata" and ffi.istype("struct Camera2D", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Mesh"
+---@param check any the value to compare
+---@return boolean
+function rl.IsMesh(check)
+  return type(check) == "cdata" and ffi.istype("struct Mesh", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Shader"
+---@param check any the value to compare
+---@return boolean
+function rl.IsShader(check)
+  return type(check) == "cdata" and ffi.istype("struct Shader", ffi.typeof(check))
+end
+
+--- check if the given value is of type "MaterialMap"
+---@param check any the value to compare
+---@return boolean
+function rl.IsMaterialMap(check)
+  return type(check) == "cdata" and ffi.istype("struct MaterialMap", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Material"
+---@param check any the value to compare
+---@return boolean
+function rl.IsMaterial(check)
+  return type(check) == "cdata" and ffi.istype("struct Material", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Transform"
+---@param check any the value to compare
+---@return boolean
+function rl.IsTransform(check)
+  return type(check) == "cdata" and ffi.istype("struct Transform", ffi.typeof(check))
+end
+
+--- check if the given value is of type "BoneInfo"
+---@param check any the value to compare
+---@return boolean
+function rl.IsBoneInfo(check)
+  return type(check) == "cdata" and ffi.istype("struct BoneInfo", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Model"
+---@param check any the value to compare
+---@return boolean
+function rl.IsModel(check)
+  return type(check) == "cdata" and ffi.istype("struct Model", ffi.typeof(check))
+end
+
+--- check if the given value is of type "ModelAnimation"
+---@param check any the value to compare
+---@return boolean
+function rl.IsModelAnimation(check)
+  return type(check) == "cdata" and ffi.istype("struct ModelAnimation", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Ray"
+---@param check any the value to compare
+---@return boolean
+function rl.IsRay(check)
+  return type(check) == "cdata" and ffi.istype("struct Ray", ffi.typeof(check))
+end
+
+--- check if the given value is of type "RayCollision"
+---@param check any the value to compare
+---@return boolean
+function rl.IsRayCollision(check)
+  return type(check) == "cdata" and ffi.istype("struct RayCollision", ffi.typeof(check))
+end
+
+--- check if the given value is of type "BoundingBox"
+---@param check any the value to compare
+---@return boolean
+function rl.IsBoundingBox(check)
+  return type(check) == "cdata" and ffi.istype("struct BoundingBox", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Wave"
+---@param check any the value to compare
+---@return boolean
+function rl.IsWave(check)
+  return type(check) == "cdata" and ffi.istype("struct Wave", ffi.typeof(check))
+end
+
+--- check if the given value is of type "rAudioBuffer"
+---@param check any the value to compare
+---@return boolean
+function rl.IsrAudioBuffer(check)
+  return type(check) == "cdata" and ffi.istype("struct rAudioBuffer", ffi.typeof(check))
+end
+
+--- check if the given value is of type "rAudioProcessor"
+---@param check any the value to compare
+---@return boolean
+function rl.IsrAudioProcessor(check)
+  return type(check) == "cdata" and ffi.istype("struct rAudioProcessor", ffi.typeof(check))
+end
+
+--- check if the given value is of type "AudioStream"
+---@param check any the value to compare
+---@return boolean
+function rl.IsAudioStream(check)
+  return type(check) == "cdata" and ffi.istype("struct AudioStream", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Sound"
+---@param check any the value to compare
+---@return boolean
+function rl.IsSound(check)
+  return type(check) == "cdata" and ffi.istype("struct Sound", ffi.typeof(check))
+end
+
+--- check if the given value is of type "Music"
+---@param check any the value to compare
+---@return boolean
+function rl.IsMusic(check)
+  return type(check) == "cdata" and ffi.istype("struct Music", ffi.typeof(check))
+end
+
+--- check if the given value is of type "VrDeviceInfo"
+---@param check any the value to compare
+---@return boolean
+function rl.IsVrDeviceInfo(check)
+  return type(check) == "cdata" and ffi.istype("struct VrDeviceInfo", ffi.typeof(check))
+end
+
+--- check if the given value is of type "VrStereoConfig"
+---@param check any the value to compare
+---@return boolean
+function rl.IsVrStereoConfig(check)
+  return type(check) == "cdata" and ffi.istype("struct VrStereoConfig", ffi.typeof(check))
+end
+
+--- check if the given value is of type "FilePathList"
+---@param check any the value to compare
+---@return boolean
+function rl.IsFilePathList(check)
+  return type(check) == "cdata" and ffi.istype("struct FilePathList", ffi.typeof(check))
+end
+
+--- check if the given value is of type "AutomationEvent"
+---@param check any the value to compare
+---@return boolean
+function rl.IsAutomationEvent(check)
+  return type(check) == "cdata" and ffi.istype("struct AutomationEvent", ffi.typeof(check))
+end
+
+--- check if the given value is of type "AutomationEventList"
+---@param check any the value to compare
+---@return boolean
+function rl.IsAutomationEventList(check)
+  return type(check) == "cdata" and ffi.istype("struct AutomationEventList", ffi.typeof(check))
+end
+
+
 return rl
 ]]
 
