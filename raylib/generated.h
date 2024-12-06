@@ -147,8 +147,10 @@ typedef struct Mesh {
     // Animation vertex data
     float *animVertices;    // Animated vertex positions (after bones transformations)
     float *animNormals;     // Animated normals (after bones transformations)
-    unsigned char *boneIds; // Vertex bone ids, max 255 bone ids, up to 4 bones influence by vertex (skinning)
-    float *boneWeights;     // Vertex bone weight, up to 4 bones influence by vertex (skinning)
+    unsigned char *boneIds; // Vertex bone ids, max 255 bone ids, up to 4 bones influence by vertex (skinning) (shader-location = 6)
+    float *boneWeights;     // Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7)
+    Matrix *boneMatrices;   // Bones animated transformation matrices
+    int boneCount;          // Number of bones
 
     // OpenGL identifiers
     unsigned int vaoId;     // OpenGL Vertex Array Object id
@@ -216,7 +218,7 @@ typedef struct ModelAnimation {
 // Ray, ray for raycasting
 typedef struct Ray {
     Vector3 position;       // Ray position (origin)
-    Vector3 direction;      // Ray direction
+    Vector3 direction;      // Ray direction (normalized)
 } Ray;
 
 // RayCollision, ray hit information
@@ -279,7 +281,6 @@ typedef struct VrDeviceInfo {
     int vResolution;                // Vertical resolution in pixels
     float hScreenSize;              // Horizontal size in meters
     float vScreenSize;              // Vertical size in meters
-    float vScreenCenter;            // Screen center in meters
     float eyeToScreenDistance;      // Distance between eye and display in meters
     float lensSeparationDistance;   // Lens separation distance in meters
     float interpupillaryDistance;   // IPD (distance between pupils) in meters
@@ -473,7 +474,7 @@ typedef enum {
     KEY_KP_EQUAL        = 336,      // Key: Keypad =
     // Android key buttons
     KEY_BACK            = 4,        // Key: Android back button
-    KEY_MENU            = 82,       // Key: Android menu button
+    KEY_MENU            = 5,        // Key: Android menu button
     KEY_VOLUME_UP       = 24,       // Key: Android volume up button
     KEY_VOLUME_DOWN     = 25        // Key: Android volume down button
 } KeyboardKey;
@@ -512,12 +513,12 @@ typedef enum {
     GAMEPAD_BUTTON_LEFT_FACE_DOWN,      // Gamepad left DPAD down button
     GAMEPAD_BUTTON_LEFT_FACE_LEFT,      // Gamepad left DPAD left button
     GAMEPAD_BUTTON_RIGHT_FACE_UP,       // Gamepad right button up (i.e. PS3: Triangle, Xbox: Y)
-    GAMEPAD_BUTTON_RIGHT_FACE_RIGHT,    // Gamepad right button right (i.e. PS3: Square, Xbox: X)
+    GAMEPAD_BUTTON_RIGHT_FACE_RIGHT,    // Gamepad right button right (i.e. PS3: Circle, Xbox: B)
     GAMEPAD_BUTTON_RIGHT_FACE_DOWN,     // Gamepad right button down (i.e. PS3: Cross, Xbox: A)
-    GAMEPAD_BUTTON_RIGHT_FACE_LEFT,     // Gamepad right button left (i.e. PS3: Circle, Xbox: B)
+    GAMEPAD_BUTTON_RIGHT_FACE_LEFT,     // Gamepad right button left (i.e. PS3: Square, Xbox: X)
     GAMEPAD_BUTTON_LEFT_TRIGGER_1,      // Gamepad top/back trigger left (first), it could be a trailing button
     GAMEPAD_BUTTON_LEFT_TRIGGER_2,      // Gamepad top/back trigger left (second), it could be a trailing button
-    GAMEPAD_BUTTON_RIGHT_TRIGGER_1,     // Gamepad top/back trigger right (one), it could be a trailing button
+    GAMEPAD_BUTTON_RIGHT_TRIGGER_1,     // Gamepad top/back trigger right (first), it could be a trailing button
     GAMEPAD_BUTTON_RIGHT_TRIGGER_2,     // Gamepad top/back trigger right (second), it could be a trailing button
     GAMEPAD_BUTTON_MIDDLE_LEFT,         // Gamepad center buttons, left one (i.e. PS3: Select)
     GAMEPAD_BUTTON_MIDDLE,              // Gamepad center buttons, middle one (i.e. PS3: PS, Xbox: XBOX)
@@ -578,7 +579,10 @@ typedef enum {
     SHADER_LOC_MAP_CUBEMAP,         // Shader location: samplerCube texture: cubemap
     SHADER_LOC_MAP_IRRADIANCE,      // Shader location: samplerCube texture: irradiance
     SHADER_LOC_MAP_PREFILTER,       // Shader location: samplerCube texture: prefilter
-    SHADER_LOC_MAP_BRDF             // Shader location: sampler2d texture: brdf
+    SHADER_LOC_MAP_BRDF,            // Shader location: sampler2d texture: brdf
+    SHADER_LOC_VERTEX_BONEIDS,      // Shader location: vertex attribute: boneIds
+    SHADER_LOC_VERTEX_BONEWEIGHTS,  // Shader location: vertex attribute: boneWeights
+    SHADER_LOC_BONE_MATRICES        // Shader location: array of matrices uniform: boneMatrices
 } ShaderLocationIndex;
 
 // Shader uniform data type
@@ -657,8 +661,7 @@ typedef enum {
     CUBEMAP_LAYOUT_LINE_VERTICAL,           // Layout is defined by a vertical line with faces
     CUBEMAP_LAYOUT_LINE_HORIZONTAL,         // Layout is defined by a horizontal line with faces
     CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR,     // Layout is defined by a 3x4 cross with cubemap faces
-    CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE,     // Layout is defined by a 4x3 cross with cubemap faces
-    CUBEMAP_LAYOUT_PANORAMA                 // Layout is defined by a panorama image (equirrectangular map)
+    CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE     // Layout is defined by a 4x3 cross with cubemap faces
 } CubemapLayout;
 
 // Font type, defines generation method
@@ -698,11 +701,11 @@ typedef enum {
 
 // Camera system modes
 typedef enum {
-    CAMERA_CUSTOM = 0,              // Custom camera
-    CAMERA_FREE,                    // Free camera
-    CAMERA_ORBITAL,                 // Orbital camera
-    CAMERA_FIRST_PERSON,            // First person camera
-    CAMERA_THIRD_PERSON             // Third person camera
+    CAMERA_CUSTOM = 0,              // Camera custom, controlled by user (UpdateCamera() does nothing)
+    CAMERA_FREE,                    // Camera free mode
+    CAMERA_ORBITAL,                 // Camera orbital, around target, zoom supported
+    CAMERA_FIRST_PERSON,            // Camera first person
+    CAMERA_THIRD_PERSON             // Camera third person
 } CameraMode;
 
 // Camera projection
@@ -719,6 +722,14 @@ typedef enum {
 } NPatchLayout;
 
 typedef void (*AudioCallback)(void *bufferData, unsigned int frames);
+
+// Callbacks to hook some internal functions
+// WARNING: These callbacks are intended for advanced users
+typedef void (*TraceLogCallback)(int logLevel, const char *text, va_list args);  // Logging: Redirect trace log messages
+typedef unsigned char *(*LoadFileDataCallback)(const char *fileName, int *dataSize);    // FileIO: Load binary data
+typedef bool (*SaveFileDataCallback)(const char *fileName, void *data, int dataSize);   // FileIO: Save binary data
+typedef char *(*LoadFileTextCallback)(const char *fileName);            // FileIO: Load text data
+typedef bool (*SaveFileTextCallback)(const char *fileName, char *text); // FileIO: Save text data
 
 // Window-related functions
 void InitWindow(int width, int height, const char *title);  // Initialize window and OpenGL context
@@ -767,7 +778,7 @@ Vector2 GetWindowScaleDPI(void);                            // Get window scale 
 const char *GetMonitorName(int monitor);                    // Get the human-readable, UTF-8 encoded name of the specified monitor
 void SetClipboardText(const char *text);                    // Set clipboard text content
 const char *GetClipboardText(void);                         // Get clipboard text content
-Image GetClipboardImage(void);                              // Get clipboard image
+Image GetClipboardImage(void);                              // Get clipboard image content
 void EnableEventWaiting(void);                              // Enable waiting for events on EndDrawing(), no automatic event polling
 void DisableEventWaiting(void);                             // Disable waiting for events on EndDrawing(), automatic events polling
 
@@ -860,11 +871,11 @@ void MemFree(void *ptr);                                    // Internal memory f
 
 // Set custom callbacks
 // WARNING: Callbacks setup is intended for advanced users
-// void SetTraceLogCallback(TraceLogCallback callback);         // Set custom trace log
-// void SetLoadFileDataCallback(LoadFileDataCallback callback); // Set custom file binary data loader
-// void SetSaveFileDataCallback(SaveFileDataCallback callback); // Set custom file binary data saver
-// void SetLoadFileTextCallback(LoadFileTextCallback callback); // Set custom file text data loader
-// void SetSaveFileTextCallback(SaveFileTextCallback callback); // Set custom file text data saver
+void SetTraceLogCallback(TraceLogCallback callback);         // Set custom trace log
+void SetLoadFileDataCallback(LoadFileDataCallback callback); // Set custom file binary data loader
+void SetSaveFileDataCallback(SaveFileDataCallback callback); // Set custom file binary data saver
+void SetLoadFileTextCallback(LoadFileTextCallback callback); // Set custom file text data loader
+void SetSaveFileTextCallback(SaveFileTextCallback callback); // Set custom file text data saver
 
 // Files management functions
 unsigned char *LoadFileData(const char *fileName, int *dataSize); // Load file data as byte array (read)
@@ -988,6 +999,9 @@ float GetGesturePinchAngle(void);                 // Get gesture pinch angle
 void UpdateCamera(Camera *camera, int mode);      // Update camera position for selected mode
 void UpdateCameraPro(Camera *camera, Vector3 movement, Vector3 rotation, float zoom); // Update camera movement/rotation
 
+//------------------------------------------------------------------------------------
+// Basic Shapes Drawing Functions (Module: shapes)
+//------------------------------------------------------------------------------------
 // Set texture and rectangle to be used on shapes drawing
 // NOTE: It can be useful when using basic shapes and one single font,
 // defining a font char white rectangle would allow drawing everything in a single draw call
@@ -1065,6 +1079,10 @@ bool CheckCollisionPointLine(Vector2 point, Vector2 p1, Vector2 p2, int threshol
 bool CheckCollisionPointPoly(Vector2 point, const Vector2 *points, int pointCount);                // Check if point is within a polygon described by array of vertices
 bool CheckCollisionLines(Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2, Vector2 *collisionPoint); // Check the collision between two lines defined by two points each, returns collision point by reference
 Rectangle GetCollisionRec(Rectangle rec1, Rectangle rec2);                                         // Get collision rectangle for two rectangles collision
+
+//------------------------------------------------------------------------------------
+// Texture Loading and Drawing Functions (Module: textures)
+//------------------------------------------------------------------------------------
 
 // Image loading functions
 // NOTE: These functions do not require GPU access
@@ -1200,6 +1218,10 @@ Color GetPixelColor(void *srcPtr, int format);                        // Get Col
 void SetPixelColor(void *dstPtr, Color color, int format);            // Set color formatted into destination pixel pointer
 int GetPixelDataSize(int width, int height, int format);              // Get pixel data size in bytes for certain format
 
+//------------------------------------------------------------------------------------
+// Font Loading and Text Drawing Functions (Module: text)
+//------------------------------------------------------------------------------------
+
 // Font loading/unloading functions
 Font GetFontDefault(void);                                                            // Get the default Font
 Font LoadFont(const char *fileName);                                                  // Load font from file into GPU memory (VRAM)
@@ -1261,6 +1283,10 @@ const char *TextToCamel(const char *text);                      // Get Camel cas
 
 int TextToInteger(const char *text);                            // Get integer value from text (negative values not supported)
 float TextToFloat(const char *text);                            // Get float value from text (negative values not supported)
+
+//------------------------------------------------------------------------------------
+// Basic 3d Shapes Drawing Functions (Module: models)
+//------------------------------------------------------------------------------------
 
 // Basic geometric 3D shapes drawing functions
 void DrawLine3D(Vector3 startPos, Vector3 endPos, Color color);                                    // Draw a line in 3D world space
@@ -1358,6 +1384,11 @@ RayCollision GetRayCollisionMesh(Ray ray, Mesh mesh, Matrix transform);         
 RayCollision GetRayCollisionTriangle(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3);            // Get collision info between ray and triangle
 RayCollision GetRayCollisionQuad(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4);    // Get collision info between ray and quad
 
+//------------------------------------------------------------------------------------
+// Audio Loading and Playing Functions (Module: audio)
+//------------------------------------------------------------------------------------
+typedef void (*AudioCallback)(void *bufferData, unsigned int frames);
+
 // Audio device management functions
 void InitAudioDevice(void);                                     // Initialize audio device and context
 void CloseAudioDevice(void);                                    // Close the audio device and context
@@ -1428,7 +1459,6 @@ void SetAudioStreamVolume(AudioStream stream, float volume);    // Set volume fo
 void SetAudioStreamPitch(AudioStream stream, float pitch);      // Set pitch for audio stream (1.0 is base level)
 void SetAudioStreamPan(AudioStream stream, float pan);          // Set pan for audio stream (0.5 is centered)
 void SetAudioStreamBufferSizeDefault(int size);                 // Default size for new audio streams
-
 void SetAudioStreamCallback(AudioStream stream, AudioCallback callback); // Audio thread callback to request new data
 
 void AttachAudioStreamProcessor(AudioStream stream, AudioCallback processor); // Attach audio stream processor to stream, receives the samples as 'float'
@@ -1436,31 +1466,3 @@ void DetachAudioStreamProcessor(AudioStream stream, AudioCallback processor); //
 
 void AttachAudioMixedProcessor(AudioCallback processor); // Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'
 void DetachAudioMixedProcessor(AudioCallback processor); // Detach audio stream processor from the entire audio pipeline
-
-// Custom raylib color palette for amazing visuals on WHITE background
-// #define LIGHTGRAY  (Color){ 200, 200, 200, 255 }   // Light Gray
-// #define GRAY       (Color){ 130, 130, 130, 255 }   // Gray
-// #define DARKGRAY   (Color){ 80, 80, 80, 255 }      // Dark Gray
-// #define YELLOW     (Color){ 253, 249, 0, 255 }     // Yellow
-// #define GOLD       (Color){ 255, 203, 0, 255 }     // Gold
-// #define ORANGE     (Color){ 255, 161, 0, 255 }     // Orange
-// #define PINK       (Color){ 255, 109, 194, 255 }   // Pink
-// #define RED        (Color){ 230, 41, 55, 255 }     // Red
-// #define MAROON     (Color){ 190, 33, 55, 255 }     // Maroon
-// #define GREEN      (Color){ 0, 228, 48, 255 }      // Green
-// #define LIME       (Color){ 0, 158, 47, 255 }      // Lime
-// #define DARKGREEN  (Color){ 0, 117, 44, 255 }      // Dark Green
-// #define SKYBLUE    (Color){ 102, 191, 255, 255 }   // Sky Blue
-// #define BLUE       (Color){ 0, 121, 241, 255 }     // Blue
-// #define DARKBLUE   (Color){ 0, 82, 172, 255 }      // Dark Blue
-// #define PURPLE     (Color){ 200, 122, 255, 255 }   // Purple
-// #define VIOLET     (Color){ 135, 60, 190, 255 }    // Violet
-// #define DARKPURPLE (Color){ 112, 31, 126, 255 }    // Dark Purple
-// #define BEIGE      (Color){ 211, 176, 131, 255 }   // Beige
-// #define BROWN      (Color){ 127, 106, 79, 255 }    // Brown
-// #define DARKBROWN  (Color){ 76, 63, 47, 255 }      // Dark Brown
-// #define WHITE      (Color){ 255, 255, 255, 255 }   // White
-// #define BLACK      (Color){ 0, 0, 0, 255 }         // Black
-// #define BLANK      (Color){ 0, 0, 0, 0 }           // Blank (Transparent)
-// #define MAGENTA    (Color){ 255, 0, 255, 255 }     // Magenta
-// #define RAYWHITE   (Color){ 245, 245, 245, 255 }   // My own White (raylib logo)
