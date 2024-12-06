@@ -22,6 +22,16 @@ local function tableJoin(intable, separator)
   return table.concat(filteredTable, separator)
 end
 
+local function splitAtFirstComma(str)
+    local commaIndex = string.find(str, ",")
+
+    if commaIndex then
+        return { str:sub(1, commaIndex-1), str:sub(commaIndex+1) }
+    else
+        return { str }
+    end
+end
+
 -- Parse different file formats into lua tables
 local raylibApi = require("api/raylib_api.lua")
 
@@ -38,11 +48,12 @@ local function typeMap(check)
     unsigned_short_ = "string",
     float = "number",
     float_ = "number",
+    double = "number",
     int = "integer",
     int_ = "integer",
     unsigned = "integer",
     unsigned_int = "integer",
-    bool = "bool",
+    bool = "boolean",
     void_ = "void",
     void = "void",
   }
@@ -104,6 +115,19 @@ end
 
 -- structs
 for _, entry in pairs(raylibApi.structs) do
+  local className = splitAtFirstComma(entry.description)
+  output = output .. `\n---@class {className[1]}`
+  for _, field in pairs(entry.fields) do
+    output = output .. `\n---@field {field.name} {typeMap(field.type)} {field.description}`
+  end
+
+  output = output .. `\n`
+end
+
+---@todo: figure out a way capture aliases
+output = output .. `\n---@alias Camera3D Camera\n---@alias Texture2D Texture\n---@alias TextureCubemap Texture\n---@alias Quaternion Vector4\n---@alias RenderTexture2D RenderTexture`
+
+for _, entry in pairs(raylibApi.structs) do
   output = output .. `\n\n--- {entry.description}`
   local fnArgs = {}
 
@@ -115,7 +139,7 @@ for _, entry in pairs(raylibApi.structs) do
   local combinedArgs = tableJoin(fnArgs, ", ")
 
   if entry.returnType ~= nil then
-    output = output .. `\n---@return {entry.returnType}`
+    output = output .. `\n---@return {typeMap(entry.returnType)}`
   end
   output = output .. `\nfunction rl.{entry.name}({combinedArgs})`
   output = output .. `\n  return ffi.new("{entry.name}", {combinedArgs})`
@@ -149,7 +173,7 @@ for _, entry in pairs(raylibApi.functions) do
   end
 
   if entry.returnType ~= nil then
-    output = output .. `\n---@return {entry.returnType}`
+    output = output .. `\n---@return {typeMap(entry.returnType)}`
   end
 
   local combinedArgs = tableJoin(fnArgs, ", ")
