@@ -74,7 +74,7 @@ local output = [[
 local ffi = require("ffi")
 local lib = ffi.load("libraylib")
 
-local generated = io.open("generated.h", "r")
+local generated = io.open("raylib/generated.h", "r")
 
 if generated == nil then
   error("Cannot find generated.h")
@@ -89,12 +89,15 @@ local rl = setmetatable({}, mt)
 -- defines
 for _, entry in pairs(raylibApi.defines) do
   if skippedTypes(entry.type) == false and entry.value ~= "" then
+    if entry.description ~= "" then
+      output = output .. `\n--- {entry.description}`
+    end
     if typeof(entry.value) == "string" then
       local value = entry.value:gsub("CLITERAL%(Color%)", "")
-      output = output .. `\n--- {entry.description}\nrl.{entry.name} = {value}\n`
+      output = output .. `\nrl.{entry.name} = {value}\n`
     end
     if typeof(entry.value) == "number" then
-      output = output .. `\n--- {entry.description}\nrl.{entry.name} = {entry.value}\n`
+      output = output .. `\nrl.{entry.name} = {entry.value}\n`
     end
   end
 end
@@ -116,7 +119,7 @@ for _, entry in pairs(raylibApi.structs) do
   end
   output = output .. `\nfunction rl.{entry.name}({combinedArgs})`
   output = output .. `\n  return ffi.new("{entry.name}", {combinedArgs})`
-  output = output .. `\nend\n`
+  output = output .. `\nend`
 end
 
 -- aliases
@@ -157,7 +160,7 @@ for _, entry in pairs(raylibApi.functions) do
     output = output .. `\nfunction rl.{entry.name}({combinedArgs})`
     output = output .. `\n  return lib.{entry.name}({combinedArgs})`
   end
-  output = output .. `\nend\n`
+  output = output .. `\nend`
 end
 
 local output = output .. [[
@@ -165,5 +168,5 @@ local output = output .. [[
 return rl
 ]]
 
-fs.writeFile("raylib.lua", output)
-print(`Wrote out {#output / 1000} kb to raylib.lua`)
+fs.writeFile("init.lua", output)
+print(`Wrote out {#output / 1000} kb to init.lua`)

@@ -145,6 +145,12 @@ return {
       description = "Maximum number of buttons supported (per gamepad)"
     },
     {
+      name = "MAX_GAMEPAD_VIBRATION_TIME",
+      type = "FLOAT",
+      value = 2.0,
+      description = "Maximum vibration time in seconds"
+    },
+    {
       name = "MAX_TOUCH_POINTS",
       type = "INT",
       value = 8,
@@ -173,6 +179,12 @@ return {
       type = "INT",
       value = 16384,
       description = "Maximum number of automation events to record"
+    },
+    {
+      name = "RL_SUPPORT_MESH_GPU_SKINNING",
+      type = "INT",
+      value = 1,
+      description = "GPU skinning, comment if your GPU does not support more than 8 VBOs"
     },
     {
       name = "RL_DEFAULT_BATCH_BUFFERS",
@@ -217,40 +229,94 @@ return {
       description = "Default projection matrix far cull distance"
     },
     {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_POSITION",
+      type = "INT",
+      value = 0,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD",
+      type = "INT",
+      value = 1,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_NORMAL",
+      type = "INT",
+      value = 2,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_COLOR",
+      type = "INT",
+      value = 3,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TANGENT",
+      type = "INT",
+      value = 4,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2",
+      type = "INT",
+      value = 5,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_INDICES",
+      type = "INT",
+      value = 6,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS",
+      type = "INT",
+      value = 7,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS",
+      type = "INT",
+      value = 8,
+      description = ""
+    },
+    {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_POSITION",
       type = "STRING",
       value = "vertexPosition",
-      description = "Bound by default to shader location: 0"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_POSITION"
     },
     {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD",
       type = "STRING",
       value = "vertexTexCoord",
-      description = "Bound by default to shader location: 1"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD"
     },
     {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_NORMAL",
       type = "STRING",
       value = "vertexNormal",
-      description = "Bound by default to shader location: 2"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_NORMAL"
     },
     {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_COLOR",
       type = "STRING",
       value = "vertexColor",
-      description = "Bound by default to shader location: 3"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_COLOR"
     },
     {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_TANGENT",
       type = "STRING",
       value = "vertexTangent",
-      description = "Bound by default to shader location: 4"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_TANGENT"
     },
     {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD2",
       type = "STRING",
       value = "vertexTexCoord2",
-      description = "Bound by default to shader location: 5"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2"
     },
     {
       name = "RL_DEFAULT_SHADER_UNIFORM_NAME_MVP",
@@ -367,13 +433,13 @@ return {
       description = ""
     },
     {
-      name = "SUPPORT_FILEFORMAT_FNT",
+      name = "SUPPORT_FILEFORMAT_TTF",
       type = "INT",
       value = 1,
       description = ""
     },
     {
-      name = "SUPPORT_FILEFORMAT_TTF",
+      name = "SUPPORT_FILEFORMAT_FNT",
       type = "INT",
       value = 1,
       description = ""
@@ -453,7 +519,7 @@ return {
     {
       name = "MAX_MESH_VERTEX_BUFFERS",
       type = "INT",
-      value = 7,
+      value = 9,
       description = "Maximum vertex buffers (VBO) per mesh"
     },
     {
@@ -533,6 +599,30 @@ return {
       type = "INT",
       value = 256,
       description = "Max length of one trace-log message"
+    },
+    {
+      name = "SUPPORT_CLIPBOARD_IMAGE",
+      type = "INT",
+      value = 1,
+      description = ""
+    },
+    {
+      name = "STBI_REQUIRED",
+      type = "GUARD",
+      value = "",
+      description = ""
+    },
+    {
+      name = "SUPPORT_FILEFORMAT_BMP",
+      type = "INT",
+      value = 1,
+      description = ""
+    },
+    {
+      name = "SUPPORT_FILEFORMAT_JPG",
+      type = "INT",
+      value = 1,
+      description = ""
     }
   },
   structs = {

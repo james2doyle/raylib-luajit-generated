@@ -9,7 +9,7 @@ return {
     {
       name = "RLGL_VERSION",
       type = "STRING",
-      value = "4.5",
+      value = "5.0",
       description = ""
     },
     {
@@ -505,6 +505,72 @@ return {
       description = "GL_BLEND_COLOR"
     },
     {
+      name = "RL_READ_FRAMEBUFFER",
+      type = "INT",
+      value = 0x8CA8,
+      description = "GL_READ_FRAMEBUFFER"
+    },
+    {
+      name = "RL_DRAW_FRAMEBUFFER",
+      type = "INT",
+      value = 0x8CA9,
+      description = "GL_DRAW_FRAMEBUFFER"
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_POSITION",
+      type = "INT",
+      value = 0,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD",
+      type = "INT",
+      value = 1,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_NORMAL",
+      type = "INT",
+      value = 2,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_COLOR",
+      type = "INT",
+      value = 3,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TANGENT",
+      type = "INT",
+      value = 4,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2",
+      type = "INT",
+      value = 5,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_INDICES",
+      type = "INT",
+      value = 6,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS",
+      type = "INT",
+      value = 7,
+      description = ""
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS",
+      type = "INT",
+      value = 8,
+      description = ""
+    },
+    {
       name = "RL_MATRIX_TYPE",
       type = "GUARD",
       value = "",
@@ -520,6 +586,18 @@ return {
       name = "RL_SHADER_LOC_MAP_SPECULAR",
       type = "UNKNOWN",
       value = "RL_SHADER_LOC_MAP_METALNESS",
+      description = ""
+    },
+    {
+      name = "GLAD_API_CALL_EXPORT",
+      type = "GUARD",
+      value = "",
+      description = ""
+    },
+    {
+      name = "GLAD_API_CALL_EXPORT_BUILD",
+      type = "GUARD",
+      value = "",
       description = ""
     },
     {
@@ -667,6 +745,18 @@ return {
       description = ""
     },
     {
+      name = "GL_PROGRAM_POINT_SIZE",
+      type = "INT",
+      value = 0x8642,
+      description = ""
+    },
+    {
+      name = "GL_LINE_WIDTH",
+      type = "INT",
+      value = 0x0B21,
+      description = ""
+    },
+    {
       name = "GL_UNSIGNED_SHORT_5_6_5",
       type = "INT",
       value = 0x8363,
@@ -718,37 +808,49 @@ return {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_POSITION",
       type = "STRING",
       value = "vertexPosition",
-      description = "Bound by default to shader location: 0"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_POSITION"
     },
     {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD",
       type = "STRING",
       value = "vertexTexCoord",
-      description = "Bound by default to shader location: 1"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD"
     },
     {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_NORMAL",
       type = "STRING",
       value = "vertexNormal",
-      description = "Bound by default to shader location: 2"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_NORMAL"
     },
     {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_COLOR",
       type = "STRING",
       value = "vertexColor",
-      description = "Bound by default to shader location: 3"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_COLOR"
     },
     {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_TANGENT",
       type = "STRING",
       value = "vertexTangent",
-      description = "Bound by default to shader location: 4"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_TANGENT"
     },
     {
       name = "RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD2",
       type = "STRING",
       value = "vertexTexCoord2",
-      description = "Bound by default to shader location: 5"
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD2"
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_NAME_BONEIDS",
+      type = "STRING",
+      value = "vertexBoneIds",
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_BONEIDS"
+    },
+    {
+      name = "RL_DEFAULT_SHADER_ATTRIB_NAME_BONEWEIGHTS",
+      type = "STRING",
+      value = "vertexBoneWeights",
+      description = "Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_BONEWEIGHTS"
     },
     {
       name = "RL_DEFAULT_SHADER_UNIFORM_NAME_MVP",
@@ -787,6 +889,12 @@ return {
       description = "color diffuse (base tint color, multiplied by texture color)"
     },
     {
+      name = "RL_DEFAULT_SHADER_UNIFORM_NAME_BONE_MATRICES",
+      type = "STRING",
+      value = "boneMatrices",
+      description = "bone matrices"
+    },
+    {
       name = "RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE0",
       type = "STRING",
       value = "texture0",
@@ -803,6 +911,12 @@ return {
       type = "STRING",
       value = "texture2",
       description = "texture2 (texture slot active 2)"
+    },
+    {
+      name = "rlMatrixToFloat(mat)",
+      type = "MACRO",
+      value = "(rlMatrixToFloatV(mat).v)",
+      description = "Get float vector for Matrix"
     },
     {
       name = "MIN(a,b)",
@@ -924,6 +1038,11 @@ return {
           description = "Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)"
         },
         {
+          type = "float *",
+          name = "normals",
+          description = "Vertex normal (XYZ - 3 components per vertex) (shader-location = 2)"
+        },
+        {
           type = "unsigned char *",
           name = "colors",
           description = "Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)"
@@ -964,9 +1083,9 @@ return {
           description = "OpenGL Vertex Array Object id"
         },
         {
-          type = "unsigned int[4]",
+          type = "unsigned int[5]",
           name = "vboId",
-          description = "OpenGL Vertex Buffer Objects id (4 types of vertex data)"
+          description = "OpenGL Vertex Buffer Objects id (5 types of vertex data)"
         }
       }
     },
@@ -1255,6 +1374,17 @@ return {
           type = "int",
           name = "framebufferHeight",
           description = "Current framebuffer height"
+        }
+      }
+    },
+    {
+      name = "rl_float16",
+      description = "Auxiliar matrix math functions",
+      fields = {
+        {
+          type = "float[16]",
+          name = "v",
+          description = ""
         }
       }
     }
@@ -1733,8 +1863,28 @@ return {
           description = "Shader uniform type: ivec4 (4 int)"
         },
         {
-          name = "RL_SHADER_UNIFORM_SAMPLER2D",
+          name = "RL_SHADER_UNIFORM_UINT",
           value = 8,
+          description = "Shader uniform type: unsigned int"
+        },
+        {
+          name = "RL_SHADER_UNIFORM_UIVEC2",
+          value = 9,
+          description = "Shader uniform type: uivec2 (2 unsigned int)"
+        },
+        {
+          name = "RL_SHADER_UNIFORM_UIVEC3",
+          value = 10,
+          description = "Shader uniform type: uivec3 (3 unsigned int)"
+        },
+        {
+          name = "RL_SHADER_UNIFORM_UIVEC4",
+          value = 11,
+          description = "Shader uniform type: uivec4 (4 unsigned int)"
+        },
+        {
+          name = "RL_SHADER_UNIFORM_SAMPLER2D",
+          value = 12,
           description = "Shader uniform type: sampler2d"
         }
       }
@@ -1995,6 +2145,25 @@ return {
       }
     },
     {
+      name = "rlSetClipPlanes",
+      description = "Set clip planes distances",
+      returnType = "void",
+      params = {
+        {type = "double", name = "nearPlane"},
+        {type = "double", name = "farPlane"}
+      }
+    },
+    {
+      name = "rlGetCullDistanceNear",
+      description = "Get cull plane distance near",
+      returnType = "double"
+    },
+    {
+      name = "rlGetCullDistanceFar",
+      description = "Get cull plane distance far",
+      returnType = "double"
+    },
+    {
       name = "rlBegin",
       description = "Initialize drawing mode (how to organize vertex)",
       returnType = "void",
@@ -2239,6 +2408,11 @@ return {
       returnType = "void"
     },
     {
+      name = "rlGetActiveFramebuffer",
+      description = "Get the currently active render texture (fbo), 0 for default framebuffer",
+      returnType = "unsigned int"
+    },
+    {
       name = "rlActiveDrawBuffers",
       description = "Activate multiple draw color buffers",
       returnType = "void",
@@ -2260,6 +2434,15 @@ return {
         {type = "int", name = "dstWidth"},
         {type = "int", name = "dstHeight"},
         {type = "int", name = "bufferMask"}
+      }
+    },
+    {
+      name = "rlBindFramebuffer",
+      description = "Bind framebuffer (FBO)",
+      returnType = "void",
+      params = {
+        {type = "unsigned int", name = "target"},
+        {type = "unsigned int", name = "framebuffer"}
       }
     },
     {
@@ -2303,6 +2486,17 @@ return {
       returnType = "void"
     },
     {
+      name = "rlColorMask",
+      description = "Color mask control",
+      returnType = "void",
+      params = {
+        {type = "bool", name = "r"},
+        {type = "bool", name = "g"},
+        {type = "bool", name = "b"},
+        {type = "bool", name = "a"}
+      }
+    },
+    {
       name = "rlSetCullFace",
       description = "Set face culling mode",
       returnType = "void",
@@ -2343,7 +2537,7 @@ return {
     },
     {
       name = "rlDisableWireMode",
-      description = "Disable wire mode ( and point ) maybe rename",
+      description = "Disable wire (and point) mode",
       returnType = "void"
     },
     {
@@ -2565,7 +2759,7 @@ return {
     },
     {
       name = "rlLoadVertexBuffer",
-      description = "Load a vertex buffer attribute",
+      description = "Load a vertex buffer object",
       returnType = "unsigned int",
       params = {
         {type = "const void *", name = "buffer"},
@@ -2575,7 +2769,7 @@ return {
     },
     {
       name = "rlLoadVertexBufferElement",
-      description = "Load a new attributes element buffer",
+      description = "Load vertex buffer elements object",
       returnType = "unsigned int",
       params = {
         {type = "const void *", name = "buffer"},
@@ -2585,7 +2779,7 @@ return {
     },
     {
       name = "rlUpdateVertexBuffer",
-      description = "Update GPU buffer with new data",
+      description = "Update vertex buffer object data on GPU buffer",
       returnType = "void",
       params = {
         {type = "unsigned int", name = "bufferId"},
@@ -2596,7 +2790,7 @@ return {
     },
     {
       name = "rlUpdateVertexBufferElements",
-      description = "Update vertex buffer elements with new data",
+      description = "Update vertex buffer elements data on GPU buffer",
       returnType = "void",
       params = {
         {type = "unsigned int", name = "id"},
@@ -2607,7 +2801,7 @@ return {
     },
     {
       name = "rlUnloadVertexArray",
-      description = "",
+      description = "Unload vertex array (vao)",
       returnType = "void",
       params = {
         {type = "unsigned int", name = "vaoId"}
@@ -2615,7 +2809,7 @@ return {
     },
     {
       name = "rlUnloadVertexBuffer",
-      description = "",
+      description = "Unload vertex buffer object",
       returnType = "void",
       params = {
         {type = "unsigned int", name = "vboId"}
@@ -2623,7 +2817,7 @@ return {
     },
     {
       name = "rlSetVertexAttribute",
-      description = "",
+      description = "Set vertex attribute data configuration",
       returnType = "void",
       params = {
         {type = "unsigned int", name = "index"},
@@ -2631,12 +2825,12 @@ return {
         {type = "int", name = "type"},
         {type = "bool", name = "normalized"},
         {type = "int", name = "stride"},
-        {type = "const void *", name = "pointer"}
+        {type = "int", name = "offset"}
       }
     },
     {
       name = "rlSetVertexAttributeDivisor",
-      description = "",
+      description = "Set vertex attribute data divisor",
       returnType = "void",
       params = {
         {type = "unsigned int", name = "index"},
@@ -2645,7 +2839,7 @@ return {
     },
     {
       name = "rlSetVertexAttributeDefault",
-      description = "Set vertex attribute default value",
+      description = "Set vertex attribute default value, when attribute to provided",
       returnType = "void",
       params = {
         {type = "int", name = "locIndex"},
@@ -2656,7 +2850,7 @@ return {
     },
     {
       name = "rlDrawVertexArray",
-      description = "",
+      description = "Draw vertex array (currently active vao)",
       returnType = "void",
       params = {
         {type = "int", name = "offset"},
@@ -2665,7 +2859,7 @@ return {
     },
     {
       name = "rlDrawVertexArrayElements",
-      description = "",
+      description = "Draw vertex array elements",
       returnType = "void",
       params = {
         {type = "int", name = "offset"},
@@ -2675,7 +2869,7 @@ return {
     },
     {
       name = "rlDrawVertexArrayInstanced",
-      description = "",
+      description = "Draw vertex array (currently active vao) with instancing",
       returnType = "void",
       params = {
         {type = "int", name = "offset"},
@@ -2685,7 +2879,7 @@ return {
     },
     {
       name = "rlDrawVertexArrayElementsInstanced",
-      description = "",
+      description = "Draw vertex array elements with instancing",
       returnType = "void",
       params = {
         {type = "int", name = "offset"},
@@ -2696,7 +2890,7 @@ return {
     },
     {
       name = "rlLoadTexture",
-      description = "Load texture in GPU",
+      description = "Load texture data",
       returnType = "unsigned int",
       params = {
         {type = "const void *", name = "data"},
@@ -2718,17 +2912,18 @@ return {
     },
     {
       name = "rlLoadTextureCubemap",
-      description = "Load texture cubemap",
+      description = "Load texture cubemap data",
       returnType = "unsigned int",
       params = {
         {type = "const void *", name = "data"},
         {type = "int", name = "size"},
-        {type = "int", name = "format"}
+        {type = "int", name = "format"},
+        {type = "int", name = "mipmapCount"}
       }
     },
     {
       name = "rlUpdateTexture",
-      description = "Update GPU texture with new data",
+      description = "Update texture with new data on GPU",
       returnType = "void",
       params = {
         {type = "unsigned int", name = "id"},
@@ -2802,11 +2997,7 @@ return {
     {
       name = "rlLoadFramebuffer",
       description = "Load an empty framebuffer",
-      returnType = "unsigned int",
-      params = {
-        {type = "int", name = "width"},
-        {type = "int", name = "height"}
-      }
+      returnType = "unsigned int"
     },
     {
       name = "rlFramebufferAttach",
@@ -2907,6 +3098,16 @@ return {
       params = {
         {type = "int", name = "locIndex"},
         {type = "Matrix", name = "mat"}
+      }
+    },
+    {
+      name = "rlSetUniformMatrices",
+      description = "Set shader value matrices",
+      returnType = "void",
+      params = {
+        {type = "int", name = "locIndex"},
+        {type = "const Matrix *", name = "mat"},
+        {type = "int", name = "count"}
       }
     },
     {
@@ -3099,22 +3300,6 @@ return {
       name = "rlLoadDrawQuad",
       description = "Load and draw a quad",
       returnType = "void"
-    },
-    {
-      name = "rlGetMatrixProjectionStereo",
-      description = "",
-      returnType = "Matrix",
-      params = {
-        {type = "int", name = "eye"}
-      }
-    },
-    {
-      name = "rlGetMatrixViewOffsetStereo",
-      description = "",
-      returnType = "Matrix",
-      params = {
-        {type = "int", name = "eye"}
-      }
     }
   }
 }
