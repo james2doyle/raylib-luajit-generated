@@ -72,7 +72,7 @@ You can use [the Raylib parser](https://github.com/raysan5/raylib/tree/master/pa
 
 ## Building `raylib/init.lua` from API files
 
-This is a work in progress as well. It uses [Lune (a luau script runtime)](https://lune-org.github.io/docs) to generate the file as it allows for string interpolation and a few other nice additions.
+This is a work in progress as well. It uses regular Lua 5.4 to generate the file. Make sure `lpeg` is installed. You can install it with `luarocks install lpeg`.
 
 It is super rough right now but it does work and generates a `init.lua` file with comments and docblocks!
 
@@ -80,7 +80,8 @@ You don't need Lune or Luau installed to use this library
 
 ```sh
 cd raylib/
-lune run generate.luau
+luarocks install lpeg
+lua generate.lua
 ```
 
 ### Thank you to the following projects
