@@ -1,4 +1,5 @@
 error("Example not implemented!")
+
 local ffi = require "ffi"
 
 local rl = require('raylib')
@@ -32,16 +33,16 @@ local resolution = rl.Vector2(GOL_WIDTH, GOL_WIDTH)
 local brushSize = 8
 
 -- Game of Life logic compute shader
-local golLogicCode = rl.LoadFileText("resources/glsl430/gol.glsl")
+local golLogicCode = rl.LoadFileText("examples/resources/glsl430/gol.glsl")
 local golLogicShader = rl.rlCompileShader(golLogicCode, rl.RL_COMPUTE_SHADER);
 local golLogicProgram = rl.rlLoadComputeShaderProgram(golLogicShader);
 rl.UnloadFileText(golLogicCode);
 
 -- Game of Life rendering compute shader
-local golRenderShader = rl.LoadShader(nil, "resources/glsl430/gol_render.glsl")
+local golRenderShader = rl.LoadShader(nil, "examples/resources/glsl430/gol_render.glsl")
 local resUniformLoc = rl.GetShaderLocation(golRenderShader, "resolution")
 
-local golTransfertCode = rl.LoadFileText("resources/glsl430/gol_transfert.glsl");
+local golTransfertCode = rl.LoadFileText("examples/resources/glsl430/gol_transfert.glsl");
 local golTransfertShader = rl.rlCompileShader(golTransfertCode, rl.RL_COMPUTE_SHADER);
 local golTransfertProgram = rl.rlLoadComputeShaderProgram(golTransfertShader);
 rl.UnloadFileText(golTransfertCode);
