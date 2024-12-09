@@ -4,6 +4,8 @@ Given a template, generate a generator.
 
 MIT license. 
 
+@see https://github.com/weshoke/Lust/
+
 --]]
 
 local concat = table.concat
