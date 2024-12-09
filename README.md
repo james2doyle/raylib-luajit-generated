@@ -13,7 +13,7 @@ Raylib LuaJit 5.5
 
 ##### PROS:
 
-- Single file (except for the compiled Raylib binaries/libraries and the header)
+- Simple lua files (except for the compiled Raylib binaries/libraries/header)
 - Works as an actual lib instead of a runner
 - No build required in order to use this
 - Really easy to update
@@ -74,7 +74,7 @@ You can use [the Raylib parser](https://github.com/raysan5/raylib/tree/master/pa
 
 This is a work in progress as well. It uses regular Lua 5.4 to generate the file. Make sure `lpeg` is installed. You can install it with `luarocks install lpeg`.
 
-It is super rough right now but it does work and generates a `init.lua` file with comments and docblocks!
+It is super rough right now but it does work and generates a `init.lua` file with comments and [docblocks](https://stevedonovan.github.io/ldoc/manual/doc.md.html)!
 
 You don't need Lune or Luau installed to use this library
 
