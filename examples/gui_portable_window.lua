@@ -1,5 +1,3 @@
-error("Example not implemented!")
-
 local rl = require('raylib')
 
 local width, height = 1280, 720

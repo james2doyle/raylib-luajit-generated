@@ -11,6 +11,9 @@ ffi.cdef(generated:read("*all"))
 
 local mt = {__index = lib}
 local rl = setmetatable({}, mt)
+
+local raygui = require("raylib/raygui")
+rl = raygui(rl)
   
   rl.RAYLIB_VERSION_MAJOR = 5
 
@@ -21,7 +24,7 @@ local rl = setmetatable({}, mt)
   rl.RAYLIB_VERSION_PATCH = 0
 
   
-  rl.RAYLIB_VERSION = 5.5
+  rl.RAYLIB_VERSION = "5.5"
 
   
   rl.PI = 3.1415926535898
@@ -103,6 +106,378 @@ local rl = setmetatable({}, mt)
 
   --- My own White (raylib logo)
   rl.RAYWHITE = { 245, 245, 245, 255 }
+
+  
+  rl.RLGL_VERSION = "5.0"
+
+  
+  rl.RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 8192
+
+  --- Default number of batch buffers (multi-buffering)
+  rl.RL_DEFAULT_BATCH_BUFFERS = 1
+
+  --- Default number of batch draw calls (by state changes: mode, texture)
+  rl.RL_DEFAULT_BATCH_DRAWCALLS = 256
+
+  --- Maximum number of textures units that can be activated on batch drawing (SetShaderValueTexture())
+  rl.RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS = 4
+
+  --- Maximum size of Matrix stack
+  rl.RL_MAX_MATRIX_STACK_SIZE = 32
+
+  --- Maximum number of shader locations supported
+  rl.RL_MAX_SHADER_LOCATIONS = 32
+
+  --- Default near cull distance
+  rl.RL_CULL_DISTANCE_NEAR = 0.01
+
+  --- Default far cull distance
+  rl.RL_CULL_DISTANCE_FAR = 1000.0
+
+  --- GL_TEXTURE_WRAP_S
+  rl.RL_TEXTURE_WRAP_S = 10242
+
+  --- GL_TEXTURE_WRAP_T
+  rl.RL_TEXTURE_WRAP_T = 10243
+
+  --- GL_TEXTURE_MAG_FILTER
+  rl.RL_TEXTURE_MAG_FILTER = 10240
+
+  --- GL_TEXTURE_MIN_FILTER
+  rl.RL_TEXTURE_MIN_FILTER = 10241
+
+  --- GL_NEAREST
+  rl.RL_TEXTURE_FILTER_NEAREST = 9728
+
+  --- GL_LINEAR
+  rl.RL_TEXTURE_FILTER_LINEAR = 9729
+
+  --- GL_NEAREST_MIPMAP_NEAREST
+  rl.RL_TEXTURE_FILTER_MIP_NEAREST = 9984
+
+  --- GL_NEAREST_MIPMAP_LINEAR
+  rl.RL_TEXTURE_FILTER_NEAREST_MIP_LINEAR = 9986
+
+  --- GL_LINEAR_MIPMAP_NEAREST
+  rl.RL_TEXTURE_FILTER_LINEAR_MIP_NEAREST = 9985
+
+  --- GL_LINEAR_MIPMAP_LINEAR
+  rl.RL_TEXTURE_FILTER_MIP_LINEAR = 9987
+
+  --- Anisotropic filter (custom identifier)
+  rl.RL_TEXTURE_FILTER_ANISOTROPIC = 12288
+
+  --- Texture mipmap bias, percentage ratio (custom identifier)
+  rl.RL_TEXTURE_MIPMAP_BIAS_RATIO = 16384
+
+  --- GL_REPEAT
+  rl.RL_TEXTURE_WRAP_REPEAT = 10497
+
+  --- GL_CLAMP_TO_EDGE
+  rl.RL_TEXTURE_WRAP_CLAMP = 33071
+
+  --- GL_MIRRORED_REPEAT
+  rl.RL_TEXTURE_WRAP_MIRROR_REPEAT = 33648
+
+  --- GL_MIRROR_CLAMP_EXT
+  rl.RL_TEXTURE_WRAP_MIRROR_CLAMP = 34626
+
+  --- GL_MODELVIEW
+  rl.RL_MODELVIEW = 5888
+
+  --- GL_PROJECTION
+  rl.RL_PROJECTION = 5889
+
+  --- GL_TEXTURE
+  rl.RL_TEXTURE = 5890
+
+  --- GL_LINES
+  rl.RL_LINES = 1
+
+  --- GL_TRIANGLES
+  rl.RL_TRIANGLES = 4
+
+  --- GL_QUADS
+  rl.RL_QUADS = 7
+
+  --- GL_UNSIGNED_BYTE
+  rl.RL_UNSIGNED_BYTE = 5121
+
+  --- GL_FLOAT
+  rl.RL_FLOAT = 5126
+
+  --- GL_STREAM_DRAW
+  rl.RL_STREAM_DRAW = 35040
+
+  --- GL_STREAM_READ
+  rl.RL_STREAM_READ = 35041
+
+  --- GL_STREAM_COPY
+  rl.RL_STREAM_COPY = 35042
+
+  --- GL_STATIC_DRAW
+  rl.RL_STATIC_DRAW = 35044
+
+  --- GL_STATIC_READ
+  rl.RL_STATIC_READ = 35045
+
+  --- GL_STATIC_COPY
+  rl.RL_STATIC_COPY = 35046
+
+  --- GL_DYNAMIC_DRAW
+  rl.RL_DYNAMIC_DRAW = 35048
+
+  --- GL_DYNAMIC_READ
+  rl.RL_DYNAMIC_READ = 35049
+
+  --- GL_DYNAMIC_COPY
+  rl.RL_DYNAMIC_COPY = 35050
+
+  --- GL_FRAGMENT_SHADER
+  rl.RL_FRAGMENT_SHADER = 35632
+
+  --- GL_VERTEX_SHADER
+  rl.RL_VERTEX_SHADER = 35633
+
+  --- GL_COMPUTE_SHADER
+  rl.RL_COMPUTE_SHADER = 37305
+
+  --- GL_ZERO
+  rl.RL_ZERO = 0
+
+  --- GL_ONE
+  rl.RL_ONE = 1
+
+  --- GL_SRC_COLOR
+  rl.RL_SRC_COLOR = 768
+
+  --- GL_ONE_MINUS_SRC_COLOR
+  rl.RL_ONE_MINUS_SRC_COLOR = 769
+
+  --- GL_SRC_ALPHA
+  rl.RL_SRC_ALPHA = 770
+
+  --- GL_ONE_MINUS_SRC_ALPHA
+  rl.RL_ONE_MINUS_SRC_ALPHA = 771
+
+  --- GL_DST_ALPHA
+  rl.RL_DST_ALPHA = 772
+
+  --- GL_ONE_MINUS_DST_ALPHA
+  rl.RL_ONE_MINUS_DST_ALPHA = 773
+
+  --- GL_DST_COLOR
+  rl.RL_DST_COLOR = 774
+
+  --- GL_ONE_MINUS_DST_COLOR
+  rl.RL_ONE_MINUS_DST_COLOR = 775
+
+  --- GL_SRC_ALPHA_SATURATE
+  rl.RL_SRC_ALPHA_SATURATE = 776
+
+  --- GL_CONSTANT_COLOR
+  rl.RL_CONSTANT_COLOR = 32769
+
+  --- GL_ONE_MINUS_CONSTANT_COLOR
+  rl.RL_ONE_MINUS_CONSTANT_COLOR = 32770
+
+  --- GL_CONSTANT_ALPHA
+  rl.RL_CONSTANT_ALPHA = 32771
+
+  --- GL_ONE_MINUS_CONSTANT_ALPHA
+  rl.RL_ONE_MINUS_CONSTANT_ALPHA = 32772
+
+  --- GL_FUNC_ADD
+  rl.RL_FUNC_ADD = 32774
+
+  --- GL_MIN
+  rl.RL_MIN = 32775
+
+  --- GL_MAX
+  rl.RL_MAX = 32776
+
+  --- GL_FUNC_SUBTRACT
+  rl.RL_FUNC_SUBTRACT = 32778
+
+  --- GL_FUNC_REVERSE_SUBTRACT
+  rl.RL_FUNC_REVERSE_SUBTRACT = 32779
+
+  --- GL_BLEND_EQUATION
+  rl.RL_BLEND_EQUATION = 32777
+
+  --- GL_BLEND_EQUATION_RGB   // (Same as BLEND_EQUATION)
+  rl.RL_BLEND_EQUATION_RGB = 32777
+
+  --- GL_BLEND_EQUATION_ALPHA
+  rl.RL_BLEND_EQUATION_ALPHA = 34877
+
+  --- GL_BLEND_DST_RGB
+  rl.RL_BLEND_DST_RGB = 32968
+
+  --- GL_BLEND_SRC_RGB
+  rl.RL_BLEND_SRC_RGB = 32969
+
+  --- GL_BLEND_DST_ALPHA
+  rl.RL_BLEND_DST_ALPHA = 32970
+
+  --- GL_BLEND_SRC_ALPHA
+  rl.RL_BLEND_SRC_ALPHA = 32971
+
+  --- GL_BLEND_COLOR
+  rl.RL_BLEND_COLOR = 32773
+
+  --- GL_READ_FRAMEBUFFER
+  rl.RL_READ_FRAMEBUFFER = 36008
+
+  --- GL_DRAW_FRAMEBUFFER
+  rl.RL_DRAW_FRAMEBUFFER = 36009
+
+  
+  rl.RL_DEFAULT_SHADER_ATTRIB_LOCATION_POSITION = 0
+
+  
+  rl.RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD = 1
+
+  
+  rl.RL_DEFAULT_SHADER_ATTRIB_LOCATION_NORMAL = 2
+
+  
+  rl.RL_DEFAULT_SHADER_ATTRIB_LOCATION_COLOR = 3
+
+  
+  rl.RL_DEFAULT_SHADER_ATTRIB_LOCATION_TANGENT = 4
+
+  
+  rl.RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2 = 5
+
+  
+  rl.RL_DEFAULT_SHADER_ATTRIB_LOCATION_INDICES = 6
+
+  
+  rl.RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEIDS = 7
+
+  
+  rl.RL_DEFAULT_SHADER_ATTRIB_LOCATION_BONEWEIGHTS = 8
+
+  
+  rl.PI = 3.1415926535898
+
+  
+  rl.GL_SHADING_LANGUAGE_VERSION = 35724
+
+  
+  rl.GL_COMPRESSED_RGB_S3TC_DXT1_EXT = 33776
+
+  
+  rl.GL_COMPRESSED_RGBA_S3TC_DXT1_EXT = 33777
+
+  
+  rl.GL_COMPRESSED_RGBA_S3TC_DXT3_EXT = 33778
+
+  
+  rl.GL_COMPRESSED_RGBA_S3TC_DXT5_EXT = 33779
+
+  
+  rl.GL_ETC1_RGB8_OES = 36196
+
+  
+  rl.GL_COMPRESSED_RGB8_ETC2 = 37492
+
+  
+  rl.GL_COMPRESSED_RGBA8_ETC2_EAC = 37496
+
+  
+  rl.GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG = 35840
+
+  
+  rl.GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG = 35842
+
+  
+  rl.GL_COMPRESSED_RGBA_ASTC_4x4_KHR = 37808
+
+  
+  rl.GL_COMPRESSED_RGBA_ASTC_8x8_KHR = 37815
+
+  
+  rl.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT = 34047
+
+  
+  rl.GL_TEXTURE_MAX_ANISOTROPY_EXT = 34046
+
+  
+  rl.GL_PROGRAM_POINT_SIZE = 34370
+
+  
+  rl.GL_LINE_WIDTH = 2849
+
+  
+  rl.GL_UNSIGNED_SHORT_5_6_5 = 33635
+
+  
+  rl.GL_UNSIGNED_SHORT_5_5_5_1 = 32820
+
+  
+  rl.GL_UNSIGNED_SHORT_4_4_4_4 = 32819
+
+  
+  rl.GL_LUMINANCE = 6409
+
+  
+  rl.GL_LUMINANCE_ALPHA = 6410
+
+  --- Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_POSITION
+  rl.RL_DEFAULT_SHADER_ATTRIB_NAME_POSITION = "vertexPosition"
+
+  --- Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD
+  rl.RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD = "vertexTexCoord"
+
+  --- Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_NORMAL
+  rl.RL_DEFAULT_SHADER_ATTRIB_NAME_NORMAL = "vertexNormal"
+
+  --- Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_COLOR
+  rl.RL_DEFAULT_SHADER_ATTRIB_NAME_COLOR = "vertexColor"
+
+  --- Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_TANGENT
+  rl.RL_DEFAULT_SHADER_ATTRIB_NAME_TANGENT = "vertexTangent"
+
+  --- Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD2
+  rl.RL_DEFAULT_SHADER_ATTRIB_NAME_TEXCOORD2 = "vertexTexCoord2"
+
+  --- Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_BONEIDS
+  rl.RL_DEFAULT_SHADER_ATTRIB_NAME_BONEIDS = "vertexBoneIds"
+
+  --- Bound by default to shader location: RL_DEFAULT_SHADER_ATTRIB_NAME_BONEWEIGHTS
+  rl.RL_DEFAULT_SHADER_ATTRIB_NAME_BONEWEIGHTS = "vertexBoneWeights"
+
+  --- model-view-projection matrix
+  rl.RL_DEFAULT_SHADER_UNIFORM_NAME_MVP = "mvp"
+
+  --- view matrix
+  rl.RL_DEFAULT_SHADER_UNIFORM_NAME_VIEW = "matView"
+
+  --- projection matrix
+  rl.RL_DEFAULT_SHADER_UNIFORM_NAME_PROJECTION = "matProjection"
+
+  --- model matrix
+  rl.RL_DEFAULT_SHADER_UNIFORM_NAME_MODEL = "matModel"
+
+  --- normal matrix (transpose(inverse(matModelView))
+  rl.RL_DEFAULT_SHADER_UNIFORM_NAME_NORMAL = "matNormal"
+
+  --- color diffuse (base tint color, multiplied by texture color)
+  rl.RL_DEFAULT_SHADER_UNIFORM_NAME_COLOR = "colDiffuse"
+
+  --- bone matrices
+  rl.RL_DEFAULT_SHADER_UNIFORM_NAME_BONE_MATRICES = "boneMatrices"
+
+  --- texture0 (texture slot active 0)
+  rl.RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE0 = "texture0"
+
+  --- texture1 (texture slot active 1)
+  rl.RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE1 = "texture1"
+
+  --- texture2 (texture slot active 2)
+  rl.RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE2 = "texture2"
 
 
 
@@ -313,16 +688,16 @@ local rl = setmetatable({}, mt)
   ---@field glyphCount number 
   ---@field glyphPadding number 
   ---@field texture Texture2D 
-  ---@field recs Rectangle * 
-  ---@field glyphs GlyphInfo * 
+  ---@field recs Rectangle  
+  ---@field glyphs GlyphInfo  
   
   --- Font, font texture and GlyphInfo array data 
   ---@param baseSize number
   ---@param glyphCount number
   ---@param glyphPadding number
   ---@param texture Texture2D
-  ---@param recs Rectangle *
-  ---@param glyphs GlyphInfo *
+  ---@param recs Rectangle 
+  ---@param glyphs GlyphInfo 
   ---@return Font
   function rl.Font(baseSize, glyphCount, glyphPadding, texture, recs, glyphs)
     return ffi.new("Font", baseSize, glyphCount, glyphPadding, texture, recs, glyphs)
@@ -376,10 +751,10 @@ local rl = setmetatable({}, mt)
   ---@field animNormals number 
   ---@field boneIds string 
   ---@field boneWeights number 
-  ---@field boneMatrices Matrix * 
+  ---@field boneMatrices Matrix  
   ---@field boneCount number 
   ---@field vaoId number 
-  ---@field vboId unsigned int * 
+  ---@field vboId number 
   
   --- Mesh, vertex data and vao/vbo 
   ---@param vertexCount number
@@ -395,10 +770,10 @@ local rl = setmetatable({}, mt)
   ---@param animNormals number
   ---@param boneIds string
   ---@param boneWeights number
-  ---@param boneMatrices Matrix *
+  ---@param boneMatrices Matrix 
   ---@param boneCount number
   ---@param vaoId number
-  ---@param vboId unsigned int *
+  ---@param vboId number
   ---@return Mesh
   function rl.Mesh(vertexCount, triangleCount, vertices, texcoords, texcoords2, normals, tangents, colors, indices, animVertices, animNormals, boneIds, boneWeights, boneMatrices, boneCount, vaoId, vboId)
     return ffi.new("Mesh", vertexCount, triangleCount, vertices, texcoords, texcoords2, normals, tangents, colors, indices, animVertices, animNormals, boneIds, boneWeights, boneMatrices, boneCount, vaoId, vboId)
@@ -432,13 +807,13 @@ local rl = setmetatable({}, mt)
 
   ---@class Material
   ---@field shader Shader 
-  ---@field maps MaterialMap * 
-  ---@field params float[4] 
+  ---@field maps MaterialMap  
+  ---@field params number[] {number, number, number, number} 
   
   --- Material, includes shader and maps 
   ---@param shader Shader
-  ---@param maps MaterialMap *
-  ---@param params float[4]
+  ---@param maps MaterialMap 
+  ---@param params number[] {number, number, number, number}
   ---@return Material
   function rl.Material(shader, maps, params)
     return ffi.new("Material", shader, maps, params)
@@ -459,11 +834,11 @@ local rl = setmetatable({}, mt)
   end
 
   ---@class BoneInfo
-  ---@field name char[32] 
+  ---@field name string 
   ---@field parent number 
   
   --- Bone, skeletal animation bone 
-  ---@param name char[32]
+  ---@param name string
   ---@param parent number
   ---@return BoneInfo
   function rl.BoneInfo(name, parent)
@@ -474,23 +849,23 @@ local rl = setmetatable({}, mt)
   ---@field transform Matrix 
   ---@field meshCount number 
   ---@field materialCount number 
-  ---@field meshes Mesh * 
-  ---@field materials Material * 
+  ---@field meshes Mesh  
+  ---@field materials Material  
   ---@field meshMaterial number 
   ---@field boneCount number 
-  ---@field bones BoneInfo * 
-  ---@field bindPose Transform * 
+  ---@field bones BoneInfo  
+  ---@field bindPose Transform  
   
   --- Model, meshes, materials and animation data 
   ---@param transform Matrix
   ---@param meshCount number
   ---@param materialCount number
-  ---@param meshes Mesh *
-  ---@param materials Material *
+  ---@param meshes Mesh 
+  ---@param materials Material 
   ---@param meshMaterial number
   ---@param boneCount number
-  ---@param bones BoneInfo *
-  ---@param bindPose Transform *
+  ---@param bones BoneInfo 
+  ---@param bindPose Transform 
   ---@return Model
   function rl.Model(transform, meshCount, materialCount, meshes, materials, meshMaterial, boneCount, bones, bindPose)
     return ffi.new("Model", transform, meshCount, materialCount, meshes, materials, meshMaterial, boneCount, bones, bindPose)
@@ -499,16 +874,16 @@ local rl = setmetatable({}, mt)
   ---@class ModelAnimation
   ---@field boneCount number 
   ---@field frameCount number 
-  ---@field bones BoneInfo * 
-  ---@field framePoses Transform ** 
-  ---@field name char[32] 
+  ---@field bones BoneInfo  
+  ---@field framePoses Transform  
+  ---@field name string 
   
   --- ModelAnimation 
   ---@param boneCount number
   ---@param frameCount number
-  ---@param bones BoneInfo *
-  ---@param framePoses Transform **
-  ---@param name char[32]
+  ---@param bones BoneInfo 
+  ---@param framePoses Transform 
+  ---@param name string
   ---@return ModelAnimation
   function rl.ModelAnimation(boneCount, frameCount, bones, framePoses, name)
     return ffi.new("ModelAnimation", boneCount, frameCount, bones, framePoses, name)
@@ -573,15 +948,15 @@ local rl = setmetatable({}, mt)
   end
 
   ---@class AudioStream
-  ---@field buffer rAudioBuffer * 
-  ---@field processor rAudioProcessor * 
+  ---@field buffer rAudioBuffer  
+  ---@field processor rAudioProcessor  
   ---@field sampleRate number 
   ---@field sampleSize number 
   ---@field channels number 
   
   --- AudioStream, custom audio stream 
-  ---@param buffer rAudioBuffer *
-  ---@param processor rAudioProcessor *
+  ---@param buffer rAudioBuffer 
+  ---@param processor rAudioProcessor 
   ---@param sampleRate number
   ---@param sampleSize number
   ---@param channels number
@@ -628,8 +1003,8 @@ local rl = setmetatable({}, mt)
   ---@field eyeToScreenDistance number 
   ---@field lensSeparationDistance number 
   ---@field interpupillaryDistance number 
-  ---@field lensDistortionValues float[4] 
-  ---@field chromaAbCorrection float[4] 
+  ---@field lensDistortionValues number[] {number, number, number, number} 
+  ---@field chromaAbCorrection number[] {number, number, number, number} 
   
   --- VrDeviceInfo, Head-Mounted-Display device parameters 
   ---@param hResolution number
@@ -639,32 +1014,32 @@ local rl = setmetatable({}, mt)
   ---@param eyeToScreenDistance number
   ---@param lensSeparationDistance number
   ---@param interpupillaryDistance number
-  ---@param lensDistortionValues float[4]
-  ---@param chromaAbCorrection float[4]
+  ---@param lensDistortionValues number[] {number, number, number, number}
+  ---@param chromaAbCorrection number[] {number, number, number, number}
   ---@return VrDeviceInfo
   function rl.VrDeviceInfo(hResolution, vResolution, hScreenSize, vScreenSize, eyeToScreenDistance, lensSeparationDistance, interpupillaryDistance, lensDistortionValues, chromaAbCorrection)
     return ffi.new("VrDeviceInfo", hResolution, vResolution, hScreenSize, vScreenSize, eyeToScreenDistance, lensSeparationDistance, interpupillaryDistance, lensDistortionValues, chromaAbCorrection)
   end
 
   ---@class VrStereoConfig
-  ---@field projection Matrix[2] 
-  ---@field viewOffset Matrix[2] 
-  ---@field leftLensCenter float[2] 
-  ---@field rightLensCenter float[2] 
-  ---@field leftScreenCenter float[2] 
-  ---@field rightScreenCenter float[2] 
-  ---@field scale float[2] 
-  ---@field scaleIn float[2] 
+  ---@field projection Matrix[] {Matrix, Matrix} 
+  ---@field viewOffset Matrix[] {Matrix, Matrix} 
+  ---@field leftLensCenter number[] {number, number} 
+  ---@field rightLensCenter number[] {number, number} 
+  ---@field leftScreenCenter number[] {number, number} 
+  ---@field rightScreenCenter number[] {number, number} 
+  ---@field scale number[] {number, number} 
+  ---@field scaleIn number[] {number, number} 
   
   --- VrStereoConfig, VR stereo rendering configuration for simulator 
-  ---@param projection Matrix[2]
-  ---@param viewOffset Matrix[2]
-  ---@param leftLensCenter float[2]
-  ---@param rightLensCenter float[2]
-  ---@param leftScreenCenter float[2]
-  ---@param rightScreenCenter float[2]
-  ---@param scale float[2]
-  ---@param scaleIn float[2]
+  ---@param projection Matrix[] {Matrix, Matrix}
+  ---@param viewOffset Matrix[] {Matrix, Matrix}
+  ---@param leftLensCenter number[] {number, number}
+  ---@param rightLensCenter number[] {number, number}
+  ---@param leftScreenCenter number[] {number, number}
+  ---@param rightScreenCenter number[] {number, number}
+  ---@param scale number[] {number, number}
+  ---@param scaleIn number[] {number, number}
   ---@return VrStereoConfig
   function rl.VrStereoConfig(projection, viewOffset, leftLensCenter, rightLensCenter, leftScreenCenter, rightScreenCenter, scale, scaleIn)
     return ffi.new("VrStereoConfig", projection, viewOffset, leftLensCenter, rightLensCenter, leftScreenCenter, rightScreenCenter, scale, scaleIn)
@@ -687,12 +1062,12 @@ local rl = setmetatable({}, mt)
   ---@class AutomationEvent
   ---@field frame number 
   ---@field type number 
-  ---@field params int[4] 
+  ---@field params number[] {number, number, number, number} 
   
   --- Automation event 
   ---@param frame number
   ---@param type number
-  ---@param params int[4]
+  ---@param params number[] {number, number, number, number}
   ---@return AutomationEvent
   function rl.AutomationEvent(frame, type, params)
     return ffi.new("AutomationEvent", frame, type, params)
@@ -701,20 +1076,199 @@ local rl = setmetatable({}, mt)
   ---@class AutomationEventList
   ---@field capacity number 
   ---@field count number 
-  ---@field events AutomationEvent * 
+  ---@field events AutomationEvent  
   
   --- Automation event list 
   ---@param capacity number
   ---@param count number
-  ---@param events AutomationEvent *
+  ---@param events AutomationEvent 
   ---@return AutomationEventList
   function rl.AutomationEventList(capacity, count, events)
     return ffi.new("AutomationEventList", capacity, count, events)
-  end  ---@alias Quaternion Vector4
+  end
+
+  ---@class rlVertexBuffer
+  ---@field elementCount number 
+  ---@field vertices number 
+  ---@field texcoords number 
+  ---@field normals number 
+  ---@field colors string 
+  ---@field indices #if defined(GRAPHICS_API_OPENGL_11) || defined(GRAPHICS_API_OPENunsigned int  
+  ---@field indices number 
+  ---@field indices #endif 
+  ---@field indices #if defined(GRAPHICS_API_OPENGL_ES2) 
+  ---@field indices string 
+  ---@field vaoId #endif 
+  ---@field vaoId number 
+  ---@field vboId number[] {number, number, number, number, number} 
+  
+  --- Dynamic vertex buffers (position + texcoords + colors + indices arrays) 
+  ---@param elementCount number
+  ---@param vertices number
+  ---@param texcoords number
+  ---@param normals number
+  ---@param colors string
+  ---@param indices #if defined(GRAPHICS_API_OPENGL_11) || defined(GRAPHICS_API_OPENunsigned int 
+  ---@param indices number
+  ---@param indices #endif
+  ---@param indices #if defined(GRAPHICS_API_OPENGL_ES2)
+  ---@param indices string
+  ---@param vaoId #endif
+  ---@param vaoId number
+  ---@param vboId number[] {number, number, number, number, number}
+  ---@return rlVertexBuffer
+  function rl.rlVertexBuffer(elementCount, vertices, texcoords, normals, colors, indices, indices, indices, indices, indices, vaoId, vaoId, vboId)
+    return ffi.new("rlVertexBuffer", elementCount, vertices, texcoords, normals, colors, indices, indices, indices, indices, indices, vaoId, vaoId, vboId)
+  end
+
+  ---@class rlDrawCall
+  ---@field mode number 
+  ---@field vertexCount number 
+  ---@field vertexAlignment number 
+  ---@field textureId number 
+  
+  --- of those state-change happens (this is done in core module) 
+  ---@param mode number
+  ---@param vertexCount number
+  ---@param vertexAlignment number
+  ---@param textureId number
+  ---@return rlDrawCall
+  function rl.rlDrawCall(mode, vertexCount, vertexAlignment, textureId)
+    return ffi.new("rlDrawCall", mode, vertexCount, vertexAlignment, textureId)
+  end
+
+  ---@class rlRenderBatch
+  ---@field bufferCount number 
+  ---@field currentBuffer number 
+  ---@field vertexBuffer rlVertexBuffer  
+  ---@field draws rlDrawCall  
+  ---@field drawCounter number 
+  ---@field currentDepth number 
+  
+  --- rlRenderBatch type 
+  ---@param bufferCount number
+  ---@param currentBuffer number
+  ---@param vertexBuffer rlVertexBuffer 
+  ---@param draws rlDrawCall 
+  ---@param drawCounter number
+  ---@param currentDepth number
+  ---@return rlRenderBatch
+  function rl.rlRenderBatch(bufferCount, currentBuffer, vertexBuffer, draws, drawCounter, currentDepth)
+    return ffi.new("rlRenderBatch", bufferCount, currentBuffer, vertexBuffer, draws, drawCounter, currentDepth)
+  end
+
+  ---@class rlglData
+  ---@field currentBatch rlRenderBatch  
+  ---@field defaultBatch rlRenderBatch 
+  ---@field vertexCounter number 
+  ---@field texcoordx number 
+  ---@field texcoordy number 
+  ---@field normalx number 
+  ---@field normaly number 
+  ---@field normalz number 
+  ---@field colorr string 
+  ---@field colorg string 
+  ---@field colorb string 
+  ---@field colora string 
+  ---@field currentMatrixMode number 
+  ---@field currentMatrix Matrix  
+  ---@field modelview Matrix 
+  ---@field projection Matrix 
+  ---@field transform Matrix 
+  ---@field transformRequired boolean 
+  ---@field stack Matrix[RL_MAX_MATRIX_STACK_SIZE] 
+  ---@field stackCounter number 
+  ---@field defaultTextureId number 
+  ---@field activeTextureId unsigned int[RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS] 
+  ---@field defaultVShaderId number 
+  ---@field defaultFShaderId number 
+  ---@field defaultShaderId number 
+  ---@field defaultShaderLocs number 
+  ---@field currentShaderId number 
+  ---@field currentShaderLocs number 
+  ---@field stereoRender boolean 
+  ---@field projectionStereo Matrix[] {Matrix, Matrix} 
+  ---@field viewOffsetStereo Matrix[] {Matrix, Matrix} 
+  ---@field currentBlendMode number 
+  ---@field glBlendSrcFactor number 
+  ---@field glBlendDstFactor number 
+  ---@field glBlendEquation number 
+  ---@field glBlendSrcFactorRGB number 
+  ---@field glBlendDestFactorRGB number 
+  ---@field glBlendSrcFactorAlpha number 
+  ---@field glBlendDestFactorAlpha number 
+  ---@field glBlendEquationRGB number 
+  ---@field glBlendEquationAlpha number 
+  ---@field glCustomBlendModeModified boolean 
+  ---@field framebufferWidth number 
+  ---@field framebufferHeight number 
+  
+  ---  
+  ---@param currentBatch rlRenderBatch 
+  ---@param defaultBatch rlRenderBatch
+  ---@param vertexCounter number
+  ---@param texcoordx number
+  ---@param texcoordy number
+  ---@param normalx number
+  ---@param normaly number
+  ---@param normalz number
+  ---@param colorr string
+  ---@param colorg string
+  ---@param colorb string
+  ---@param colora string
+  ---@param currentMatrixMode number
+  ---@param currentMatrix Matrix 
+  ---@param modelview Matrix
+  ---@param projection Matrix
+  ---@param transform Matrix
+  ---@param transformRequired boolean
+  ---@param stack Matrix[RL_MAX_MATRIX_STACK_SIZE]
+  ---@param stackCounter number
+  ---@param defaultTextureId number
+  ---@param activeTextureId unsigned int[RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS]
+  ---@param defaultVShaderId number
+  ---@param defaultFShaderId number
+  ---@param defaultShaderId number
+  ---@param defaultShaderLocs number
+  ---@param currentShaderId number
+  ---@param currentShaderLocs number
+  ---@param stereoRender boolean
+  ---@param projectionStereo Matrix[] {Matrix, Matrix}
+  ---@param viewOffsetStereo Matrix[] {Matrix, Matrix}
+  ---@param currentBlendMode number
+  ---@param glBlendSrcFactor number
+  ---@param glBlendDstFactor number
+  ---@param glBlendEquation number
+  ---@param glBlendSrcFactorRGB number
+  ---@param glBlendDestFactorRGB number
+  ---@param glBlendSrcFactorAlpha number
+  ---@param glBlendDestFactorAlpha number
+  ---@param glBlendEquationRGB number
+  ---@param glBlendEquationAlpha number
+  ---@param glCustomBlendModeModified boolean
+  ---@param framebufferWidth number
+  ---@param framebufferHeight number
+  ---@return rlglData
+  function rl.rlglData(currentBatch, defaultBatch, vertexCounter, texcoordx, texcoordy, normalx, normaly, normalz, colorr, colorg, colorb, colora, currentMatrixMode, currentMatrix, modelview, projection, transform, transformRequired, stack, stackCounter, defaultTextureId, activeTextureId, defaultVShaderId, defaultFShaderId, defaultShaderId, defaultShaderLocs, currentShaderId, currentShaderLocs, stereoRender, projectionStereo, viewOffsetStereo, currentBlendMode, glBlendSrcFactor, glBlendDstFactor, glBlendEquation, glBlendSrcFactorRGB, glBlendDestFactorRGB, glBlendSrcFactorAlpha, glBlendDestFactorAlpha, glBlendEquationRGB, glBlendEquationAlpha, glCustomBlendModeModified, framebufferWidth, framebufferHeight)
+    return ffi.new("rlglData", currentBatch, defaultBatch, vertexCounter, texcoordx, texcoordy, normalx, normaly, normalz, colorr, colorg, colorb, colora, currentMatrixMode, currentMatrix, modelview, projection, transform, transformRequired, stack, stackCounter, defaultTextureId, activeTextureId, defaultVShaderId, defaultFShaderId, defaultShaderId, defaultShaderLocs, currentShaderId, currentShaderLocs, stereoRender, projectionStereo, viewOffsetStereo, currentBlendMode, glBlendSrcFactor, glBlendDstFactor, glBlendEquation, glBlendSrcFactorRGB, glBlendDestFactorRGB, glBlendSrcFactorAlpha, glBlendDestFactorAlpha, glBlendEquationRGB, glBlendEquationAlpha, glCustomBlendModeModified, framebufferWidth, framebufferHeight)
+  end
+
+  ---@class rl_float16
+  ---@field v number[] {number, number, number, number, number, number, number, number, number, number, number, number, number, number, number, number} 
+  
+  --- Auxiliar matrix math functions 
+  ---@param v number[] {number, number, number, number, number, number, number, number, number, number, number, number, number, number, number, number}
+  ---@return rl_float16
+  function rl.rl_float16(v)
+    return ffi.new("rl_float16", v)
+  end
+
+  ---@alias Quaternion Vector4
   ---@alias Texture2D Texture
   ---@alias TextureCubemap Texture
   ---@alias RenderTexture2D RenderTexture
   ---@alias Camera Camera3D
+
   --- Set to try enabling V-Sync on GPU
   rl.FLAG_VSYNC_HINT = 64
 
@@ -1615,6 +2169,351 @@ local rl = setmetatable({}, mt)
   --- Npatch layout: 3x1 tiles
   rl.NPATCH_THREE_PATCH_HORIZONTAL = 2
 
+  --- OpenGL 1.1
+  rl.RL_OPENGL_11 = 1
+
+  --- OpenGL 2.1 (GLSL 120)
+  rl.RL_OPENGL_21 = 2
+
+  --- OpenGL 3.3 (GLSL 330)
+  rl.RL_OPENGL_33 = 3
+
+  --- OpenGL 4.3 (using GLSL 330)
+  rl.RL_OPENGL_43 = 4
+
+  --- OpenGL ES 2.0 (GLSL 100)
+  rl.RL_OPENGL_ES_20 = 5
+
+  --- OpenGL ES 3.0 (GLSL 300 es)
+  rl.RL_OPENGL_ES_30 = 6
+
+  --- Display all logs
+  rl.RL_LOG_ALL = 0
+
+  --- Trace logging, intended for internal use only
+  rl.RL_LOG_TRACE = 1
+
+  --- Debug logging, used for internal debugging, it should be disabled on release builds
+  rl.RL_LOG_DEBUG = 2
+
+  --- Info logging, used for program execution info
+  rl.RL_LOG_INFO = 3
+
+  --- Warning logging, used on recoverable failures
+  rl.RL_LOG_WARNING = 4
+
+  --- Error logging, used on unrecoverable failures
+  rl.RL_LOG_ERROR = 5
+
+  --- Fatal logging, used to abort program: exit(EXIT_FAILURE)
+  rl.RL_LOG_FATAL = 6
+
+  --- Disable logging
+  rl.RL_LOG_NONE = 7
+
+  --- 8 bit per pixel (no alpha)
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1
+
+  --- 8*2 bpp (2 channels)
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA = 2
+
+  --- 16 bpp
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_R5G6B5 = 3
+
+  --- 24 bpp
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8 = 4
+
+  --- 16 bpp (1 bit alpha)
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_R5G5B5A1 = 5
+
+  --- 16 bpp (4 bit alpha)
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_R4G4B4A4 = 6
+
+  --- 32 bpp
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8 = 7
+
+  --- 32 bpp (1 channel - float)
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_R32 = 8
+
+  --- 32*3 bpp (3 channels - float)
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32 = 9
+
+  --- 32*4 bpp (4 channels - float)
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 = 10
+
+  --- 16 bpp (1 channel - half float)
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_R16 = 11
+
+  --- 16*3 bpp (3 channels - half float)
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16 = 12
+
+  --- 16*4 bpp (4 channels - half float)
+  rl.RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16A16 = 13
+
+  --- 4 bpp (no alpha)
+  rl.RL_PIXELFORMAT_COMPRESSED_DXT1_RGB = 14
+
+  --- 4 bpp (1 bit alpha)
+  rl.RL_PIXELFORMAT_COMPRESSED_DXT1_RGBA = 15
+
+  --- 8 bpp
+  rl.RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA = 16
+
+  --- 8 bpp
+  rl.RL_PIXELFORMAT_COMPRESSED_DXT5_RGBA = 17
+
+  --- 4 bpp
+  rl.RL_PIXELFORMAT_COMPRESSED_ETC1_RGB = 18
+
+  --- 4 bpp
+  rl.RL_PIXELFORMAT_COMPRESSED_ETC2_RGB = 19
+
+  --- 8 bpp
+  rl.RL_PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA = 20
+
+  --- 4 bpp
+  rl.RL_PIXELFORMAT_COMPRESSED_PVRT_RGB = 21
+
+  --- 4 bpp
+  rl.RL_PIXELFORMAT_COMPRESSED_PVRT_RGBA = 22
+
+  --- 8 bpp
+  rl.RL_PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA = 23
+
+  --- 2 bpp
+  rl.RL_PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA = 24
+
+  --- No filter, just pixel approximation
+  rl.RL_TEXTURE_FILTER_POINT = 0
+
+  --- Linear filtering
+  rl.RL_TEXTURE_FILTER_BILINEAR = 1
+
+  --- Trilinear filtering (linear with mipmaps)
+  rl.RL_TEXTURE_FILTER_TRILINEAR = 2
+
+  --- Anisotropic filtering 4x
+  rl.RL_TEXTURE_FILTER_ANISOTROPIC_4X = 3
+
+  --- Anisotropic filtering 8x
+  rl.RL_TEXTURE_FILTER_ANISOTROPIC_8X = 4
+
+  --- Anisotropic filtering 16x
+  rl.RL_TEXTURE_FILTER_ANISOTROPIC_16X = 5
+
+  --- Blend textures considering alpha (default)
+  rl.RL_BLEND_ALPHA = 0
+
+  --- Blend textures adding colors
+  rl.RL_BLEND_ADDITIVE = 1
+
+  --- Blend textures multiplying colors
+  rl.RL_BLEND_MULTIPLIED = 2
+
+  --- Blend textures adding colors (alternative)
+  rl.RL_BLEND_ADD_COLORS = 3
+
+  --- Blend textures subtracting colors (alternative)
+  rl.RL_BLEND_SUBTRACT_COLORS = 4
+
+  --- Blend premultiplied textures considering alpha
+  rl.RL_BLEND_ALPHA_PREMULTIPLY = 5
+
+  --- Blend textures using custom src/dst factors (use rlSetBlendFactors())
+  rl.RL_BLEND_CUSTOM = 6
+
+  --- Blend textures using custom src/dst factors (use rlSetBlendFactorsSeparate())
+  rl.RL_BLEND_CUSTOM_SEPARATE = 7
+
+  --- Shader location: vertex attribute: position
+  rl.RL_SHADER_LOC_VERTEX_POSITION = 0
+
+  --- Shader location: vertex attribute: texcoord01
+  rl.RL_SHADER_LOC_VERTEX_TEXCOORD01 = 1
+
+  --- Shader location: vertex attribute: texcoord02
+  rl.RL_SHADER_LOC_VERTEX_TEXCOORD02 = 2
+
+  --- Shader location: vertex attribute: normal
+  rl.RL_SHADER_LOC_VERTEX_NORMAL = 3
+
+  --- Shader location: vertex attribute: tangent
+  rl.RL_SHADER_LOC_VERTEX_TANGENT = 4
+
+  --- Shader location: vertex attribute: color
+  rl.RL_SHADER_LOC_VERTEX_COLOR = 5
+
+  --- Shader location: matrix uniform: model-view-projection
+  rl.RL_SHADER_LOC_MATRIX_MVP = 6
+
+  --- Shader location: matrix uniform: view (camera transform)
+  rl.RL_SHADER_LOC_MATRIX_VIEW = 7
+
+  --- Shader location: matrix uniform: projection
+  rl.RL_SHADER_LOC_MATRIX_PROJECTION = 8
+
+  --- Shader location: matrix uniform: model (transform)
+  rl.RL_SHADER_LOC_MATRIX_MODEL = 9
+
+  --- Shader location: matrix uniform: normal
+  rl.RL_SHADER_LOC_MATRIX_NORMAL = 10
+
+  --- Shader location: vector uniform: view
+  rl.RL_SHADER_LOC_VECTOR_VIEW = 11
+
+  --- Shader location: vector uniform: diffuse color
+  rl.RL_SHADER_LOC_COLOR_DIFFUSE = 12
+
+  --- Shader location: vector uniform: specular color
+  rl.RL_SHADER_LOC_COLOR_SPECULAR = 13
+
+  --- Shader location: vector uniform: ambient color
+  rl.RL_SHADER_LOC_COLOR_AMBIENT = 14
+
+  --- Shader location: sampler2d texture: albedo (same as: RL_SHADER_LOC_MAP_DIFFUSE)
+  rl.RL_SHADER_LOC_MAP_ALBEDO = 15
+
+  --- Shader location: sampler2d texture: metalness (same as: RL_SHADER_LOC_MAP_SPECULAR)
+  rl.RL_SHADER_LOC_MAP_METALNESS = 16
+
+  --- Shader location: sampler2d texture: normal
+  rl.RL_SHADER_LOC_MAP_NORMAL = 17
+
+  --- Shader location: sampler2d texture: roughness
+  rl.RL_SHADER_LOC_MAP_ROUGHNESS = 18
+
+  --- Shader location: sampler2d texture: occlusion
+  rl.RL_SHADER_LOC_MAP_OCCLUSION = 19
+
+  --- Shader location: sampler2d texture: emission
+  rl.RL_SHADER_LOC_MAP_EMISSION = 20
+
+  --- Shader location: sampler2d texture: height
+  rl.RL_SHADER_LOC_MAP_HEIGHT = 21
+
+  --- Shader location: samplerCube texture: cubemap
+  rl.RL_SHADER_LOC_MAP_CUBEMAP = 22
+
+  --- Shader location: samplerCube texture: irradiance
+  rl.RL_SHADER_LOC_MAP_IRRADIANCE = 23
+
+  --- Shader location: samplerCube texture: prefilter
+  rl.RL_SHADER_LOC_MAP_PREFILTER = 24
+
+  --- Shader location: sampler2d texture: brdf
+  rl.RL_SHADER_LOC_MAP_BRDF = 25
+
+  --- Shader uniform type: float
+  rl.RL_SHADER_UNIFORM_FLOAT = 0
+
+  --- Shader uniform type: vec2 (2 float)
+  rl.RL_SHADER_UNIFORM_VEC2 = 1
+
+  --- Shader uniform type: vec3 (3 float)
+  rl.RL_SHADER_UNIFORM_VEC3 = 2
+
+  --- Shader uniform type: vec4 (4 float)
+  rl.RL_SHADER_UNIFORM_VEC4 = 3
+
+  --- Shader uniform type: int
+  rl.RL_SHADER_UNIFORM_INT = 4
+
+  --- Shader uniform type: ivec2 (2 int)
+  rl.RL_SHADER_UNIFORM_IVEC2 = 5
+
+  --- Shader uniform type: ivec3 (3 int)
+  rl.RL_SHADER_UNIFORM_IVEC3 = 6
+
+  --- Shader uniform type: ivec4 (4 int)
+  rl.RL_SHADER_UNIFORM_IVEC4 = 7
+
+  --- Shader uniform type: unsigned int
+  rl.RL_SHADER_UNIFORM_UINT = 8
+
+  --- Shader uniform type: uivec2 (2 unsigned int)
+  rl.RL_SHADER_UNIFORM_UIVEC2 = 9
+
+  --- Shader uniform type: uivec3 (3 unsigned int)
+  rl.RL_SHADER_UNIFORM_UIVEC3 = 10
+
+  --- Shader uniform type: uivec4 (4 unsigned int)
+  rl.RL_SHADER_UNIFORM_UIVEC4 = 11
+
+  --- Shader uniform type: sampler2d
+  rl.RL_SHADER_UNIFORM_SAMPLER2D = 12
+
+  --- Shader attribute type: float
+  rl.RL_SHADER_ATTRIB_FLOAT = 0
+
+  --- Shader attribute type: vec2 (2 float)
+  rl.RL_SHADER_ATTRIB_VEC2 = 1
+
+  --- Shader attribute type: vec3 (3 float)
+  rl.RL_SHADER_ATTRIB_VEC3 = 2
+
+  --- Shader attribute type: vec4 (4 float)
+  rl.RL_SHADER_ATTRIB_VEC4 = 3
+
+  --- Framebuffer attachment type: color 0
+  rl.RL_ATTACHMENT_COLOR_CHANNEL0 = 0
+
+  --- Framebuffer attachment type: color 1
+  rl.RL_ATTACHMENT_COLOR_CHANNEL1 = 1
+
+  --- Framebuffer attachment type: color 2
+  rl.RL_ATTACHMENT_COLOR_CHANNEL2 = 2
+
+  --- Framebuffer attachment type: color 3
+  rl.RL_ATTACHMENT_COLOR_CHANNEL3 = 3
+
+  --- Framebuffer attachment type: color 4
+  rl.RL_ATTACHMENT_COLOR_CHANNEL4 = 4
+
+  --- Framebuffer attachment type: color 5
+  rl.RL_ATTACHMENT_COLOR_CHANNEL5 = 5
+
+  --- Framebuffer attachment type: color 6
+  rl.RL_ATTACHMENT_COLOR_CHANNEL6 = 6
+
+  --- Framebuffer attachment type: color 7
+  rl.RL_ATTACHMENT_COLOR_CHANNEL7 = 7
+
+  --- Framebuffer attachment type: depth
+  rl.RL_ATTACHMENT_DEPTH = 100
+
+  --- Framebuffer attachment type: stencil
+  rl.RL_ATTACHMENT_STENCIL = 200
+
+  --- Framebuffer texture attachment type: cubemap, +X side
+  rl.RL_ATTACHMENT_CUBEMAP_POSITIVE_X = 0
+
+  --- Framebuffer texture attachment type: cubemap, -X side
+  rl.RL_ATTACHMENT_CUBEMAP_NEGATIVE_X = 1
+
+  --- Framebuffer texture attachment type: cubemap, +Y side
+  rl.RL_ATTACHMENT_CUBEMAP_POSITIVE_Y = 2
+
+  --- Framebuffer texture attachment type: cubemap, -Y side
+  rl.RL_ATTACHMENT_CUBEMAP_NEGATIVE_Y = 3
+
+  --- Framebuffer texture attachment type: cubemap, +Z side
+  rl.RL_ATTACHMENT_CUBEMAP_POSITIVE_Z = 4
+
+  --- Framebuffer texture attachment type: cubemap, -Z side
+  rl.RL_ATTACHMENT_CUBEMAP_NEGATIVE_Z = 5
+
+  --- Framebuffer texture attachment type: texture2d
+  rl.RL_ATTACHMENT_TEXTURE2D = 100
+
+  --- Framebuffer texture attachment type: renderbuffer
+  rl.RL_ATTACHMENT_RENDERBUFFER = 200
+
+  --- 
+  rl.RL_CULL_FACE_FRONT = 0
+
+  --- 
+  rl.RL_CULL_FACE_BACK = 1
+
 
   --- Initialize window and OpenGL context 
   ---@param width number
@@ -1738,7 +2637,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Set icon for window (multiple images, RGBA 32bit) 
-  ---@param images Image *
+  ---@param images Image 
   ---@param count number
   ---@return void
   function rl.SetWindowIcons(images, count)
@@ -2143,7 +3042,7 @@ local rl = setmetatable({}, mt)
   --- Set shader uniform value 
   ---@param shader Shader
   ---@param locIndex number
-  ---@param value const void *
+  ---@param value const void 
   ---@param uniformType number
   ---@return void
   function rl.SetShaderValue(shader, locIndex, value, uniformType)
@@ -2153,7 +3052,7 @@ local rl = setmetatable({}, mt)
   --- Set shader uniform value vector 
   ---@param shader Shader
   ---@param locIndex number
-  ---@param value const void *
+  ---@param value const void 
   ---@param uniformType number
   ---@param count number
   ---@return void
@@ -2675,7 +3574,7 @@ local rl = setmetatable({}, mt)
   --- Compute MD5 hash code, returns static int[4] (16 bytes) 
   ---@param data string
   ---@param dataSize number
-  ---@return unsigned int *
+  ---@return number
   function rl.ComputeMD5(data, dataSize)
     return lib.ComputeMD5(data, dataSize)
   end
@@ -2683,7 +3582,7 @@ local rl = setmetatable({}, mt)
   --- Compute SHA1 hash code, returns static int[5] (20 bytes) 
   ---@param data string
   ---@param dataSize number
-  ---@return unsigned int *
+  ---@return number
   function rl.ComputeSHA1(data, dataSize)
     return lib.ComputeSHA1(data, dataSize)
   end
@@ -2711,7 +3610,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Set automation event list to record to 
-  ---@param list AutomationEventList *
+  ---@param list AutomationEventList 
   ---@return void
   function rl.SetAutomationEventList(list)
     return lib.SetAutomationEventList(list)
@@ -3059,7 +3958,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Update camera position for selected mode 
-  ---@param camera Camera *
+  ---@param camera Camera 
   ---@param mode number
   ---@return void
   function rl.UpdateCamera(camera, mode)
@@ -3067,7 +3966,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Update camera movement/rotation 
-  ---@param camera Camera *
+  ---@param camera Camera 
   ---@param movement Vector3
   ---@param rotation Vector3
   ---@param zoom number
@@ -3144,7 +4043,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw lines sequence (using gl lines) 
-  ---@param points const Vector2 *
+  ---@param points const Vector2 
   ---@param pointCount number
   ---@param color Color
   ---@return void
@@ -3428,7 +4327,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw a triangle fan defined by points (first vertex is the center) 
-  ---@param points const Vector2 *
+  ---@param points const Vector2 
   ---@param pointCount number
   ---@param color Color
   ---@return void
@@ -3437,7 +4336,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw a triangle strip defined by points 
-  ---@param points const Vector2 *
+  ---@param points const Vector2 
   ---@param pointCount number
   ---@param color Color
   ---@return void
@@ -3480,7 +4379,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw spline: Linear, minimum 2 points 
-  ---@param points const Vector2 *
+  ---@param points const Vector2 
   ---@param pointCount number
   ---@param thick number
   ---@param color Color
@@ -3490,7 +4389,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw spline: B-Spline, minimum 4 points 
-  ---@param points const Vector2 *
+  ---@param points const Vector2 
   ---@param pointCount number
   ---@param thick number
   ---@param color Color
@@ -3500,7 +4399,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw spline: Catmull-Rom, minimum 4 points 
-  ---@param points const Vector2 *
+  ---@param points const Vector2 
   ---@param pointCount number
   ---@param thick number
   ---@param color Color
@@ -3510,7 +4409,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...] 
-  ---@param points const Vector2 *
+  ---@param points const Vector2 
   ---@param pointCount number
   ---@param thick number
   ---@param color Color
@@ -3520,7 +4419,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...] 
-  ---@param points const Vector2 *
+  ---@param points const Vector2 
   ---@param pointCount number
   ---@param thick number
   ---@param color Color
@@ -3714,7 +4613,7 @@ local rl = setmetatable({}, mt)
 
   --- Check if point is within a polygon described by array of vertices 
   ---@param point Vector2
-  ---@param points const Vector2 *
+  ---@param points const Vector2 
   ---@param pointCount number
   ---@return boolean
   function rl.CheckCollisionPointPoly(point, points, pointCount)
@@ -3726,7 +4625,7 @@ local rl = setmetatable({}, mt)
   ---@param endPos1 Vector2
   ---@param startPos2 Vector2
   ---@param endPos2 Vector2
-  ---@param collisionPoint Vector2 *
+  ---@param collisionPoint Vector2 
   ---@return boolean
   function rl.CheckCollisionLines(startPos1, endPos1, startPos2, endPos2, collisionPoint)
     return lib.CheckCollisionLines(startPos1, endPos1, startPos2, endPos2, collisionPoint)
@@ -3973,7 +4872,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Convert image data to desired format 
-  ---@param image Image *
+  ---@param image Image 
   ---@param newFormat number
   ---@return void
   function rl.ImageFormat(image, newFormat)
@@ -3981,7 +4880,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Convert image to POT (power-of-two) 
-  ---@param image Image *
+  ---@param image Image 
   ---@param fill Color
   ---@return void
   function rl.ImageToPOT(image, fill)
@@ -3989,7 +4888,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Crop an image to a defined rectangle 
-  ---@param image Image *
+  ---@param image Image 
   ---@param crop Rectangle
   ---@return void
   function rl.ImageCrop(image, crop)
@@ -3997,7 +4896,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Crop image depending on alpha value 
-  ---@param image Image *
+  ---@param image Image 
   ---@param threshold number
   ---@return void
   function rl.ImageAlphaCrop(image, threshold)
@@ -4005,7 +4904,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Clear alpha channel to desired color 
-  ---@param image Image *
+  ---@param image Image 
   ---@param color Color
   ---@param threshold number
   ---@return void
@@ -4014,7 +4913,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Apply alpha mask to image 
-  ---@param image Image *
+  ---@param image Image 
   ---@param alphaMask Image
   ---@return void
   function rl.ImageAlphaMask(image, alphaMask)
@@ -4022,14 +4921,14 @@ local rl = setmetatable({}, mt)
   end
 
   --- Premultiply alpha channel 
-  ---@param image Image *
+  ---@param image Image 
   ---@return void
   function rl.ImageAlphaPremultiply(image)
     return lib.ImageAlphaPremultiply(image)
   end
 
   --- Apply Gaussian blur using a box blur approximation 
-  ---@param image Image *
+  ---@param image Image 
   ---@param blurSize number
   ---@return void
   function rl.ImageBlurGaussian(image, blurSize)
@@ -4037,8 +4936,8 @@ local rl = setmetatable({}, mt)
   end
 
   --- Apply custom square convolution kernel to image 
-  ---@param image Image *
-  ---@param kernel const float *
+  ---@param image Image 
+  ---@param kernel const float 
   ---@param kernelSize number
   ---@return void
   function rl.ImageKernelConvolution(image, kernel, kernelSize)
@@ -4046,7 +4945,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Resize image (Bicubic scaling algorithm) 
-  ---@param image Image *
+  ---@param image Image 
   ---@param newWidth number
   ---@param newHeight number
   ---@return void
@@ -4055,7 +4954,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Resize image (Nearest-Neighbor scaling algorithm) 
-  ---@param image Image *
+  ---@param image Image 
   ---@param newWidth number
   ---@param newHeight number
   ---@return void
@@ -4064,7 +4963,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Resize canvas and fill with color 
-  ---@param image Image *
+  ---@param image Image 
   ---@param newWidth number
   ---@param newHeight number
   ---@param offsetX number
@@ -4076,14 +4975,14 @@ local rl = setmetatable({}, mt)
   end
 
   --- Compute all mipmap levels for a provided image 
-  ---@param image Image *
+  ---@param image Image 
   ---@return void
   function rl.ImageMipmaps(image)
     return lib.ImageMipmaps(image)
   end
 
   --- Dither image data to 16bpp or lower (Floyd-Steinberg dithering) 
-  ---@param image Image *
+  ---@param image Image 
   ---@param rBpp number
   ---@param gBpp number
   ---@param bBpp number
@@ -4094,21 +4993,21 @@ local rl = setmetatable({}, mt)
   end
 
   --- Flip image vertically 
-  ---@param image Image *
+  ---@param image Image 
   ---@return void
   function rl.ImageFlipVertical(image)
     return lib.ImageFlipVertical(image)
   end
 
   --- Flip image horizontally 
-  ---@param image Image *
+  ---@param image Image 
   ---@return void
   function rl.ImageFlipHorizontal(image)
     return lib.ImageFlipHorizontal(image)
   end
 
   --- Rotate image by input angle in degrees (-359 to 359) 
-  ---@param image Image *
+  ---@param image Image 
   ---@param degrees number
   ---@return void
   function rl.ImageRotate(image, degrees)
@@ -4116,21 +5015,21 @@ local rl = setmetatable({}, mt)
   end
 
   --- Rotate image clockwise 90deg 
-  ---@param image Image *
+  ---@param image Image 
   ---@return void
   function rl.ImageRotateCW(image)
     return lib.ImageRotateCW(image)
   end
 
   --- Rotate image counter-clockwise 90deg 
-  ---@param image Image *
+  ---@param image Image 
   ---@return void
   function rl.ImageRotateCCW(image)
     return lib.ImageRotateCCW(image)
   end
 
   --- Modify image color: tint 
-  ---@param image Image *
+  ---@param image Image 
   ---@param color Color
   ---@return void
   function rl.ImageColorTint(image, color)
@@ -4138,21 +5037,21 @@ local rl = setmetatable({}, mt)
   end
 
   --- Modify image color: invert 
-  ---@param image Image *
+  ---@param image Image 
   ---@return void
   function rl.ImageColorInvert(image)
     return lib.ImageColorInvert(image)
   end
 
   --- Modify image color: grayscale 
-  ---@param image Image *
+  ---@param image Image 
   ---@return void
   function rl.ImageColorGrayscale(image)
     return lib.ImageColorGrayscale(image)
   end
 
   --- Modify image color: contrast (-100 to 100) 
-  ---@param image Image *
+  ---@param image Image 
   ---@param contrast number
   ---@return void
   function rl.ImageColorContrast(image, contrast)
@@ -4160,7 +5059,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Modify image color: brightness (-255 to 255) 
-  ---@param image Image *
+  ---@param image Image 
   ---@param brightness number
   ---@return void
   function rl.ImageColorBrightness(image, brightness)
@@ -4168,7 +5067,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Modify image color: replace color 
-  ---@param image Image *
+  ---@param image Image 
   ---@param color Color
   ---@param replace Color
   ---@return void
@@ -4178,7 +5077,7 @@ local rl = setmetatable({}, mt)
 
   --- Load color data from image as a Color array (RGBA - 32bit) 
   ---@param image Image
-  ---@return Color *
+  ---@return Color 
   function rl.LoadImageColors(image)
     return lib.LoadImageColors(image)
   end
@@ -4187,20 +5086,20 @@ local rl = setmetatable({}, mt)
   ---@param image Image
   ---@param maxPaletteSize number
   ---@param colorCount number
-  ---@return Color *
+  ---@return Color 
   function rl.LoadImagePalette(image, maxPaletteSize, colorCount)
     return lib.LoadImagePalette(image, maxPaletteSize, colorCount)
   end
 
   --- Unload color data loaded with LoadImageColors() 
-  ---@param colors Color *
+  ---@param colors Color 
   ---@return void
   function rl.UnloadImageColors(colors)
     return lib.UnloadImageColors(colors)
   end
 
   --- Unload colors palette loaded with LoadImagePalette() 
-  ---@param colors Color *
+  ---@param colors Color 
   ---@return void
   function rl.UnloadImagePalette(colors)
     return lib.UnloadImagePalette(colors)
@@ -4224,7 +5123,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Clear image background with given color 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param color Color
   ---@return void
   function rl.ImageClearBackground(dst, color)
@@ -4232,7 +5131,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw pixel within an image 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param posX number
   ---@param posY number
   ---@param color Color
@@ -4242,7 +5141,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw pixel within an image (Vector version) 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param position Vector2
   ---@param color Color
   ---@return void
@@ -4251,7 +5150,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw line within an image 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param startPosX number
   ---@param startPosY number
   ---@param endPosX number
@@ -4263,7 +5162,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw line within an image (Vector version) 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param start Vector2
   ---@param ending Vector2
   ---@param color Color
@@ -4273,7 +5172,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw a line defining thickness within an image 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param start Vector2
   ---@param ending Vector2
   ---@param thick number
@@ -4284,7 +5183,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw a filled circle within an image 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param centerX number
   ---@param centerY number
   ---@param radius number
@@ -4295,7 +5194,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw a filled circle within an image (Vector version) 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param center Vector2
   ---@param radius number
   ---@param color Color
@@ -4305,7 +5204,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw circle outline within an image 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param centerX number
   ---@param centerY number
   ---@param radius number
@@ -4316,7 +5215,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw circle outline within an image (Vector version) 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param center Vector2
   ---@param radius number
   ---@param color Color
@@ -4326,7 +5225,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw rectangle within an image 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param posX number
   ---@param posY number
   ---@param width number
@@ -4338,7 +5237,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw rectangle within an image (Vector version) 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param position Vector2
   ---@param size Vector2
   ---@param color Color
@@ -4348,7 +5247,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw rectangle within an image 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param rec Rectangle
   ---@param color Color
   ---@return void
@@ -4357,7 +5256,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw rectangle lines within an image 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param rec Rectangle
   ---@param thick number
   ---@param color Color
@@ -4367,7 +5266,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw triangle within an image 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param v1 Vector2
   ---@param v2 Vector2
   ---@param v3 Vector2
@@ -4378,7 +5277,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw triangle with interpolated colors within an image 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param v1 Vector2
   ---@param v2 Vector2
   ---@param v3 Vector2
@@ -4391,7 +5290,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw triangle outline within an image 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param v1 Vector2
   ---@param v2 Vector2
   ---@param v3 Vector2
@@ -4402,8 +5301,8 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw a triangle fan defined by points within an image (first vertex is the center) 
-  ---@param dst Image *
-  ---@param points Vector2 *
+  ---@param dst Image 
+  ---@param points Vector2 
   ---@param pointCount number
   ---@param color Color
   ---@return void
@@ -4412,8 +5311,8 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw a triangle strip defined by points within an image 
-  ---@param dst Image *
-  ---@param points Vector2 *
+  ---@param dst Image 
+  ---@param points Vector2 
   ---@param pointCount number
   ---@param color Color
   ---@return void
@@ -4422,7 +5321,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw a source image within a destination image (tint applied to source) 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param src Image
   ---@param srcRec Rectangle
   ---@param dstRec Rectangle
@@ -4433,7 +5332,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw text (using default font) within an image (destination) 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param text string
   ---@param posX number
   ---@param posY number
@@ -4445,7 +5344,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw text (custom sprite font) within an image (destination) 
-  ---@param dst Image *
+  ---@param dst Image 
   ---@param font Font
   ---@param text string
   ---@param position Vector2
@@ -4517,7 +5416,7 @@ local rl = setmetatable({}, mt)
 
   --- Update GPU texture with new data 
   ---@param texture Texture2D
-  ---@param pixels const void *
+  ---@param pixels const void 
   ---@return void
   function rl.UpdateTexture(texture, pixels)
     return lib.UpdateTexture(texture, pixels)
@@ -4526,14 +5425,14 @@ local rl = setmetatable({}, mt)
   --- Update GPU texture rectangle with new data 
   ---@param texture Texture2D
   ---@param rec Rectangle
-  ---@param pixels const void *
+  ---@param pixels const void 
   ---@return void
   function rl.UpdateTextureRec(texture, rec, pixels)
     return lib.UpdateTextureRec(texture, rec, pixels)
   end
 
   --- Generate GPU mipmaps for a texture 
-  ---@param texture Texture2D *
+  ---@param texture Texture2D 
   ---@return void
   function rl.GenTextureMipmaps(texture)
     return lib.GenTextureMipmaps(texture)
@@ -4813,14 +5712,14 @@ local rl = setmetatable({}, mt)
   ---@param codepoints number
   ---@param codepointCount number
   ---@param type number
-  ---@return GlyphInfo *
+  ---@return GlyphInfo 
   function rl.LoadFontData(fileData, dataSize, fontSize, codepoints, codepointCount, type)
     return lib.LoadFontData(fileData, dataSize, fontSize, codepoints, codepointCount, type)
   end
 
   --- Generate image font atlas using chars info 
-  ---@param glyphs const GlyphInfo *
-  ---@param glyphRecs Rectangle **
+  ---@param glyphs const GlyphInfo 
+  ---@param glyphRecs Rectangle 
   ---@param glyphCount number
   ---@param fontSize number
   ---@param padding number
@@ -4831,7 +5730,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Unload font chars info data (RAM) 
-  ---@param glyphs GlyphInfo *
+  ---@param glyphs GlyphInfo 
   ---@param glyphCount number
   ---@return void
   function rl.UnloadFontData(glyphs, glyphCount)
@@ -4911,7 +5810,7 @@ local rl = setmetatable({}, mt)
 
   --- Draw multiple character (codepoint) 
   ---@param font Font
-  ---@param codepoints const int *
+  ---@param codepoints const int 
   ---@param codepointCount number
   ---@param position Vector2
   ---@param fontSize number
@@ -4972,7 +5871,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Load UTF-8 text encoded from codepoints array 
-  ---@param codepoints const int *
+  ---@param codepoints const int 
   ---@param length number
   ---@return string
   function rl.LoadUTF8(codepoints, length)
@@ -5109,7 +6008,7 @@ local rl = setmetatable({}, mt)
 
   --- Split text into multiple strings 
   ---@param text string
-  ---@param delimiter char
+  ---@param delimiter string
   ---@param count number
   ---@return string
   function rl.TextSplit(text, delimiter, count)
@@ -5221,7 +6120,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Draw a triangle strip defined by points 
-  ---@param points const Vector3 *
+  ---@param points const Vector3 
   ---@param pointCount number
   ---@param color Color
   ---@return void
@@ -5545,7 +6444,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Upload mesh vertex data in GPU and provide VAO/VBO ids 
-  ---@param mesh Mesh *
+  ---@param mesh Mesh 
   ---@param dynamic boolean
   ---@return void
   function rl.UploadMesh(mesh, dynamic)
@@ -5555,7 +6454,7 @@ local rl = setmetatable({}, mt)
   --- Update mesh vertex data in GPU for a specific buffer index 
   ---@param mesh Mesh
   ---@param index number
-  ---@param data const void *
+  ---@param data const void 
   ---@param dataSize number
   ---@param offset number
   ---@return void
@@ -5582,7 +6481,7 @@ local rl = setmetatable({}, mt)
   --- Draw multiple mesh instances with material and different transforms 
   ---@param mesh Mesh
   ---@param material Material
-  ---@param transforms const Matrix *
+  ---@param transforms const Matrix 
   ---@param instances number
   ---@return void
   function rl.DrawMeshInstanced(mesh, material, transforms, instances)
@@ -5597,7 +6496,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Compute mesh tangents 
-  ---@param mesh Mesh *
+  ---@param mesh Mesh 
   ---@return void
   function rl.GenMeshTangents(mesh)
     return lib.GenMeshTangents(mesh)
@@ -5721,7 +6620,7 @@ local rl = setmetatable({}, mt)
   --- Load materials from model file 
   ---@param fileName string
   ---@param materialCount number
-  ---@return Material *
+  ---@return Material 
   function rl.LoadMaterials(fileName, materialCount)
     return lib.LoadMaterials(fileName, materialCount)
   end
@@ -5747,7 +6646,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...) 
-  ---@param material Material *
+  ---@param material Material 
   ---@param mapType number
   ---@param texture Texture2D
   ---@return void
@@ -5756,7 +6655,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Set material for a mesh 
-  ---@param model Model *
+  ---@param model Model 
   ---@param meshId number
   ---@param materialId number
   ---@return void
@@ -5767,7 +6666,7 @@ local rl = setmetatable({}, mt)
   --- Load model animations from file 
   ---@param fileName string
   ---@param animCount number
-  ---@return ModelAnimation *
+  ---@return ModelAnimation 
   function rl.LoadModelAnimations(fileName, animCount)
     return lib.LoadModelAnimations(fileName, animCount)
   end
@@ -5798,7 +6697,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Unload animation array data 
-  ---@param animations ModelAnimation *
+  ---@param animations ModelAnimation 
   ---@param animCount number
   ---@return void
   function rl.UnloadModelAnimations(animations, animCount)
@@ -5971,7 +6870,7 @@ local rl = setmetatable({}, mt)
 
   --- Update sound buffer with new data 
   ---@param sound Sound
-  ---@param data const void *
+  ---@param data const void 
   ---@param sampleCount number
   ---@return void
   function rl.UpdateSound(sound, data, sampleCount)
@@ -6082,7 +6981,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Crop a wave to defined frames range 
-  ---@param wave Wave *
+  ---@param wave Wave 
   ---@param initFrame number
   ---@param finalFrame number
   ---@return void
@@ -6091,7 +6990,7 @@ local rl = setmetatable({}, mt)
   end
 
   --- Convert wave data to desired format 
-  ---@param wave Wave *
+  ---@param wave Wave 
   ---@param sampleRate number
   ---@param sampleSize number
   ---@param channels number
@@ -6257,7 +7156,7 @@ local rl = setmetatable({}, mt)
 
   --- Update audio stream buffers with data 
   ---@param stream AudioStream
-  ---@param data const void *
+  ---@param data const void 
   ---@param frameCount number
   ---@return void
   function rl.UpdateAudioStream(stream, data, frameCount)
@@ -6373,6 +7272,1206 @@ local rl = setmetatable({}, mt)
   ---@return void
   function rl.DetachAudioMixedProcessor(processor)
     return lib.DetachAudioMixedProcessor(processor)
+  end
+
+  --- Choose the current matrix to be transformed 
+  ---@param mode number
+  ---@return void
+  function rl.rlMatrixMode(mode)
+    return lib.rlMatrixMode(mode)
+  end
+
+  --- Push the current matrix to stack 
+  ---@return void
+  function rl.rlPushMatrix()
+    return lib.rlPushMatrix()
+  end
+
+  --- Pop latest inserted matrix from stack 
+  ---@return void
+  function rl.rlPopMatrix()
+    return lib.rlPopMatrix()
+  end
+
+  --- Reset current matrix to identity matrix 
+  ---@return void
+  function rl.rlLoadIdentity()
+    return lib.rlLoadIdentity()
+  end
+
+  --- Multiply the current matrix by a translation matrix 
+  ---@param x number
+  ---@param y number
+  ---@param z number
+  ---@return void
+  function rl.rlTranslatef(x, y, z)
+    return lib.rlTranslatef(x, y, z)
+  end
+
+  --- Multiply the current matrix by a rotation matrix 
+  ---@param angle number
+  ---@param x number
+  ---@param y number
+  ---@param z number
+  ---@return void
+  function rl.rlRotatef(angle, x, y, z)
+    return lib.rlRotatef(angle, x, y, z)
+  end
+
+  --- Multiply the current matrix by a scaling matrix 
+  ---@param x number
+  ---@param y number
+  ---@param z number
+  ---@return void
+  function rl.rlScalef(x, y, z)
+    return lib.rlScalef(x, y, z)
+  end
+
+  --- Multiply the current matrix by another matrix 
+  ---@param matf const float 
+  ---@return void
+  function rl.rlMultMatrixf(matf)
+    return lib.rlMultMatrixf(matf)
+  end
+
+  ---  
+  ---@param left number
+  ---@param right number
+  ---@param bottom number
+  ---@param top number
+  ---@param znear number
+  ---@param zfar number
+  ---@return void
+  function rl.rlFrustum(left, right, bottom, top, znear, zfar)
+    return lib.rlFrustum(left, right, bottom, top, znear, zfar)
+  end
+
+  ---  
+  ---@param left number
+  ---@param right number
+  ---@param bottom number
+  ---@param top number
+  ---@param znear number
+  ---@param zfar number
+  ---@return void
+  function rl.rlOrtho(left, right, bottom, top, znear, zfar)
+    return lib.rlOrtho(left, right, bottom, top, znear, zfar)
+  end
+
+  --- Set the viewport area 
+  ---@param x number
+  ---@param y number
+  ---@param width number
+  ---@param height number
+  ---@return void
+  function rl.rlViewport(x, y, width, height)
+    return lib.rlViewport(x, y, width, height)
+  end
+
+  --- Set clip planes distances 
+  ---@param nearPlane number
+  ---@param farPlane number
+  ---@return void
+  function rl.rlSetClipPlanes(nearPlane, farPlane)
+    return lib.rlSetClipPlanes(nearPlane, farPlane)
+  end
+
+  --- Get cull plane distance near 
+  ---@return number
+  function rl.rlGetCullDistanceNear()
+    return lib.rlGetCullDistanceNear()
+  end
+
+  --- Get cull plane distance far 
+  ---@return number
+  function rl.rlGetCullDistanceFar()
+    return lib.rlGetCullDistanceFar()
+  end
+
+  --- Initialize drawing mode (how to organize vertex) 
+  ---@param mode number
+  ---@return void
+  function rl.rlBegin(mode)
+    return lib.rlBegin(mode)
+  end
+
+  --- Finish vertex providing 
+  ---@return void
+  function rl.rlEnd()
+    return lib.rlEnd()
+  end
+
+  --- Define one vertex (position) - 2 int 
+  ---@param x number
+  ---@param y number
+  ---@return void
+  function rl.rlVertex2i(x, y)
+    return lib.rlVertex2i(x, y)
+  end
+
+  --- Define one vertex (position) - 2 float 
+  ---@param x number
+  ---@param y number
+  ---@return void
+  function rl.rlVertex2f(x, y)
+    return lib.rlVertex2f(x, y)
+  end
+
+  --- Define one vertex (position) - 3 float 
+  ---@param x number
+  ---@param y number
+  ---@param z number
+  ---@return void
+  function rl.rlVertex3f(x, y, z)
+    return lib.rlVertex3f(x, y, z)
+  end
+
+  --- Define one vertex (texture coordinate) - 2 float 
+  ---@param x number
+  ---@param y number
+  ---@return void
+  function rl.rlTexCoord2f(x, y)
+    return lib.rlTexCoord2f(x, y)
+  end
+
+  --- Define one vertex (normal) - 3 float 
+  ---@param x number
+  ---@param y number
+  ---@param z number
+  ---@return void
+  function rl.rlNormal3f(x, y, z)
+    return lib.rlNormal3f(x, y, z)
+  end
+
+  --- Define one vertex (color) - 4 byte 
+  ---@param r string
+  ---@param g string
+  ---@param b string
+  ---@param a string
+  ---@return void
+  function rl.rlColor4ub(r, g, b, a)
+    return lib.rlColor4ub(r, g, b, a)
+  end
+
+  --- Define one vertex (color) - 3 float 
+  ---@param x number
+  ---@param y number
+  ---@param z number
+  ---@return void
+  function rl.rlColor3f(x, y, z)
+    return lib.rlColor3f(x, y, z)
+  end
+
+  --- Define one vertex (color) - 4 float 
+  ---@param x number
+  ---@param y number
+  ---@param z number
+  ---@param w number
+  ---@return void
+  function rl.rlColor4f(x, y, z, w)
+    return lib.rlColor4f(x, y, z, w)
+  end
+
+  --- Enable vertex array (VAO, if supported) 
+  ---@param vaoId number
+  ---@return boolean
+  function rl.rlEnableVertexArray(vaoId)
+    return lib.rlEnableVertexArray(vaoId)
+  end
+
+  --- Disable vertex array (VAO, if supported) 
+  ---@return void
+  function rl.rlDisableVertexArray()
+    return lib.rlDisableVertexArray()
+  end
+
+  --- Enable vertex buffer (VBO) 
+  ---@param id number
+  ---@return void
+  function rl.rlEnableVertexBuffer(id)
+    return lib.rlEnableVertexBuffer(id)
+  end
+
+  --- Disable vertex buffer (VBO) 
+  ---@return void
+  function rl.rlDisableVertexBuffer()
+    return lib.rlDisableVertexBuffer()
+  end
+
+  --- Enable vertex buffer element (VBO element) 
+  ---@param id number
+  ---@return void
+  function rl.rlEnableVertexBufferElement(id)
+    return lib.rlEnableVertexBufferElement(id)
+  end
+
+  --- Disable vertex buffer element (VBO element) 
+  ---@return void
+  function rl.rlDisableVertexBufferElement()
+    return lib.rlDisableVertexBufferElement()
+  end
+
+  --- Enable vertex attribute index 
+  ---@param index number
+  ---@return void
+  function rl.rlEnableVertexAttribute(index)
+    return lib.rlEnableVertexAttribute(index)
+  end
+
+  --- Disable vertex attribute index 
+  ---@param index number
+  ---@return void
+  function rl.rlDisableVertexAttribute(index)
+    return lib.rlDisableVertexAttribute(index)
+  end
+
+  --- Enable attribute state pointer 
+  ---@param vertexAttribType number
+  ---@param buffer void
+  ---@return void
+  function rl.rlEnableStatePointer(vertexAttribType, buffer)
+    return lib.rlEnableStatePointer(vertexAttribType, buffer)
+  end
+
+  --- Disable attribute state pointer 
+  ---@param vertexAttribType number
+  ---@return void
+  function rl.rlDisableStatePointer(vertexAttribType)
+    return lib.rlDisableStatePointer(vertexAttribType)
+  end
+
+  --- Select and active a texture slot 
+  ---@param slot number
+  ---@return void
+  function rl.rlActiveTextureSlot(slot)
+    return lib.rlActiveTextureSlot(slot)
+  end
+
+  --- Enable texture 
+  ---@param id number
+  ---@return void
+  function rl.rlEnableTexture(id)
+    return lib.rlEnableTexture(id)
+  end
+
+  --- Disable texture 
+  ---@return void
+  function rl.rlDisableTexture()
+    return lib.rlDisableTexture()
+  end
+
+  --- Enable texture cubemap 
+  ---@param id number
+  ---@return void
+  function rl.rlEnableTextureCubemap(id)
+    return lib.rlEnableTextureCubemap(id)
+  end
+
+  --- Disable texture cubemap 
+  ---@return void
+  function rl.rlDisableTextureCubemap()
+    return lib.rlDisableTextureCubemap()
+  end
+
+  --- Set texture parameters (filter, wrap) 
+  ---@param id number
+  ---@param param number
+  ---@param value number
+  ---@return void
+  function rl.rlTextureParameters(id, param, value)
+    return lib.rlTextureParameters(id, param, value)
+  end
+
+  --- Set cubemap parameters (filter, wrap) 
+  ---@param id number
+  ---@param param number
+  ---@param value number
+  ---@return void
+  function rl.rlCubemapParameters(id, param, value)
+    return lib.rlCubemapParameters(id, param, value)
+  end
+
+  --- Enable shader program 
+  ---@param id number
+  ---@return void
+  function rl.rlEnableShader(id)
+    return lib.rlEnableShader(id)
+  end
+
+  --- Disable shader program 
+  ---@return void
+  function rl.rlDisableShader()
+    return lib.rlDisableShader()
+  end
+
+  --- Enable render texture (fbo) 
+  ---@param id number
+  ---@return void
+  function rl.rlEnableFramebuffer(id)
+    return lib.rlEnableFramebuffer(id)
+  end
+
+  --- Disable render texture (fbo), return to default framebuffer 
+  ---@return void
+  function rl.rlDisableFramebuffer()
+    return lib.rlDisableFramebuffer()
+  end
+
+  --- Get the currently active render texture (fbo), 0 for default framebuffer 
+  ---@return number
+  function rl.rlGetActiveFramebuffer()
+    return lib.rlGetActiveFramebuffer()
+  end
+
+  --- Activate multiple draw color buffers 
+  ---@param count number
+  ---@return void
+  function rl.rlActiveDrawBuffers(count)
+    return lib.rlActiveDrawBuffers(count)
+  end
+
+  --- Blit active framebuffer to main framebuffer 
+  ---@param srcX number
+  ---@param srcY number
+  ---@param srcWidth number
+  ---@param srcHeight number
+  ---@param dstX number
+  ---@param dstY number
+  ---@param dstWidth number
+  ---@param dstHeight number
+  ---@param bufferMask number
+  ---@return void
+  function rl.rlBlitFramebuffer(srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight, bufferMask)
+    return lib.rlBlitFramebuffer(srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight, bufferMask)
+  end
+
+  --- Bind framebuffer (FBO) 
+  ---@param target number
+  ---@param framebuffer number
+  ---@return void
+  function rl.rlBindFramebuffer(target, framebuffer)
+    return lib.rlBindFramebuffer(target, framebuffer)
+  end
+
+  --- Enable color blending 
+  ---@return void
+  function rl.rlEnableColorBlend()
+    return lib.rlEnableColorBlend()
+  end
+
+  --- Disable color blending 
+  ---@return void
+  function rl.rlDisableColorBlend()
+    return lib.rlDisableColorBlend()
+  end
+
+  --- Enable depth test 
+  ---@return void
+  function rl.rlEnableDepthTest()
+    return lib.rlEnableDepthTest()
+  end
+
+  --- Disable depth test 
+  ---@return void
+  function rl.rlDisableDepthTest()
+    return lib.rlDisableDepthTest()
+  end
+
+  --- Enable depth write 
+  ---@return void
+  function rl.rlEnableDepthMask()
+    return lib.rlEnableDepthMask()
+  end
+
+  --- Disable depth write 
+  ---@return void
+  function rl.rlDisableDepthMask()
+    return lib.rlDisableDepthMask()
+  end
+
+  --- Enable backface culling 
+  ---@return void
+  function rl.rlEnableBackfaceCulling()
+    return lib.rlEnableBackfaceCulling()
+  end
+
+  --- Disable backface culling 
+  ---@return void
+  function rl.rlDisableBackfaceCulling()
+    return lib.rlDisableBackfaceCulling()
+  end
+
+  --- Color mask control 
+  ---@param r boolean
+  ---@param g boolean
+  ---@param b boolean
+  ---@param a boolean
+  ---@return void
+  function rl.rlColorMask(r, g, b, a)
+    return lib.rlColorMask(r, g, b, a)
+  end
+
+  --- Set face culling mode 
+  ---@param mode number
+  ---@return void
+  function rl.rlSetCullFace(mode)
+    return lib.rlSetCullFace(mode)
+  end
+
+  --- Enable scissor test 
+  ---@return void
+  function rl.rlEnableScissorTest()
+    return lib.rlEnableScissorTest()
+  end
+
+  --- Disable scissor test 
+  ---@return void
+  function rl.rlDisableScissorTest()
+    return lib.rlDisableScissorTest()
+  end
+
+  --- Scissor test 
+  ---@param x number
+  ---@param y number
+  ---@param width number
+  ---@param height number
+  ---@return void
+  function rl.rlScissor(x, y, width, height)
+    return lib.rlScissor(x, y, width, height)
+  end
+
+  --- Enable wire mode 
+  ---@return void
+  function rl.rlEnableWireMode()
+    return lib.rlEnableWireMode()
+  end
+
+  --- Enable point mode 
+  ---@return void
+  function rl.rlEnablePointMode()
+    return lib.rlEnablePointMode()
+  end
+
+  --- Disable wire (and point) mode 
+  ---@return void
+  function rl.rlDisableWireMode()
+    return lib.rlDisableWireMode()
+  end
+
+  --- Set the line drawing width 
+  ---@param width number
+  ---@return void
+  function rl.rlSetLineWidth(width)
+    return lib.rlSetLineWidth(width)
+  end
+
+  --- Get the line drawing width 
+  ---@return number
+  function rl.rlGetLineWidth()
+    return lib.rlGetLineWidth()
+  end
+
+  --- Enable line aliasing 
+  ---@return void
+  function rl.rlEnableSmoothLines()
+    return lib.rlEnableSmoothLines()
+  end
+
+  --- Disable line aliasing 
+  ---@return void
+  function rl.rlDisableSmoothLines()
+    return lib.rlDisableSmoothLines()
+  end
+
+  --- Enable stereo rendering 
+  ---@return void
+  function rl.rlEnableStereoRender()
+    return lib.rlEnableStereoRender()
+  end
+
+  --- Disable stereo rendering 
+  ---@return void
+  function rl.rlDisableStereoRender()
+    return lib.rlDisableStereoRender()
+  end
+
+  --- Check if stereo render is enabled 
+  ---@return boolean
+  function rl.rlIsStereoRenderEnabled()
+    return lib.rlIsStereoRenderEnabled()
+  end
+
+  --- Clear color buffer with color 
+  ---@param r string
+  ---@param g string
+  ---@param b string
+  ---@param a string
+  ---@return void
+  function rl.rlClearColor(r, g, b, a)
+    return lib.rlClearColor(r, g, b, a)
+  end
+
+  --- Clear used screen buffers (color and depth) 
+  ---@return void
+  function rl.rlClearScreenBuffers()
+    return lib.rlClearScreenBuffers()
+  end
+
+  --- Check and log OpenGL error codes 
+  ---@return void
+  function rl.rlCheckErrors()
+    return lib.rlCheckErrors()
+  end
+
+  --- Set blending mode 
+  ---@param mode number
+  ---@return void
+  function rl.rlSetBlendMode(mode)
+    return lib.rlSetBlendMode(mode)
+  end
+
+  --- Set blending mode factor and equation (using OpenGL factors) 
+  ---@param glSrcFactor number
+  ---@param glDstFactor number
+  ---@param glEquation number
+  ---@return void
+  function rl.rlSetBlendFactors(glSrcFactor, glDstFactor, glEquation)
+    return lib.rlSetBlendFactors(glSrcFactor, glDstFactor, glEquation)
+  end
+
+  --- Set blending mode factors and equations separately (using OpenGL factors) 
+  ---@param glSrcRGB number
+  ---@param glDstRGB number
+  ---@param glSrcAlpha number
+  ---@param glDstAlpha number
+  ---@param glEqRGB number
+  ---@param glEqAlpha number
+  ---@return void
+  function rl.rlSetBlendFactorsSeparate(glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, glEqRGB, glEqAlpha)
+    return lib.rlSetBlendFactorsSeparate(glSrcRGB, glDstRGB, glSrcAlpha, glDstAlpha, glEqRGB, glEqAlpha)
+  end
+
+  --- Initialize rlgl (buffers, shaders, textures, states) 
+  ---@param width number
+  ---@param height number
+  ---@return void
+  function rl.rlglInit(width, height)
+    return lib.rlglInit(width, height)
+  end
+
+  --- De-initialize rlgl (buffers, shaders, textures) 
+  ---@return void
+  function rl.rlglClose()
+    return lib.rlglClose()
+  end
+
+  --- Load OpenGL extensions (loader function required) 
+  ---@param loader void
+  ---@return void
+  function rl.rlLoadExtensions(loader)
+    return lib.rlLoadExtensions(loader)
+  end
+
+  --- Get current OpenGL version 
+  ---@return number
+  function rl.rlGetVersion()
+    return lib.rlGetVersion()
+  end
+
+  --- Set current framebuffer width 
+  ---@param width number
+  ---@return void
+  function rl.rlSetFramebufferWidth(width)
+    return lib.rlSetFramebufferWidth(width)
+  end
+
+  --- Get default framebuffer width 
+  ---@return number
+  function rl.rlGetFramebufferWidth()
+    return lib.rlGetFramebufferWidth()
+  end
+
+  --- Set current framebuffer height 
+  ---@param height number
+  ---@return void
+  function rl.rlSetFramebufferHeight(height)
+    return lib.rlSetFramebufferHeight(height)
+  end
+
+  --- Get default framebuffer height 
+  ---@return number
+  function rl.rlGetFramebufferHeight()
+    return lib.rlGetFramebufferHeight()
+  end
+
+  --- Get default texture id 
+  ---@return number
+  function rl.rlGetTextureIdDefault()
+    return lib.rlGetTextureIdDefault()
+  end
+
+  --- Get default shader id 
+  ---@return number
+  function rl.rlGetShaderIdDefault()
+    return lib.rlGetShaderIdDefault()
+  end
+
+  --- Get default shader locations 
+  ---@return number
+  function rl.rlGetShaderLocsDefault()
+    return lib.rlGetShaderLocsDefault()
+  end
+
+  --- Load a render batch system 
+  ---@param numBuffers number
+  ---@param bufferElements number
+  ---@return rlRenderBatch
+  function rl.rlLoadRenderBatch(numBuffers, bufferElements)
+    return lib.rlLoadRenderBatch(numBuffers, bufferElements)
+  end
+
+  --- Unload render batch system 
+  ---@param batch rlRenderBatch
+  ---@return void
+  function rl.rlUnloadRenderBatch(batch)
+    return lib.rlUnloadRenderBatch(batch)
+  end
+
+  --- Draw render batch data (Update->Draw->Reset) 
+  ---@param batch rlRenderBatch 
+  ---@return void
+  function rl.rlDrawRenderBatch(batch)
+    return lib.rlDrawRenderBatch(batch)
+  end
+
+  --- Set the active render batch for rlgl (NULL for default internal) 
+  ---@param batch rlRenderBatch 
+  ---@return void
+  function rl.rlSetRenderBatchActive(batch)
+    return lib.rlSetRenderBatchActive(batch)
+  end
+
+  --- Update and draw internal render batch 
+  ---@return void
+  function rl.rlDrawRenderBatchActive()
+    return lib.rlDrawRenderBatchActive()
+  end
+
+  --- Check internal buffer overflow for a given number of vertex 
+  ---@param vCount number
+  ---@return boolean
+  function rl.rlCheckRenderBatchLimit(vCount)
+    return lib.rlCheckRenderBatchLimit(vCount)
+  end
+
+  --- Set current texture for render batch and check buffers limits 
+  ---@param id number
+  ---@return void
+  function rl.rlSetTexture(id)
+    return lib.rlSetTexture(id)
+  end
+
+  --- Load vertex array (vao) if supported 
+  ---@return number
+  function rl.rlLoadVertexArray()
+    return lib.rlLoadVertexArray()
+  end
+
+  --- Load a vertex buffer object 
+  ---@param buffer const void 
+  ---@param size number
+  ---@param dynamic boolean
+  ---@return number
+  function rl.rlLoadVertexBuffer(buffer, size, dynamic)
+    return lib.rlLoadVertexBuffer(buffer, size, dynamic)
+  end
+
+  --- Load vertex buffer elements object 
+  ---@param buffer const void 
+  ---@param size number
+  ---@param dynamic boolean
+  ---@return number
+  function rl.rlLoadVertexBufferElement(buffer, size, dynamic)
+    return lib.rlLoadVertexBufferElement(buffer, size, dynamic)
+  end
+
+  --- Update vertex buffer object data on GPU buffer 
+  ---@param bufferId number
+  ---@param data const void 
+  ---@param dataSize number
+  ---@param offset number
+  ---@return void
+  function rl.rlUpdateVertexBuffer(bufferId, data, dataSize, offset)
+    return lib.rlUpdateVertexBuffer(bufferId, data, dataSize, offset)
+  end
+
+  --- Update vertex buffer elements data on GPU buffer 
+  ---@param id number
+  ---@param data const void 
+  ---@param dataSize number
+  ---@param offset number
+  ---@return void
+  function rl.rlUpdateVertexBufferElements(id, data, dataSize, offset)
+    return lib.rlUpdateVertexBufferElements(id, data, dataSize, offset)
+  end
+
+  --- Unload vertex array (vao) 
+  ---@param vaoId number
+  ---@return void
+  function rl.rlUnloadVertexArray(vaoId)
+    return lib.rlUnloadVertexArray(vaoId)
+  end
+
+  --- Unload vertex buffer object 
+  ---@param vboId number
+  ---@return void
+  function rl.rlUnloadVertexBuffer(vboId)
+    return lib.rlUnloadVertexBuffer(vboId)
+  end
+
+  --- Set vertex attribute data configuration 
+  ---@param index number
+  ---@param compSize number
+  ---@param type number
+  ---@param normalized boolean
+  ---@param stride number
+  ---@param offset number
+  ---@return void
+  function rl.rlSetVertexAttribute(index, compSize, type, normalized, stride, offset)
+    return lib.rlSetVertexAttribute(index, compSize, type, normalized, stride, offset)
+  end
+
+  --- Set vertex attribute data divisor 
+  ---@param index number
+  ---@param divisor number
+  ---@return void
+  function rl.rlSetVertexAttributeDivisor(index, divisor)
+    return lib.rlSetVertexAttributeDivisor(index, divisor)
+  end
+
+  --- Set vertex attribute default value, when attribute to provided 
+  ---@param locIndex number
+  ---@param value const void 
+  ---@param attribType number
+  ---@param count number
+  ---@return void
+  function rl.rlSetVertexAttributeDefault(locIndex, value, attribType, count)
+    return lib.rlSetVertexAttributeDefault(locIndex, value, attribType, count)
+  end
+
+  --- Draw vertex array (currently active vao) 
+  ---@param offset number
+  ---@param count number
+  ---@return void
+  function rl.rlDrawVertexArray(offset, count)
+    return lib.rlDrawVertexArray(offset, count)
+  end
+
+  --- Draw vertex array elements 
+  ---@param offset number
+  ---@param count number
+  ---@param buffer const void 
+  ---@return void
+  function rl.rlDrawVertexArrayElements(offset, count, buffer)
+    return lib.rlDrawVertexArrayElements(offset, count, buffer)
+  end
+
+  --- Draw vertex array (currently active vao) with instancing 
+  ---@param offset number
+  ---@param count number
+  ---@param instances number
+  ---@return void
+  function rl.rlDrawVertexArrayInstanced(offset, count, instances)
+    return lib.rlDrawVertexArrayInstanced(offset, count, instances)
+  end
+
+  --- Draw vertex array elements with instancing 
+  ---@param offset number
+  ---@param count number
+  ---@param buffer const void 
+  ---@param instances number
+  ---@return void
+  function rl.rlDrawVertexArrayElementsInstanced(offset, count, buffer, instances)
+    return lib.rlDrawVertexArrayElementsInstanced(offset, count, buffer, instances)
+  end
+
+  --- Load texture data 
+  ---@param data const void 
+  ---@param width number
+  ---@param height number
+  ---@param format number
+  ---@param mipmapCount number
+  ---@return number
+  function rl.rlLoadTexture(data, width, height, format, mipmapCount)
+    return lib.rlLoadTexture(data, width, height, format, mipmapCount)
+  end
+
+  --- Load depth texture/renderbuffer (to be attached to fbo) 
+  ---@param width number
+  ---@param height number
+  ---@param useRenderBuffer boolean
+  ---@return number
+  function rl.rlLoadTextureDepth(width, height, useRenderBuffer)
+    return lib.rlLoadTextureDepth(width, height, useRenderBuffer)
+  end
+
+  --- Load texture cubemap data 
+  ---@param data const void 
+  ---@param size number
+  ---@param format number
+  ---@param mipmapCount number
+  ---@return number
+  function rl.rlLoadTextureCubemap(data, size, format, mipmapCount)
+    return lib.rlLoadTextureCubemap(data, size, format, mipmapCount)
+  end
+
+  --- Update texture with new data on GPU 
+  ---@param id number
+  ---@param offsetX number
+  ---@param offsetY number
+  ---@param width number
+  ---@param height number
+  ---@param format number
+  ---@param data const void 
+  ---@return void
+  function rl.rlUpdateTexture(id, offsetX, offsetY, width, height, format, data)
+    return lib.rlUpdateTexture(id, offsetX, offsetY, width, height, format, data)
+  end
+
+  --- Get OpenGL internal formats 
+  ---@param format number
+  ---@param glInternalFormat number
+  ---@param glFormat number
+  ---@param glType number
+  ---@return void
+  function rl.rlGetGlTextureFormats(format, glInternalFormat, glFormat, glType)
+    return lib.rlGetGlTextureFormats(format, glInternalFormat, glFormat, glType)
+  end
+
+  --- Get name string for pixel format 
+  ---@param format number
+  ---@return string
+  function rl.rlGetPixelFormatName(format)
+    return lib.rlGetPixelFormatName(format)
+  end
+
+  --- Unload texture from GPU memory 
+  ---@param id number
+  ---@return void
+  function rl.rlUnloadTexture(id)
+    return lib.rlUnloadTexture(id)
+  end
+
+  --- Generate mipmap data for selected texture 
+  ---@param id number
+  ---@param width number
+  ---@param height number
+  ---@param format number
+  ---@param mipmaps number
+  ---@return void
+  function rl.rlGenTextureMipmaps(id, width, height, format, mipmaps)
+    return lib.rlGenTextureMipmaps(id, width, height, format, mipmaps)
+  end
+
+  --- Read texture pixel data 
+  ---@param id number
+  ---@param width number
+  ---@param height number
+  ---@param format number
+  ---@return void
+  function rl.rlReadTexturePixels(id, width, height, format)
+    return lib.rlReadTexturePixels(id, width, height, format)
+  end
+
+  --- Read screen pixel data (color buffer) 
+  ---@param width number
+  ---@param height number
+  ---@return string
+  function rl.rlReadScreenPixels(width, height)
+    return lib.rlReadScreenPixels(width, height)
+  end
+
+  --- Load an empty framebuffer 
+  ---@return number
+  function rl.rlLoadFramebuffer()
+    return lib.rlLoadFramebuffer()
+  end
+
+  --- Attach texture/renderbuffer to a framebuffer 
+  ---@param fboId number
+  ---@param texId number
+  ---@param attachType number
+  ---@param texType number
+  ---@param mipLevel number
+  ---@return void
+  function rl.rlFramebufferAttach(fboId, texId, attachType, texType, mipLevel)
+    return lib.rlFramebufferAttach(fboId, texId, attachType, texType, mipLevel)
+  end
+
+  --- Verify framebuffer is complete 
+  ---@param id number
+  ---@return boolean
+  function rl.rlFramebufferComplete(id)
+    return lib.rlFramebufferComplete(id)
+  end
+
+  --- Delete framebuffer from GPU 
+  ---@param id number
+  ---@return void
+  function rl.rlUnloadFramebuffer(id)
+    return lib.rlUnloadFramebuffer(id)
+  end
+
+  --- Load shader from code strings 
+  ---@param vsCode string
+  ---@param fsCode string
+  ---@return number
+  function rl.rlLoadShaderCode(vsCode, fsCode)
+    return lib.rlLoadShaderCode(vsCode, fsCode)
+  end
+
+  --- Compile custom shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER) 
+  ---@param shaderCode string
+  ---@param type number
+  ---@return number
+  function rl.rlCompileShader(shaderCode, type)
+    return lib.rlCompileShader(shaderCode, type)
+  end
+
+  --- Load custom shader program 
+  ---@param vShaderId number
+  ---@param fShaderId number
+  ---@return number
+  function rl.rlLoadShaderProgram(vShaderId, fShaderId)
+    return lib.rlLoadShaderProgram(vShaderId, fShaderId)
+  end
+
+  --- Unload shader program 
+  ---@param id number
+  ---@return void
+  function rl.rlUnloadShaderProgram(id)
+    return lib.rlUnloadShaderProgram(id)
+  end
+
+  --- Get shader location uniform 
+  ---@param shaderId number
+  ---@param uniformName string
+  ---@return number
+  function rl.rlGetLocationUniform(shaderId, uniformName)
+    return lib.rlGetLocationUniform(shaderId, uniformName)
+  end
+
+  --- Get shader location attribute 
+  ---@param shaderId number
+  ---@param attribName string
+  ---@return number
+  function rl.rlGetLocationAttrib(shaderId, attribName)
+    return lib.rlGetLocationAttrib(shaderId, attribName)
+  end
+
+  --- Set shader value uniform 
+  ---@param locIndex number
+  ---@param value const void 
+  ---@param uniformType number
+  ---@param count number
+  ---@return void
+  function rl.rlSetUniform(locIndex, value, uniformType, count)
+    return lib.rlSetUniform(locIndex, value, uniformType, count)
+  end
+
+  --- Set shader value matrix 
+  ---@param locIndex number
+  ---@param mat Matrix
+  ---@return void
+  function rl.rlSetUniformMatrix(locIndex, mat)
+    return lib.rlSetUniformMatrix(locIndex, mat)
+  end
+
+  --- Set shader value matrices 
+  ---@param locIndex number
+  ---@param mat const Matrix 
+  ---@param count number
+  ---@return void
+  function rl.rlSetUniformMatrices(locIndex, mat, count)
+    return lib.rlSetUniformMatrices(locIndex, mat, count)
+  end
+
+  --- Set shader value sampler 
+  ---@param locIndex number
+  ---@param textureId number
+  ---@return void
+  function rl.rlSetUniformSampler(locIndex, textureId)
+    return lib.rlSetUniformSampler(locIndex, textureId)
+  end
+
+  --- Set shader currently active (id and locations) 
+  ---@param id number
+  ---@param locs number
+  ---@return void
+  function rl.rlSetShader(id, locs)
+    return lib.rlSetShader(id, locs)
+  end
+
+  --- Load compute shader program 
+  ---@param shaderId number
+  ---@return number
+  function rl.rlLoadComputeShaderProgram(shaderId)
+    return lib.rlLoadComputeShaderProgram(shaderId)
+  end
+
+  --- Dispatch compute shader (equivalent to *draw* for graphics pipeline) 
+  ---@param groupX number
+  ---@param groupY number
+  ---@param groupZ number
+  ---@return void
+  function rl.rlComputeShaderDispatch(groupX, groupY, groupZ)
+    return lib.rlComputeShaderDispatch(groupX, groupY, groupZ)
+  end
+
+  --- Load shader storage buffer object (SSBO) 
+  ---@param size number
+  ---@param data const void 
+  ---@param usageHint number
+  ---@return number
+  function rl.rlLoadShaderBuffer(size, data, usageHint)
+    return lib.rlLoadShaderBuffer(size, data, usageHint)
+  end
+
+  --- Unload shader storage buffer object (SSBO) 
+  ---@param ssboId number
+  ---@return void
+  function rl.rlUnloadShaderBuffer(ssboId)
+    return lib.rlUnloadShaderBuffer(ssboId)
+  end
+
+  --- Update SSBO buffer data 
+  ---@param id number
+  ---@param data const void 
+  ---@param dataSize number
+  ---@param offset number
+  ---@return void
+  function rl.rlUpdateShaderBuffer(id, data, dataSize, offset)
+    return lib.rlUpdateShaderBuffer(id, data, dataSize, offset)
+  end
+
+  --- Bind SSBO buffer 
+  ---@param id number
+  ---@param index number
+  ---@return void
+  function rl.rlBindShaderBuffer(id, index)
+    return lib.rlBindShaderBuffer(id, index)
+  end
+
+  --- Read SSBO buffer data (GPU->CPU) 
+  ---@param id number
+  ---@param dest void
+  ---@param count number
+  ---@param offset number
+  ---@return void
+  function rl.rlReadShaderBuffer(id, dest, count, offset)
+    return lib.rlReadShaderBuffer(id, dest, count, offset)
+  end
+
+  --- Copy SSBO data between buffers 
+  ---@param destId number
+  ---@param srcId number
+  ---@param destOffset number
+  ---@param srcOffset number
+  ---@param count number
+  ---@return void
+  function rl.rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count)
+    return lib.rlCopyShaderBuffer(destId, srcId, destOffset, srcOffset, count)
+  end
+
+  --- Get SSBO buffer size 
+  ---@param id number
+  ---@return number
+  function rl.rlGetShaderBufferSize(id)
+    return lib.rlGetShaderBufferSize(id)
+  end
+
+  --- Bind image texture 
+  ---@param id number
+  ---@param index number
+  ---@param format number
+  ---@param readonly boolean
+  ---@return void
+  function rl.rlBindImageTexture(id, index, format, readonly)
+    return lib.rlBindImageTexture(id, index, format, readonly)
+  end
+
+  --- Get internal modelview matrix 
+  ---@return Matrix
+  function rl.rlGetMatrixModelview()
+    return lib.rlGetMatrixModelview()
+  end
+
+  --- Get internal projection matrix 
+  ---@return Matrix
+  function rl.rlGetMatrixProjection()
+    return lib.rlGetMatrixProjection()
+  end
+
+  --- Get internal accumulated transform matrix 
+  ---@return Matrix
+  function rl.rlGetMatrixTransform()
+    return lib.rlGetMatrixTransform()
+  end
+
+  --- Get internal projection matrix for stereo render (selected eye) 
+  ---@param eye number
+  ---@return Matrix
+  function rl.rlGetMatrixProjectionStereo(eye)
+    return lib.rlGetMatrixProjectionStereo(eye)
+  end
+
+  --- Get internal view offset matrix for stereo render (selected eye) 
+  ---@param eye number
+  ---@return Matrix
+  function rl.rlGetMatrixViewOffsetStereo(eye)
+    return lib.rlGetMatrixViewOffsetStereo(eye)
+  end
+
+  --- Set a custom projection matrix (replaces internal projection matrix) 
+  ---@param proj Matrix
+  ---@return void
+  function rl.rlSetMatrixProjection(proj)
+    return lib.rlSetMatrixProjection(proj)
+  end
+
+  --- Set a custom modelview matrix (replaces internal modelview matrix) 
+  ---@param view Matrix
+  ---@return void
+  function rl.rlSetMatrixModelview(view)
+    return lib.rlSetMatrixModelview(view)
+  end
+
+  --- Set eyes projection matrices for stereo rendering 
+  ---@param right Matrix
+  ---@param left Matrix
+  ---@return void
+  function rl.rlSetMatrixProjectionStereo(right, left)
+    return lib.rlSetMatrixProjectionStereo(right, left)
+  end
+
+  --- Set eyes view offsets matrices for stereo rendering 
+  ---@param right Matrix
+  ---@param left Matrix
+  ---@return void
+  function rl.rlSetMatrixViewOffsetStereo(right, left)
+    return lib.rlSetMatrixViewOffsetStereo(right, left)
+  end
+
+  --- Load and draw a cube 
+  ---@return void
+  function rl.rlLoadDrawCube()
+    return lib.rlLoadDrawCube()
+  end
+
+  --- Load and draw a quad 
+  ---@return void
+  function rl.rlLoadDrawQuad()
+    return lib.rlLoadDrawQuad()
   end
 
   --- check if the given value is of type "Vector2"

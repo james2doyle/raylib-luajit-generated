@@ -321,6 +321,63 @@ typedef struct AutomationEventList {
     AutomationEvent *events;        // Events entries
 } AutomationEventList;
 
+// rlgl
+
+// Dynamic vertex buffers (position + texcoords + colors + indices arrays)
+typedef struct rlVertexBuffer {
+    int elementCount;           // Number of elements in the buffer (QUADS)
+
+    float *vertices;            // Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+    float *texcoords;           // Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1)
+    float *normals;             // Vertex normal (XYZ - 3 components per vertex) (shader-location = 2)
+    unsigned char *colors;      // Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+// #if defined(GRAPHICS_API_OPENGL_11) || defined(GRAPHICS_API_OPENGL_33)
+    unsigned int *indices;      // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+// #endif
+// #if defined(GRAPHICS_API_OPENGL_ES2)
+    // unsigned short *indices;    // Vertex indices (in case vertex data comes indexed) (6 indices per quad)
+// #endif
+    unsigned int vaoId;         // OpenGL Vertex Array Object id
+    unsigned int vboId[5];      // OpenGL Vertex Buffer Objects id (5 types of vertex data)
+} rlVertexBuffer;
+
+// Draw call type
+// NOTE: Only texture changes register a new draw, other state-change-related elements are not
+// used at this moment (vaoId, shaderId, matrices), raylib just forces a batch draw call if any
+// of those state-change happens (this is done in core module)
+typedef struct rlDrawCall {
+    int mode;                   // Drawing mode: LINES, TRIANGLES, QUADS
+    int vertexCount;            // Number of vertex of the draw
+    int vertexAlignment;        // Number of vertex required for index alignment (LINES, TRIANGLES)
+    //unsigned int vaoId;       // Vertex array id to be used on the draw -> Using RLGL.currentBatch->vertexBuffer.vaoId
+    //unsigned int shaderId;    // Shader id to be used on the draw -> Using RLGL.currentShaderId
+    unsigned int textureId;     // Texture id to be used on the draw -> Use to create new draw call if changes
+
+    //Matrix projection;        // Projection matrix for this draw -> Using RLGL.projection by default
+    //Matrix modelview;         // Modelview matrix for this draw -> Using RLGL.modelview by default
+} rlDrawCall;
+
+// rlRenderBatch type
+typedef struct rlRenderBatch {
+    int bufferCount;            // Number of vertex buffers (multi-buffering support)
+    int currentBuffer;          // Current buffer tracking in case of multi-buffering
+    rlVertexBuffer *vertexBuffer; // Dynamic buffer(s) for vertex data
+
+    rlDrawCall *draws;          // Draw calls array, depends on textureId
+    int drawCounter;            // Draw calls counter
+    float currentDepth;         // Current depth value for next draw
+} rlRenderBatch;
+
+// raygui
+
+// Style property
+// NOTE: Used when exporting style as code for convenience
+typedef struct GuiStyleProp {
+    unsigned short controlId;   // Control identifier
+    unsigned short propertyId;  // Property identifier
+    int propertyValue;          // Property value
+} GuiStyleProp;
+
 //----------------------------------------------------------------------------------
 // Enumerators Definition
 //----------------------------------------------------------------------------------
@@ -722,6 +779,349 @@ typedef enum {
 } NPatchLayout;
 
 typedef void (*AudioCallback)(void *bufferData, unsigned int frames);
+
+// rlgl
+
+// Trace log level
+// NOTE: Organized by priority level
+typedef enum {
+    RL_LOG_ALL = 0,             // Display all logs
+    RL_LOG_TRACE,               // Trace logging, intended for internal use only
+    RL_LOG_DEBUG,               // Debug logging, used for internal debugging, it should be disabled on release builds
+    RL_LOG_INFO,                // Info logging, used for program execution info
+    RL_LOG_WARNING,             // Warning logging, used on recoverable failures
+    RL_LOG_ERROR,               // Error logging, used on unrecoverable failures
+    RL_LOG_FATAL,               // Fatal logging, used to abort program: exit(EXIT_FAILURE)
+    RL_LOG_NONE                 // Disable logging
+} rlTraceLogLevel;
+
+// Texture pixel formats
+// NOTE: Support depends on OpenGL version
+typedef enum {
+    RL_PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1,     // 8 bit per pixel (no alpha)
+    RL_PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA,        // 8*2 bpp (2 channels)
+    RL_PIXELFORMAT_UNCOMPRESSED_R5G6B5,            // 16 bpp
+    RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8,            // 24 bpp
+    RL_PIXELFORMAT_UNCOMPRESSED_R5G5B5A1,          // 16 bpp (1 bit alpha)
+    RL_PIXELFORMAT_UNCOMPRESSED_R4G4B4A4,          // 16 bpp (4 bit alpha)
+    RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8,          // 32 bpp
+    RL_PIXELFORMAT_UNCOMPRESSED_R32,               // 32 bpp (1 channel - float)
+    RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32,         // 32*3 bpp (3 channels - float)
+    RL_PIXELFORMAT_UNCOMPRESSED_R32G32B32A32,      // 32*4 bpp (4 channels - float)
+    RL_PIXELFORMAT_UNCOMPRESSED_R16,               // 16 bpp (1 channel - half float)
+    RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16,         // 16*3 bpp (3 channels - half float)
+    RL_PIXELFORMAT_UNCOMPRESSED_R16G16B16A16,      // 16*4 bpp (4 channels - half float)
+    RL_PIXELFORMAT_COMPRESSED_DXT1_RGB,            // 4 bpp (no alpha)
+    RL_PIXELFORMAT_COMPRESSED_DXT1_RGBA,           // 4 bpp (1 bit alpha)
+    RL_PIXELFORMAT_COMPRESSED_DXT3_RGBA,           // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_DXT5_RGBA,           // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_ETC1_RGB,            // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_ETC2_RGB,            // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA,       // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_PVRT_RGB,            // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_PVRT_RGBA,           // 4 bpp
+    RL_PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA,       // 8 bpp
+    RL_PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA        // 2 bpp
+} rlPixelFormat;
+
+// Texture parameters: filter mode
+// NOTE 1: Filtering considers mipmaps if available in the texture
+// NOTE 2: Filter is accordingly set for minification and magnification
+typedef enum {
+    RL_TEXTURE_FILTER_POINT = 0,        // No filter, just pixel approximation
+    RL_TEXTURE_FILTER_BILINEAR,         // Linear filtering
+    RL_TEXTURE_FILTER_TRILINEAR,        // Trilinear filtering (linear with mipmaps)
+    RL_TEXTURE_FILTER_ANISOTROPIC_4X,   // Anisotropic filtering 4x
+    RL_TEXTURE_FILTER_ANISOTROPIC_8X,   // Anisotropic filtering 8x
+    RL_TEXTURE_FILTER_ANISOTROPIC_16X,  // Anisotropic filtering 16x
+} rlTextureFilter;
+
+// Color blending modes (pre-defined)
+typedef enum {
+    RL_BLEND_ALPHA = 0,                 // Blend textures considering alpha (default)
+    RL_BLEND_ADDITIVE,                  // Blend textures adding colors
+    RL_BLEND_MULTIPLIED,                // Blend textures multiplying colors
+    RL_BLEND_ADD_COLORS,                // Blend textures adding colors (alternative)
+    RL_BLEND_SUBTRACT_COLORS,           // Blend textures subtracting colors (alternative)
+    RL_BLEND_ALPHA_PREMULTIPLY,         // Blend premultiplied textures considering alpha
+    RL_BLEND_CUSTOM,                    // Blend textures using custom src/dst factors (use rlSetBlendFactors())
+    RL_BLEND_CUSTOM_SEPARATE            // Blend textures using custom src/dst factors (use rlSetBlendFactorsSeparate())
+} rlBlendMode;
+
+// Shader location point type
+typedef enum {
+    RL_SHADER_LOC_VERTEX_POSITION = 0,  // Shader location: vertex attribute: position
+    RL_SHADER_LOC_VERTEX_TEXCOORD01,    // Shader location: vertex attribute: texcoord01
+    RL_SHADER_LOC_VERTEX_TEXCOORD02,    // Shader location: vertex attribute: texcoord02
+    RL_SHADER_LOC_VERTEX_NORMAL,        // Shader location: vertex attribute: normal
+    RL_SHADER_LOC_VERTEX_TANGENT,       // Shader location: vertex attribute: tangent
+    RL_SHADER_LOC_VERTEX_COLOR,         // Shader location: vertex attribute: color
+    RL_SHADER_LOC_MATRIX_MVP,           // Shader location: matrix uniform: model-view-projection
+    RL_SHADER_LOC_MATRIX_VIEW,          // Shader location: matrix uniform: view (camera transform)
+    RL_SHADER_LOC_MATRIX_PROJECTION,    // Shader location: matrix uniform: projection
+    RL_SHADER_LOC_MATRIX_MODEL,         // Shader location: matrix uniform: model (transform)
+    RL_SHADER_LOC_MATRIX_NORMAL,        // Shader location: matrix uniform: normal
+    RL_SHADER_LOC_VECTOR_VIEW,          // Shader location: vector uniform: view
+    RL_SHADER_LOC_COLOR_DIFFUSE,        // Shader location: vector uniform: diffuse color
+    RL_SHADER_LOC_COLOR_SPECULAR,       // Shader location: vector uniform: specular color
+    RL_SHADER_LOC_COLOR_AMBIENT,        // Shader location: vector uniform: ambient color
+    RL_SHADER_LOC_MAP_ALBEDO,           // Shader location: sampler2d texture: albedo (same as: RL_SHADER_LOC_MAP_DIFFUSE)
+    RL_SHADER_LOC_MAP_METALNESS,        // Shader location: sampler2d texture: metalness (same as: RL_SHADER_LOC_MAP_SPECULAR)
+    RL_SHADER_LOC_MAP_NORMAL,           // Shader location: sampler2d texture: normal
+    RL_SHADER_LOC_MAP_ROUGHNESS,        // Shader location: sampler2d texture: roughness
+    RL_SHADER_LOC_MAP_OCCLUSION,        // Shader location: sampler2d texture: occlusion
+    RL_SHADER_LOC_MAP_EMISSION,         // Shader location: sampler2d texture: emission
+    RL_SHADER_LOC_MAP_HEIGHT,           // Shader location: sampler2d texture: height
+    RL_SHADER_LOC_MAP_CUBEMAP,          // Shader location: samplerCube texture: cubemap
+    RL_SHADER_LOC_MAP_IRRADIANCE,       // Shader location: samplerCube texture: irradiance
+    RL_SHADER_LOC_MAP_PREFILTER,        // Shader location: samplerCube texture: prefilter
+    RL_SHADER_LOC_MAP_BRDF              // Shader location: sampler2d texture: brdf
+} rlShaderLocationIndex;
+
+// Shader uniform data type
+typedef enum {
+    RL_SHADER_UNIFORM_FLOAT = 0,        // Shader uniform type: float
+    RL_SHADER_UNIFORM_VEC2,             // Shader uniform type: vec2 (2 float)
+    RL_SHADER_UNIFORM_VEC3,             // Shader uniform type: vec3 (3 float)
+    RL_SHADER_UNIFORM_VEC4,             // Shader uniform type: vec4 (4 float)
+    RL_SHADER_UNIFORM_INT,              // Shader uniform type: int
+    RL_SHADER_UNIFORM_IVEC2,            // Shader uniform type: ivec2 (2 int)
+    RL_SHADER_UNIFORM_IVEC3,            // Shader uniform type: ivec3 (3 int)
+    RL_SHADER_UNIFORM_IVEC4,            // Shader uniform type: ivec4 (4 int)
+    RL_SHADER_UNIFORM_UINT,             // Shader uniform type: unsigned int
+    RL_SHADER_UNIFORM_UIVEC2,           // Shader uniform type: uivec2 (2 unsigned int)
+    RL_SHADER_UNIFORM_UIVEC3,           // Shader uniform type: uivec3 (3 unsigned int)
+    RL_SHADER_UNIFORM_UIVEC4,           // Shader uniform type: uivec4 (4 unsigned int)
+    RL_SHADER_UNIFORM_SAMPLER2D         // Shader uniform type: sampler2d
+} rlShaderUniformDataType;
+
+// Shader attribute data types
+typedef enum {
+    RL_SHADER_ATTRIB_FLOAT = 0,         // Shader attribute type: float
+    RL_SHADER_ATTRIB_VEC2,              // Shader attribute type: vec2 (2 float)
+    RL_SHADER_ATTRIB_VEC3,              // Shader attribute type: vec3 (3 float)
+    RL_SHADER_ATTRIB_VEC4               // Shader attribute type: vec4 (4 float)
+} rlShaderAttributeDataType;
+
+// Framebuffer attachment type
+// NOTE: By default up to 8 color channels defined, but it can be more
+typedef enum {
+    RL_ATTACHMENT_COLOR_CHANNEL0 = 0,       // Framebuffer attachment type: color 0
+    RL_ATTACHMENT_COLOR_CHANNEL1 = 1,       // Framebuffer attachment type: color 1
+    RL_ATTACHMENT_COLOR_CHANNEL2 = 2,       // Framebuffer attachment type: color 2
+    RL_ATTACHMENT_COLOR_CHANNEL3 = 3,       // Framebuffer attachment type: color 3
+    RL_ATTACHMENT_COLOR_CHANNEL4 = 4,       // Framebuffer attachment type: color 4
+    RL_ATTACHMENT_COLOR_CHANNEL5 = 5,       // Framebuffer attachment type: color 5
+    RL_ATTACHMENT_COLOR_CHANNEL6 = 6,       // Framebuffer attachment type: color 6
+    RL_ATTACHMENT_COLOR_CHANNEL7 = 7,       // Framebuffer attachment type: color 7
+    RL_ATTACHMENT_DEPTH = 100,              // Framebuffer attachment type: depth
+    RL_ATTACHMENT_STENCIL = 200,            // Framebuffer attachment type: stencil
+} rlFramebufferAttachType;
+
+// Framebuffer texture attachment type
+typedef enum {
+    RL_ATTACHMENT_CUBEMAP_POSITIVE_X = 0,   // Framebuffer texture attachment type: cubemap, +X side
+    RL_ATTACHMENT_CUBEMAP_NEGATIVE_X = 1,   // Framebuffer texture attachment type: cubemap, -X side
+    RL_ATTACHMENT_CUBEMAP_POSITIVE_Y = 2,   // Framebuffer texture attachment type: cubemap, +Y side
+    RL_ATTACHMENT_CUBEMAP_NEGATIVE_Y = 3,   // Framebuffer texture attachment type: cubemap, -Y side
+    RL_ATTACHMENT_CUBEMAP_POSITIVE_Z = 4,   // Framebuffer texture attachment type: cubemap, +Z side
+    RL_ATTACHMENT_CUBEMAP_NEGATIVE_Z = 5,   // Framebuffer texture attachment type: cubemap, -Z side
+    RL_ATTACHMENT_TEXTURE2D = 100,          // Framebuffer texture attachment type: texture2d
+    RL_ATTACHMENT_RENDERBUFFER = 200,       // Framebuffer texture attachment type: renderbuffer
+} rlFramebufferAttachTextureType;
+
+// Face culling mode
+typedef enum {
+    RL_CULL_FACE_FRONT = 0,
+    RL_CULL_FACE_BACK
+} rlCullMode;
+
+// raygui
+
+// Gui control state
+typedef enum {
+    STATE_NORMAL = 0,
+    STATE_FOCUSED,
+    STATE_PRESSED,
+    STATE_DISABLED
+} GuiState;
+
+// Gui control text alignment
+typedef enum {
+    TEXT_ALIGN_LEFT = 0,
+    TEXT_ALIGN_CENTER,
+    TEXT_ALIGN_RIGHT
+} GuiTextAlignment;
+
+// Gui control text alignment vertical
+// NOTE: Text vertical position inside the text bounds
+typedef enum {
+    TEXT_ALIGN_TOP = 0,
+    TEXT_ALIGN_MIDDLE,
+    TEXT_ALIGN_BOTTOM
+} GuiTextAlignmentVertical;
+
+// Gui control text wrap mode
+// NOTE: Useful for multiline text
+typedef enum {
+    TEXT_WRAP_NONE = 0,
+    TEXT_WRAP_CHAR,
+    TEXT_WRAP_WORD
+} GuiTextWrapMode;
+
+// Gui controls
+typedef enum {
+    // Default -> populates to all controls when set
+    DEFAULT = 0,
+
+    // Basic controls
+    LABEL,          // Used also for: LABELBUTTON
+    BUTTON,
+    TOGGLE,         // Used also for: TOGGLEGROUP
+    SLIDER,         // Used also for: SLIDERBAR, TOGGLESLIDER
+    PROGRESSBAR,
+    CHECKBOX,
+    COMBOBOX,
+    DROPDOWNBOX,
+    TEXTBOX,        // Used also for: TEXTBOXMULTI
+    VALUEBOX,
+    SPINNER,        // Uses: BUTTON, VALUEBOX
+    LISTVIEW,
+    COLORPICKER,
+    SCROLLBAR,
+    STATUSBAR
+} GuiControl;
+
+// Gui base properties for every control
+// NOTE: RAYGUI_MAX_PROPS_BASE properties (by default 16 properties)
+typedef enum {
+    BORDER_COLOR_NORMAL = 0,    // Control border color in STATE_NORMAL
+    BASE_COLOR_NORMAL,          // Control base color in STATE_NORMAL
+    TEXT_COLOR_NORMAL,          // Control text color in STATE_NORMAL
+    BORDER_COLOR_FOCUSED,       // Control border color in STATE_FOCUSED
+    BASE_COLOR_FOCUSED,         // Control base color in STATE_FOCUSED
+    TEXT_COLOR_FOCUSED,         // Control text color in STATE_FOCUSED
+    BORDER_COLOR_PRESSED,       // Control border color in STATE_PRESSED
+    BASE_COLOR_PRESSED,         // Control base color in STATE_PRESSED
+    TEXT_COLOR_PRESSED,         // Control text color in STATE_PRESSED
+    BORDER_COLOR_DISABLED,      // Control border color in STATE_DISABLED
+    BASE_COLOR_DISABLED,        // Control base color in STATE_DISABLED
+    TEXT_COLOR_DISABLED,        // Control text color in STATE_DISABLED
+    BORDER_WIDTH,               // Control border size, 0 for no border
+    //TEXT_SIZE,                  // Control text size (glyphs max height) -> GLOBAL for all controls
+    //TEXT_SPACING,               // Control text spacing between glyphs -> GLOBAL for all controls
+    //TEXT_LINE_SPACING           // Control text spacing between lines -> GLOBAL for all controls
+    TEXT_PADDING,               // Control text padding, not considering border
+    TEXT_ALIGNMENT,             // Control text horizontal alignment inside control text bound (after border and padding)
+    //TEXT_WRAP_MODE              // Control text wrap-mode inside text bounds -> GLOBAL for all controls
+} GuiControlProperty;
+
+// TODO: Which text styling properties should be global or per-control?
+// At this moment TEXT_PADDING and TEXT_ALIGNMENT is configured and saved per control while
+// TEXT_SIZE, TEXT_SPACING, TEXT_LINE_SPACING, TEXT_ALIGNMENT_VERTICAL, TEXT_WRAP_MODE are global and
+// should be configured by user as needed while defining the UI layout
+
+// Gui extended properties depend on control
+// NOTE: RAYGUI_MAX_PROPS_EXTENDED properties (by default, max 8 properties)
+//----------------------------------------------------------------------------------
+// DEFAULT extended properties
+// NOTE: Those properties are common to all controls or global
+// WARNING: We only have 8 slots for those properties by default!!! -> New global control: TEXT?
+typedef enum {
+    TEXT_SIZE = 16,             // Text size (glyphs max height)
+    TEXT_SPACING,               // Text spacing between glyphs
+    LINE_COLOR,                 // Line control color
+    BACKGROUND_COLOR,           // Background color
+    TEXT_LINE_SPACING,          // Text spacing between lines
+    TEXT_ALIGNMENT_VERTICAL,    // Text vertical alignment inside text bounds (after border and padding)
+    TEXT_WRAP_MODE              // Text wrap-mode inside text bounds
+    //TEXT_DECORATION             // Text decoration: 0-None, 1-Underline, 2-Line-through, 3-Overline
+    //TEXT_DECORATION_THICK       // Text decoration line thickness
+} GuiDefaultProperty;
+
+// Other possible text properties:
+// TEXT_WEIGHT                  // Normal, Italic, Bold -> Requires specific font change
+// TEXT_INDENT                  // Text indentation -> Now using TEXT_PADDING...
+
+// Label
+//typedef enum { } GuiLabelProperty;
+
+// Button/Spinner
+//typedef enum { } GuiButtonProperty;
+
+// Toggle/ToggleGroup
+typedef enum {
+    GROUP_PADDING = 16,         // ToggleGroup separation between toggles
+} GuiToggleProperty;
+
+// Slider/SliderBar
+typedef enum {
+    SLIDER_WIDTH = 16,          // Slider size of internal bar
+    SLIDER_PADDING              // Slider/SliderBar internal bar padding
+} GuiSliderProperty;
+
+// ProgressBar
+typedef enum {
+    PROGRESS_PADDING = 16,      // ProgressBar internal padding
+} GuiProgressBarProperty;
+
+// ScrollBar
+typedef enum {
+    ARROWS_SIZE = 16,           // ScrollBar arrows size
+    ARROWS_VISIBLE,             // ScrollBar arrows visible
+    SCROLL_SLIDER_PADDING,      // ScrollBar slider internal padding
+    SCROLL_SLIDER_SIZE,         // ScrollBar slider size
+    SCROLL_PADDING,             // ScrollBar scroll padding from arrows
+    SCROLL_SPEED,               // ScrollBar scrolling speed
+} GuiScrollBarProperty;
+
+// CheckBox
+typedef enum {
+    CHECK_PADDING = 16          // CheckBox internal check padding
+} GuiCheckBoxProperty;
+
+// ComboBox
+typedef enum {
+    COMBO_BUTTON_WIDTH = 16,    // ComboBox right button width
+    COMBO_BUTTON_SPACING        // ComboBox button separation
+} GuiComboBoxProperty;
+
+// DropdownBox
+typedef enum {
+    ARROW_PADDING = 16,         // DropdownBox arrow separation from border and items
+    DROPDOWN_ITEMS_SPACING,     // DropdownBox items separation
+    DROPDOWN_ARROW_HIDDEN,      // DropdownBox arrow hidden
+    DROPDOWN_ROLL_UP            // DropdownBox roll up flag (default rolls down)
+} GuiDropdownBoxProperty;
+
+// TextBox/TextBoxMulti/ValueBox/Spinner
+typedef enum {
+    TEXT_READONLY = 16,         // TextBox in read-only mode: 0-text editable, 1-text no-editable
+} GuiTextBoxProperty;
+
+// Spinner
+typedef enum {
+    SPIN_BUTTON_WIDTH = 16,     // Spinner left/right buttons width
+    SPIN_BUTTON_SPACING,        // Spinner buttons separation
+} GuiSpinnerProperty;
+
+// ListView
+typedef enum {
+    LIST_ITEMS_HEIGHT = 16,     // ListView items height
+    LIST_ITEMS_SPACING,         // ListView items separation
+    SCROLLBAR_WIDTH,            // ListView scrollbar size (usually width)
+    SCROLLBAR_SIDE,             // ListView scrollbar side (0-SCROLLBAR_LEFT_SIDE, 1-SCROLLBAR_RIGHT_SIDE)
+    LIST_ITEMS_BORDER_WIDTH     // ListView items border width
+} GuiListViewProperty;
+
+// ColorPicker
+typedef enum {
+    COLOR_SELECTOR_SIZE = 16,
+    HUEBAR_WIDTH,               // ColorPicker right hue bar width
+    HUEBAR_PADDING,             // ColorPicker right hue bar separation from panel
+    HUEBAR_SELECTOR_HEIGHT,     // ColorPicker right hue bar selector height
+    HUEBAR_SELECTOR_OVERFLOW    // ColorPicker right hue bar selector overflow
+} GuiColorPickerProperty;
 
 // Callbacks to hook some internal functions
 // WARNING: These callbacks are intended for advanced users
@@ -1466,3 +1866,299 @@ void DetachAudioStreamProcessor(AudioStream stream, AudioCallback processor); //
 
 void AttachAudioMixedProcessor(AudioCallback processor); // Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'
 void DetachAudioMixedProcessor(AudioCallback processor); // Detach audio stream processor from the entire audio pipeline
+
+// rlgl
+
+void rlMatrixMode(int mode);                      // Choose the current matrix to be transformed
+void rlPushMatrix(void);                          // Push the current matrix to stack
+void rlPopMatrix(void);                           // Pop latest inserted matrix from stack
+void rlLoadIdentity(void);                        // Reset current matrix to identity matrix
+void rlTranslatef(float x, float y, float z);     // Multiply the current matrix by a translation matrix
+void rlRotatef(float angle, float x, float y, float z); // Multiply the current matrix by a rotation matrix
+void rlScalef(float x, float y, float z);         // Multiply the current matrix by a scaling matrix
+void rlMultMatrixf(const float *matf);            // Multiply the current matrix by another matrix
+void rlFrustum(double left, double right, double bottom, double top, double znear, double zfar);
+void rlOrtho(double left, double right, double bottom, double top, double znear, double zfar);
+void rlViewport(int x, int y, int width, int height); // Set the viewport area
+void rlSetClipPlanes(double nearPlane, double farPlane);    // Set clip planes distances
+double rlGetCullDistanceNear(void);               // Get cull plane distance near
+double rlGetCullDistanceFar(void);                // Get cull plane distance far
+
+//------------------------------------------------------------------------------------
+// Functions Declaration - Vertex level operations
+//------------------------------------------------------------------------------------
+void rlBegin(int mode);                           // Initialize drawing mode (how to organize vertex)
+void rlEnd(void);                                 // Finish vertex providing
+void rlVertex2i(int x, int y);                    // Define one vertex (position) - 2 int
+void rlVertex2f(float x, float y);                // Define one vertex (position) - 2 float
+void rlVertex3f(float x, float y, float z);       // Define one vertex (position) - 3 float
+void rlTexCoord2f(float x, float y);              // Define one vertex (texture coordinate) - 2 float
+void rlNormal3f(float x, float y, float z);       // Define one vertex (normal) - 3 float
+void rlColor4ub(unsigned char r, unsigned char g, unsigned char b, unsigned char a); // Define one vertex (color) - 4 byte
+void rlColor3f(float x, float y, float z);        // Define one vertex (color) - 3 float
+void rlColor4f(float x, float y, float z, float w); // Define one vertex (color) - 4 float
+
+//------------------------------------------------------------------------------------
+// Functions Declaration - OpenGL style functions (common to 1.1, 3.3+, ES2)
+// NOTE: This functions are used to completely abstract raylib code from OpenGL layer,
+// some of them are direct wrappers over OpenGL calls, some others are custom
+//------------------------------------------------------------------------------------
+
+// Vertex buffers state
+bool rlEnableVertexArray(unsigned int vaoId);     // Enable vertex array (VAO, if supported)
+void rlDisableVertexArray(void);                  // Disable vertex array (VAO, if supported)
+void rlEnableVertexBuffer(unsigned int id);       // Enable vertex buffer (VBO)
+void rlDisableVertexBuffer(void);                 // Disable vertex buffer (VBO)
+void rlEnableVertexBufferElement(unsigned int id); // Enable vertex buffer element (VBO element)
+void rlDisableVertexBufferElement(void);          // Disable vertex buffer element (VBO element)
+void rlEnableVertexAttribute(unsigned int index); // Enable vertex attribute index
+void rlDisableVertexAttribute(unsigned int index); // Disable vertex attribute index
+// #if defined(GRAPHICS_API_OPENGL_11)
+void rlEnableStatePointer(int vertexAttribType, void *buffer); // Enable attribute state pointer
+void rlDisableStatePointer(int vertexAttribType); // Disable attribute state pointer
+// #endif
+
+// Textures state
+void rlActiveTextureSlot(int slot);               // Select and active a texture slot
+void rlEnableTexture(unsigned int id);            // Enable texture
+void rlDisableTexture(void);                      // Disable texture
+void rlEnableTextureCubemap(unsigned int id);     // Enable texture cubemap
+void rlDisableTextureCubemap(void);               // Disable texture cubemap
+void rlTextureParameters(unsigned int id, int param, int value); // Set texture parameters (filter, wrap)
+void rlCubemapParameters(unsigned int id, int param, int value); // Set cubemap parameters (filter, wrap)
+
+// Shader state
+void rlEnableShader(unsigned int id);             // Enable shader program
+void rlDisableShader(void);                       // Disable shader program
+
+// Framebuffer state
+void rlEnableFramebuffer(unsigned int id);        // Enable render texture (fbo)
+void rlDisableFramebuffer(void);                  // Disable render texture (fbo), return to default framebuffer
+unsigned int rlGetActiveFramebuffer(void);        // Get the currently active render texture (fbo), 0 for default framebuffer
+void rlActiveDrawBuffers(int count);              // Activate multiple draw color buffers
+void rlBlitFramebuffer(int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY, int dstWidth, int dstHeight, int bufferMask); // Blit active framebuffer to main framebuffer
+void rlBindFramebuffer(unsigned int target, unsigned int framebuffer); // Bind framebuffer (FBO)
+
+// General render state
+void rlEnableColorBlend(void);                    // Enable color blending
+void rlDisableColorBlend(void);                   // Disable color blending
+void rlEnableDepthTest(void);                     // Enable depth test
+void rlDisableDepthTest(void);                    // Disable depth test
+void rlEnableDepthMask(void);                     // Enable depth write
+void rlDisableDepthMask(void);                    // Disable depth write
+void rlEnableBackfaceCulling(void);               // Enable backface culling
+void rlDisableBackfaceCulling(void);              // Disable backface culling
+void rlColorMask(bool r, bool g, bool b, bool a); // Color mask control
+void rlSetCullFace(int mode);                     // Set face culling mode
+void rlEnableScissorTest(void);                   // Enable scissor test
+void rlDisableScissorTest(void);                  // Disable scissor test
+void rlScissor(int x, int y, int width, int height); // Scissor test
+void rlEnableWireMode(void);                      // Enable wire mode
+void rlEnablePointMode(void);                     // Enable point mode
+void rlDisableWireMode(void);                     // Disable wire (and point) mode
+void rlSetLineWidth(float width);                 // Set the line drawing width
+float rlGetLineWidth(void);                       // Get the line drawing width
+void rlEnableSmoothLines(void);                   // Enable line aliasing
+void rlDisableSmoothLines(void);                  // Disable line aliasing
+void rlEnableStereoRender(void);                  // Enable stereo rendering
+void rlDisableStereoRender(void);                 // Disable stereo rendering
+bool rlIsStereoRenderEnabled(void);               // Check if stereo render is enabled
+
+void rlClearColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a); // Clear color buffer with color
+void rlClearScreenBuffers(void);                  // Clear used screen buffers (color and depth)
+void rlCheckErrors(void);                         // Check and log OpenGL error codes
+void rlSetBlendMode(int mode);                    // Set blending mode
+void rlSetBlendFactors(int glSrcFactor, int glDstFactor, int glEquation); // Set blending mode factor and equation (using OpenGL factors)
+void rlSetBlendFactorsSeparate(int glSrcRGB, int glDstRGB, int glSrcAlpha, int glDstAlpha, int glEqRGB, int glEqAlpha); // Set blending mode factors and equations separately (using OpenGL factors)
+
+//------------------------------------------------------------------------------------
+// Functions Declaration - rlgl functionality
+//------------------------------------------------------------------------------------
+// rlgl initialization functions
+void rlglInit(int width, int height);             // Initialize rlgl (buffers, shaders, textures, states)
+void rlglClose(void);                             // De-initialize rlgl (buffers, shaders, textures)
+void rlLoadExtensions(void *loader);              // Load OpenGL extensions (loader function required)
+int rlGetVersion(void);                           // Get current OpenGL version
+void rlSetFramebufferWidth(int width);            // Set current framebuffer width
+int rlGetFramebufferWidth(void);                  // Get default framebuffer width
+void rlSetFramebufferHeight(int height);          // Set current framebuffer height
+int rlGetFramebufferHeight(void);                 // Get default framebuffer height
+
+unsigned int rlGetTextureIdDefault(void);         // Get default texture id
+unsigned int rlGetShaderIdDefault(void);          // Get default shader id
+int *rlGetShaderLocsDefault(void);                // Get default shader locations
+
+// Render batch management
+// NOTE: rlgl provides a default render batch to behave like OpenGL 1.1 immediate mode
+// but this render batch API is exposed in case of custom batches are required
+rlRenderBatch rlLoadRenderBatch(int numBuffers, int bufferElements); // Load a render batch system
+void rlUnloadRenderBatch(rlRenderBatch batch);    // Unload render batch system
+void rlDrawRenderBatch(rlRenderBatch *batch);     // Draw render batch data (Update->Draw->Reset)
+void rlSetRenderBatchActive(rlRenderBatch *batch); // Set the active render batch for rlgl (NULL for default internal)
+void rlDrawRenderBatchActive(void);               // Update and draw internal render batch
+bool rlCheckRenderBatchLimit(int vCount);         // Check internal buffer overflow for a given number of vertex
+
+void rlSetTexture(unsigned int id);               // Set current texture for render batch and check buffers limits
+
+//------------------------------------------------------------------------------------------------------------------------
+
+// Vertex buffers management
+unsigned int rlLoadVertexArray(void);             // Load vertex array (vao) if supported
+unsigned int rlLoadVertexBuffer(const void *buffer, int size, bool dynamic); // Load a vertex buffer object
+unsigned int rlLoadVertexBufferElement(const void *buffer, int size, bool dynamic); // Load vertex buffer elements object
+void rlUpdateVertexBuffer(unsigned int bufferId, const void *data, int dataSize, int offset); // Update vertex buffer object data on GPU buffer
+void rlUpdateVertexBufferElements(unsigned int id, const void *data, int dataSize, int offset); // Update vertex buffer elements data on GPU buffer
+void rlUnloadVertexArray(unsigned int vaoId);     // Unload vertex array (vao)
+void rlUnloadVertexBuffer(unsigned int vboId);    // Unload vertex buffer object
+void rlSetVertexAttribute(unsigned int index, int compSize, int type, bool normalized, int stride, int offset); // Set vertex attribute data configuration
+void rlSetVertexAttributeDivisor(unsigned int index, int divisor); // Set vertex attribute data divisor
+void rlSetVertexAttributeDefault(int locIndex, const void *value, int attribType, int count); // Set vertex attribute default value, when attribute to provided
+void rlDrawVertexArray(int offset, int count);    // Draw vertex array (currently active vao)
+void rlDrawVertexArrayElements(int offset, int count, const void *buffer); // Draw vertex array elements
+void rlDrawVertexArrayInstanced(int offset, int count, int instances); // Draw vertex array (currently active vao) with instancing
+void rlDrawVertexArrayElementsInstanced(int offset, int count, const void *buffer, int instances); // Draw vertex array elements with instancing
+
+// Textures management
+unsigned int rlLoadTexture(const void *data, int width, int height, int format, int mipmapCount); // Load texture data
+unsigned int rlLoadTextureDepth(int width, int height, bool useRenderBuffer); // Load depth texture/renderbuffer (to be attached to fbo)
+unsigned int rlLoadTextureCubemap(const void *data, int size, int format, int mipmapCount); // Load texture cubemap data
+void rlUpdateTexture(unsigned int id, int offsetX, int offsetY, int width, int height, int format, const void *data); // Update texture with new data on GPU
+void rlGetGlTextureFormats(int format, unsigned int *glInternalFormat, unsigned int *glFormat, unsigned int *glType); // Get OpenGL internal formats
+const char *rlGetPixelFormatName(unsigned int format);              // Get name string for pixel format
+void rlUnloadTexture(unsigned int id);                              // Unload texture from GPU memory
+void rlGenTextureMipmaps(unsigned int id, int width, int height, int format, int *mipmaps); // Generate mipmap data for selected texture
+void *rlReadTexturePixels(unsigned int id, int width, int height, int format); // Read texture pixel data
+unsigned char *rlReadScreenPixels(int width, int height);           // Read screen pixel data (color buffer)
+
+// Framebuffer management (fbo)
+unsigned int rlLoadFramebuffer(void);                               // Load an empty framebuffer
+void rlFramebufferAttach(unsigned int fboId, unsigned int texId, int attachType, int texType, int mipLevel); // Attach texture/renderbuffer to a framebuffer
+bool rlFramebufferComplete(unsigned int id);                        // Verify framebuffer is complete
+void rlUnloadFramebuffer(unsigned int id);                          // Delete framebuffer from GPU
+
+// Shaders management
+unsigned int rlLoadShaderCode(const char *vsCode, const char *fsCode);    // Load shader from code strings
+unsigned int rlCompileShader(const char *shaderCode, int type);           // Compile custom shader and return shader id (type: RL_VERTEX_SHADER, RL_FRAGMENT_SHADER, RL_COMPUTE_SHADER)
+unsigned int rlLoadShaderProgram(unsigned int vShaderId, unsigned int fShaderId); // Load custom shader program
+void rlUnloadShaderProgram(unsigned int id);                              // Unload shader program
+int rlGetLocationUniform(unsigned int shaderId, const char *uniformName); // Get shader location uniform
+int rlGetLocationAttrib(unsigned int shaderId, const char *attribName);   // Get shader location attribute
+void rlSetUniform(int locIndex, const void *value, int uniformType, int count); // Set shader value uniform
+void rlSetUniformMatrix(int locIndex, Matrix mat);                        // Set shader value matrix
+void rlSetUniformMatrices(int locIndex, const Matrix *mat, int count);    // Set shader value matrices
+void rlSetUniformSampler(int locIndex, unsigned int textureId);           // Set shader value sampler
+void rlSetShader(unsigned int id, int *locs);                             // Set shader currently active (id and locations)
+
+// Compute shader management
+unsigned int rlLoadComputeShaderProgram(unsigned int shaderId);           // Load compute shader program
+void rlComputeShaderDispatch(unsigned int groupX, unsigned int groupY, unsigned int groupZ); // Dispatch compute shader (equivalent to *draw* for graphics pipeline)
+
+// Shader buffer storage object management (ssbo)
+unsigned int rlLoadShaderBuffer(unsigned int size, const void *data, int usageHint); // Load shader storage buffer object (SSBO)
+void rlUnloadShaderBuffer(unsigned int ssboId);                           // Unload shader storage buffer object (SSBO)
+void rlUpdateShaderBuffer(unsigned int id, const void *data, unsigned int dataSize, unsigned int offset); // Update SSBO buffer data
+void rlBindShaderBuffer(unsigned int id, unsigned int index);             // Bind SSBO buffer
+void rlReadShaderBuffer(unsigned int id, void *dest, unsigned int count, unsigned int offset); // Read SSBO buffer data (GPU->CPU)
+void rlCopyShaderBuffer(unsigned int destId, unsigned int srcId, unsigned int destOffset, unsigned int srcOffset, unsigned int count); // Copy SSBO data between buffers
+unsigned int rlGetShaderBufferSize(unsigned int id);                      // Get SSBO buffer size
+
+// Buffer management
+void rlBindImageTexture(unsigned int id, unsigned int index, int format, bool readonly);  // Bind image texture
+
+// Matrix state management
+Matrix rlGetMatrixModelview(void);                                  // Get internal modelview matrix
+Matrix rlGetMatrixProjection(void);                                 // Get internal projection matrix
+Matrix rlGetMatrixTransform(void);                                  // Get internal accumulated transform matrix
+Matrix rlGetMatrixProjectionStereo(int eye);                        // Get internal projection matrix for stereo render (selected eye)
+Matrix rlGetMatrixViewOffsetStereo(int eye);                        // Get internal view offset matrix for stereo render (selected eye)
+void rlSetMatrixProjection(Matrix proj);                            // Set a custom projection matrix (replaces internal projection matrix)
+void rlSetMatrixModelview(Matrix view);                             // Set a custom modelview matrix (replaces internal modelview matrix)
+void rlSetMatrixProjectionStereo(Matrix right, Matrix left);        // Set eyes projection matrices for stereo rendering
+void rlSetMatrixViewOffsetStereo(Matrix right, Matrix left);        // Set eyes view offsets matrices for stereo rendering
+
+// Quick and dirty cube/quad buffers load->draw->unload
+void rlLoadDrawCube(void);     // Load and draw a cube
+void rlLoadDrawQuad(void);     // Load and draw a quad
+
+// raygui
+
+// Global gui state control functions
+void GuiEnable(void);                                 // Enable gui controls (global state)
+void GuiDisable(void);                                // Disable gui controls (global state)
+void GuiLock(void);                                   // Lock gui controls (global state)
+void GuiUnlock(void);                                 // Unlock gui controls (global state)
+bool GuiIsLocked(void);                               // Check if gui is locked (global state)
+void GuiSetAlpha(float alpha);                        // Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f
+void GuiSetState(int state);                          // Set gui state (global state)
+int GuiGetState(void);                                // Get gui state (global state)
+
+// Font set/get functions
+void GuiSetFont(Font font);                           // Set gui custom font (global state)
+Font GuiGetFont(void);                                // Get gui custom font (global state)
+
+// Style set/get functions
+void GuiSetStyle(int control, int property, int value); // Set one style property
+int GuiGetStyle(int control, int property);           // Get one style property
+
+// Styles loading functions
+void GuiLoadStyle(const char *fileName);              // Load style file over global style variable (.rgs)
+void GuiLoadStyleDefault(void);                       // Load style default over global style
+
+// Tooltips management functions
+void GuiEnableTooltip(void);                          // Enable gui tooltips (global state)
+void GuiDisableTooltip(void);                         // Disable gui tooltips (global state)
+void GuiSetTooltip(const char *tooltip);              // Set tooltip string
+
+// Icons functionality
+const char *GuiIconText(int iconId, const char *text); // Get text with icon id prepended (if supported)
+// #if !defined(RAYGUI_NO_ICONS)
+void GuiSetIconScale(int scale);                      // Set default icon drawing size
+unsigned int *GuiGetIcons(void);                      // Get raygui icons data pointer
+char **GuiLoadIcons(const char *fileName, bool loadIconsName); // Load raygui icons file (.rgi) into internal icons data
+void GuiDrawIcon(int iconId, int posX, int posY, int pixelSize, Color color); // Draw icon using pixel size at specified position
+// #endif
+
+// Controls
+//----------------------------------------------------------------------------------------------------------
+// Container/separator controls, useful for controls organization
+int GuiWindowBox(Rectangle bounds, const char *title);                                       // Window Box control, shows a window that can be closed
+int GuiGroupBox(Rectangle bounds, const char *text);                                         // Group Box control with text name
+int GuiLine(Rectangle bounds, const char *text);                                             // Line separator control, could contain text
+int GuiPanel(Rectangle bounds, const char *text);                                            // Panel control, useful to group controls
+int GuiTabBar(Rectangle bounds, const char **text, int count, int *active);                  // Tab Bar control, returns TAB to be closed or -1
+int GuiScrollPanel(Rectangle bounds, const char *text, Rectangle content, Vector2 *scroll, Rectangle *view); // Scroll Panel control
+
+// Basic controls set
+int GuiLabel(Rectangle bounds, const char *text);                                            // Label control
+int GuiButton(Rectangle bounds, const char *text);                                           // Button control, returns true when clicked
+int GuiLabelButton(Rectangle bounds, const char *text);                                      // Label button control, returns true when clicked
+int GuiToggle(Rectangle bounds, const char *text, bool *active);                             // Toggle Button control
+int GuiToggleGroup(Rectangle bounds, const char *text, int *active);                         // Toggle Group control
+int GuiToggleSlider(Rectangle bounds, const char *text, int *active);                        // Toggle Slider control
+int GuiCheckBox(Rectangle bounds, const char *text, bool *checked);                          // Check Box control, returns true when active
+int GuiComboBox(Rectangle bounds, const char *text, int *active);                            // Combo Box control
+
+int GuiDropdownBox(Rectangle bounds, const char *text, int *active, bool editMode);          // Dropdown Box control
+int GuiSpinner(Rectangle bounds, const char *text, int *value, int minValue, int maxValue, bool editMode); // Spinner control
+int GuiValueBox(Rectangle bounds, const char *text, int *value, int minValue, int maxValue, bool editMode); // Value Box control, updates input text with numbers
+int GuiValueBoxFloat(Rectangle bounds, const char *text, char *textValue, float *value, bool editMode); // Value box control for float values
+int GuiTextBox(Rectangle bounds, char *text, int textSize, bool editMode);                   // Text Box control, updates input text
+
+int GuiSlider(Rectangle bounds, const char *textLeft, const char *textRight, float *value, float minValue, float maxValue); // Slider control
+int GuiSliderBar(Rectangle bounds, const char *textLeft, const char *textRight, float *value, float minValue, float maxValue); // Slider Bar control
+int GuiProgressBar(Rectangle bounds, const char *textLeft, const char *textRight, float *value, float minValue, float maxValue); // Progress Bar control
+int GuiStatusBar(Rectangle bounds, const char *text);                                        // Status Bar control, shows info text
+int GuiDummyRec(Rectangle bounds, const char *text);                                         // Dummy control for placeholders
+int GuiGrid(Rectangle bounds, const char *text, float spacing, int subdivs, Vector2 *mouseCell); // Grid control
+
+// Advance controls set
+int GuiListView(Rectangle bounds, const char *text, int *scrollIndex, int *active);          // List View control
+int GuiListViewEx(Rectangle bounds, const char **text, int count, int *scrollIndex, int *active, int *focus); // List View with extended parameters
+int GuiMessageBox(Rectangle bounds, const char *title, const char *message, const char *buttons); // Message Box control, displays a message
+int GuiTextInputBox(Rectangle bounds, const char *title, const char *message, const char *buttons, char *text, int textMaxSize, bool *secretViewActive); // Text Input Box control, ask for text, supports secret
+int GuiColorPicker(Rectangle bounds, const char *text, Color *color);                        // Color Picker control (multiple color controls)
+int GuiColorPanel(Rectangle bounds, const char *text, Color *color);                         // Color Panel control
+int GuiColorBarAlpha(Rectangle bounds, const char *text, float *alpha);                      // Color Bar Alpha control
+int GuiColorBarHue(Rectangle bounds, const char *text, float *value);                        // Color Bar Hue control
+int GuiColorPickerHSV(Rectangle bounds, const char *text, Vector3 *colorHsv);                // Color Picker control that avoids conversion to RGB on each call (multiple color controls)
+int GuiColorPanelHSV(Rectangle bounds, const char *text, Vector3 *colorHsv);                 // Color Panel control that updates Hue-Saturation-Value color value, used by GuiColorPickerHSV()

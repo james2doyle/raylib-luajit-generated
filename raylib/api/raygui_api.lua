@@ -15,7 +15,7 @@ return {
     {
       name = "RAYGUI_VERSION_MINOR",
       type = "INT",
-      value = 5,
+      value = 0,
       description = ""
     },
     {
@@ -27,7 +27,7 @@ return {
     {
       name = "RAYGUI_VERSION",
       type = "STRING",
-      value = "4.5-dev",
+      value = "4.0",
       description = ""
     },
     {
@@ -220,12 +220,6 @@ return {
       name = "RAYGUI_MIN_SCROLLBAR_HEIGHT",
       type = "INT",
       value = 40,
-      description = ""
-    },
-    {
-      name = "RAYGUI_MIN_MOUSE_WHEEL_SPEED",
-      type = "INT",
-      value = 20,
       description = ""
     },
     {
@@ -1034,16 +1028,6 @@ return {
           name = "DROPDOWN_ITEMS_SPACING",
           value = 17,
           description = "DropdownBox items separation"
-        },
-        {
-          name = "DROPDOWN_ARROW_HIDDEN",
-          value = 18,
-          description = "DropdownBox arrow hidden"
-        },
-        {
-          name = "DROPDOWN_ROLL_UP",
-          value = 19,
-          description = "DropdownBox roll up flag (default rolls down)"
         }
       }
     },
@@ -1097,11 +1081,6 @@ return {
           name = "SCROLLBAR_SIDE",
           value = 19,
           description = "ListView scrollbar side (0-SCROLLBAR_LEFT_SIDE, 1-SCROLLBAR_RIGHT_SIDE)"
-        },
-        {
-          name = "LIST_ITEMS_BORDER_WIDTH",
-          value = 20,
-          description = "ListView items border width"
         }
       }
     },
@@ -2241,47 +2220,47 @@ return {
           description = ""
         },
         {
-          name = "ICON_WARNING",
+          name = "ICON_220",
           value = 220,
           description = ""
         },
         {
-          name = "ICON_HELP_BOX",
+          name = "ICON_221",
           value = 221,
           description = ""
         },
         {
-          name = "ICON_INFO_BOX",
+          name = "ICON_222",
           value = 222,
           description = ""
         },
         {
-          name = "ICON_PRIORITY",
+          name = "ICON_223",
           value = 223,
           description = ""
         },
         {
-          name = "ICON_LAYERS_ISO",
+          name = "ICON_224",
           value = 224,
           description = ""
         },
         {
-          name = "ICON_LAYERS2",
+          name = "ICON_225",
           value = 225,
           description = ""
         },
         {
-          name = "ICON_MLAYERS",
+          name = "ICON_226",
           value = 226,
           description = ""
         },
         {
-          name = "ICON_MAPS",
+          name = "ICON_227",
           value = 227,
           description = ""
         },
         {
-          name = "ICON_HOT",
+          name = "ICON_228",
           value = 228,
           description = ""
         },
