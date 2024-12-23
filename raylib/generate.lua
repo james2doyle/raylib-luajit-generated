@@ -31,7 +31,7 @@ local function skipped_types(check)
   return table_contains(t, check)
 end
 
-local tableReturnTemplate = Lust({[[@map{ n=argList, _separator=", " }:{{$n}}]]})
+local tableReturnTemplate = Lust({ [[@map{ n=argList, _separator=", " }:{{$n}}]] })
 
 local function type_map(check)
   local key = check:gsub("*", ""):gsub(" ", "_")
@@ -111,11 +111,10 @@ rl = raygui(rl)
 file:write(header)
 
 -- defines
-local definesTemplate = Lust({[[$entry.description
+local definesTemplate = Lust({ [[$entry.description
   rl.$entry.name = $entry.value
 
-]],
-})
+]] })
 
 for _, targetApi in pairs(apiFiles) do
   for _, entry in pairs(targetApi.defines) do
@@ -144,14 +143,17 @@ for _, targetApi in pairs(apiFiles) do
 end
 
 -- structs
-local structsClassTemplate = Lust({[[$class $entry.name
-  @map{ n=entry.fields }:{{$field $n.name $n.type $newline}}]]})
+local structsClassTemplate =
+  Lust({ [[$class $entry.name
+  @map{ n=entry.fields }:{{$field $n.name $n.type $newline}}]] })
 
-local structsFunctionTemplate = Lust({[[  --- $entry.description @map{ n=entry.fields }:{{$newline  $param $n.name $n.type}}
+local structsFunctionTemplate = Lust({
+  [[  --- $entry.description @map{ n=entry.fields }:{{$newline  $param $n.name $n.type}}
   $returns $entry.name
   function rl.$entry.name(@map{ n=entry.fields, _separator=", " }:{{$n.name}})
     return ffi.new("$entry.name", @map{ n=entry.fields, _separator=", " }:{{$n.name}})
-  end]]})
+  end]],
+})
 
 -- bucket to make sure structs aren't doubled
 local loadedStructs = {}
@@ -160,7 +162,7 @@ for _, targetApi in pairs(apiFiles) do
   for _, entry in pairs(targetApi.structs) do
     if table_contains(loadedStructs, entry.name) == false then
       if entry.fields ~= nil then
-        for i,v in ipairs(entry.fields) do
+        for i, v in ipairs(entry.fields) do
           entry.fields[i].type = type_map(entry.fields[i].type)
         end
       end
@@ -191,7 +193,7 @@ for _, targetApi in pairs(apiFiles) do
 end
 
 -- aliases
-local aliasesTemplate = Lust({[[@map{ n=aliases }:{{  $alias $n.name $n.type$newline}}]]})
+local aliasesTemplate = Lust({ [[@map{ n=aliases }:{{  $alias $n.name $n.type$newline}}]] })
 
 for _, targetApi in pairs(apiFiles) do
   if #targetApi.aliases > 0 then
@@ -210,7 +212,8 @@ for _, targetApi in pairs(apiFiles) do
 end
 
 -- enums
-local enumsTemplate = Lust({[[@map{ n=entry.values }:{{  --- $n.description$newline  rl.$n.name = $n.value$newline$newline}}]]})
+local enumsTemplate =
+  Lust({ [[@map{ n=entry.values }:{{  --- $n.description$newline  rl.$n.name = $n.value$newline$newline}}]] })
 
 for _, targetApi in pairs(apiFiles) do
   for _, entry in pairs(targetApi.enums) do
@@ -230,18 +233,20 @@ end
 ---@todo callbacks?
 
 -- functions
-local functionsTemplate = Lust({[[  --- $entry.description @map{ n=entry.params }:{{$newline  $param $n.name $n.type}}
+local functionsTemplate = Lust({
+  [[  --- $entry.description @map{ n=entry.params }:{{$newline  $param $n.name $n.type}}
   $returns $entry.returnType
   function rl.$entry.name(@map{ n=entry.params, _separator=", " }:{{$n.name}})
     return lib.$entry.name(@map{ n=entry.params, _separator=", " }:{{$n.name}})
-  end]]})
+  end]],
+})
 
 for _, targetApi in pairs(apiFiles) do
   for _, entry in pairs(targetApi.functions) do
     entry.returnType = type_map(entry.returnType)
 
     if entry.params ~= nil then
-      for i,v in ipairs(entry.params) do
+      for i, v in ipairs(entry.params) do
         entry.params[i].name = entry.params[i].name == "end" and "ending" or entry.params[i].name
         entry.params[i].type = type_map(entry.params[i].type)
       end
