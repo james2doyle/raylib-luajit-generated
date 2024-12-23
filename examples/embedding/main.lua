@@ -1,4 +1,4 @@
-local rl = require('raylib')
+local rl = require("raylib")
 
 local width, height = 800, 450
 
@@ -14,10 +14,10 @@ rl.PlayMusicStream(music)
 while not rl.WindowShouldClose() do
   rl.UpdateMusicStream(music)
 
-	rl.BeginDrawing()
+  rl.BeginDrawing()
   rl.ClearBackground(rl.RAYWHITE)
 
-  rl.DrawTexture(logo, width/2 - logo.width/2, height/2 - logo.height/2, rl.WHITE)
+  rl.DrawTexture(logo, width / 2 - logo.width / 2, height / 2 - logo.height / 2, rl.WHITE)
   rl.DrawText("this is a texture!", 350, 370, 10, rl.GRAY)
 
   rl.EndDrawing()

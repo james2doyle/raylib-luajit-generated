@@ -1,9 +1,9 @@
 error("Example not implemented!")
-local rl = require('raylib')
-local lynx = require "lynx"
-local raylua_funcs = require "lynx.raylua_lynx"
+local rl = require("raylib")
+local lynx = require("lynx")
+local raylua_funcs = require("lynx.raylua_lynx")
 
-local menu = lynx.menu ({
+local menu = lynx.menu({
   lynx.text("Test Lynx menu in Raylib", { selectable = false }),
   lynx.text("", { selectable = false }),
   lynx.text("Long life to Lynx !"),
@@ -18,22 +18,22 @@ local menu = lynx.menu ({
   h = 500,
   default_height = 24,
   current = 3,
-  funcs = raylua_funcs
+  funcs = raylua_funcs,
 })
 
 rl.SetConfigFlags(rl.FLAG_VSYNC_HINT)
 rl.InitWindow(800, 450, "raylib [lua] example - lynx menu")
 
 while not rl.WindowShouldClose() do
-	rl.BeginDrawing()
-	rl.ClearBackground(rl.BLACK)
+  rl.BeginDrawing()
+  rl.ClearBackground(rl.BLACK)
   local pos = rl.GetMousePosition()
   menu:input_mouse(pos.x, pos.y, 0)
 
   menu:update(rl.GetFrameTime())
   menu:draw()
 
-	rl.EndDrawing()
+  rl.EndDrawing()
 end
 
 rl.CloseWindow()

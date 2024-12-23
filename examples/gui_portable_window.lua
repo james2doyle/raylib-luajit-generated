@@ -1,4 +1,4 @@
-local rl = require('raylib')
+local rl = require("raylib")
 
 local width, height = 1280, 720
 
@@ -15,30 +15,29 @@ local exit_window = false
 
 while not exit_window and not rl.WindowShouldClose() do
   mouse_pos = rl.GetMousePosition()
-  
+
   if rl.IsMouseButtonPressed(rl.MOUSE_BUTTON_LEFT) then
     if rl.CheckCollisionPointRec(mouse_pos, rl.Rectangle(0, 0, width, 20)) then
       drag_window = true
       pan_offset = rl.Vector2(mouse_pos.x, mouse_pos.y)
     end
   end
-  
+
   if drag_window then
     window_pos = window_pos + mouse_pos - pan_offset
-    
+
     if rl.IsMouseButtonReleased(rl.MOUSE_BUTTON_RIGHT) then
       drag_window = false
     end
-    
+
     rl.SetWindowPosition(window_pos.x, window_pos.y)
   end
-    
+
   rl.BeginDrawing()
-  
+
   rl.ClearBackground(rl.RAYWHITE)
   exit_window = rl.GuiWindowBox(rl.Rectangle(0, 0, width, height), "PORTABLE WINDOW")
-  rl.DrawText(string.format("Mouse Position: [ %.0f, %.0f ]", mouse_pos.x, mouse_pos.y),
-    10, 40, 10, rl.DARKGRAY)
+  rl.DrawText(string.format("Mouse Position: [ %.0f, %.0f ]", mouse_pos.x, mouse_pos.y), 10, 40, 10, rl.DARKGRAY)
 
   rl.EndDrawing()
 end

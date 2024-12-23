@@ -1,4 +1,4 @@
-local rl = require('raylib')
+local rl = require("raylib")
 
 local screenWidth = 800
 local screenHeight = 450
@@ -13,7 +13,6 @@ local foreground = rl.LoadTexture("examples/resources/cyberpunk_street_foregroun
 local scrollingBack = 0.0
 local scrollingMid = 0.0
 local scrollingFore = 0.0
-
 
 while not rl.WindowShouldClose() do
   scrollingBack = scrollingBack - 0.1
@@ -32,27 +31,32 @@ while not rl.WindowShouldClose() do
     scrollingFore = 0
   end
 
+  rl.BeginDrawing()
 
-  rl.BeginDrawing()   
-  
   rl.ClearBackground(rl.GetColor(0x052c46ff))
   rl.ClearBackground(rl.RAYWHITE)
-  
+
   -- Draw background image twice
   -- NOTE: Texture is scaled twice its size
   rl.DrawTextureEx(background, rl.Vector2(scrollingBack, 20), 0.0, 2.0, rl.WHITE)
-  rl.DrawTextureEx(background, rl.Vector2(background.width * 2 + scrollingBack, 20), 0.0, 2.0,  rl.WHITE)
+  rl.DrawTextureEx(background, rl.Vector2(background.width * 2 + scrollingBack, 20), 0.0, 2.0, rl.WHITE)
 
   --Draw midground image twice
   rl.DrawTextureEx(midground, rl.Vector2(scrollingMid, 20), 0.0, 2.0, rl.WHITE)
-  rl.DrawTextureEx(midground, rl.Vector2(midground.width * 2 + scrollingMid, 20), 0.0, 2.0,  rl.WHITE)
+  rl.DrawTextureEx(midground, rl.Vector2(midground.width * 2 + scrollingMid, 20), 0.0, 2.0, rl.WHITE)
 
   -- Draw foreground image twice
   rl.DrawTextureEx(foreground, rl.Vector2(scrollingFore, 70), 0.0, 2.0, rl.WHITE)
   rl.DrawTextureEx(foreground, rl.Vector2(foreground.width * 2 + scrollingFore, 70), 0.0, 2.0, rl.WHITE)
 
   rl.DrawText("BACKGROUND SCROLLING & PARALLAX", 10, 10, 20, rl.RED)
-  rl.DrawText("(c) Cyberpunk Street Environment by Luis Zuno (@ansimuz)", screenWidth - 330, screenHeight - 20, 10, rl.RAYWHITE)
+  rl.DrawText(
+    "(c) Cyberpunk Street Environment by Luis Zuno (@ansimuz)",
+    screenWidth - 330,
+    screenHeight - 20,
+    10,
+    rl.RAYWHITE
+  )
 
   rl.EndDrawing()
 end

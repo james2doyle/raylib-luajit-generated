@@ -1,4 +1,4 @@
-local rl = require('raylib')
+local rl = require("raylib")
 
 rl.SetConfigFlags(rl.FLAG_VSYNC_HINT)
 

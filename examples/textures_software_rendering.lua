@@ -1,7 +1,7 @@
-local ffi = require('ffi')
-local rl = require('raylib')
+local ffi = require("ffi")
+local rl = require("raylib")
 
-local lua_color =	rl.Color(3, 3, 128, 255)
+local lua_color = rl.Color(3, 3, 128, 255)
 
 local width, height = 800, 450
 
@@ -22,7 +22,7 @@ local fb_texture = rl.LoadTextureFromImage(framebuffer)
 
 while not rl.WindowShouldClose() do
   --rl.ImageClearBackground(framebuffer, rl.RAYWHITE)
-  for i=0,width*height-1 do
+  for i = 0, width * height - 1 do
     fb_data[i] = rl.RAYWHITE
   end
 

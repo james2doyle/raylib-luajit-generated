@@ -1,4 +1,4 @@
-local rl = require('raylib')
+local rl = require("raylib")
 
 rl.SetConfigFlags(rl.FLAG_VSYNC_HINT)
 
@@ -8,12 +8,12 @@ local font = rl.LoadFontEx("resources/NotoSans-Medium.ttf", 32, nil, 255)
 
 while not rl.WindowShouldClose() do
   rl.BeginDrawing()
-  
+
   rl.DrawFPS(10, 10)
 
   rl.ClearBackground(rl.RAYWHITE)
   rl.DrawTextEx(font, "Congrats! You created your first window!", rl.Vector2(174, 200), 32, 0, rl.BLACK)
-  
+
   rl.EndDrawing()
 end
 

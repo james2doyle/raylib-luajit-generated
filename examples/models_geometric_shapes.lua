@@ -1,4 +1,4 @@
-local rl = require('raylib')
+local rl = require("raylib")
 
 local screenWidth = 800
 local screenHeight = 450
@@ -6,13 +6,7 @@ local screenHeight = 450
 rl.SetConfigFlags(rl.FLAG_VSYNC_HINT)
 rl.InitWindow(screenWidth, screenHeight, "raylua [models] example - geometric shapes")
 
-local camera = rl.Camera3D(
-  rl.Vector3(0, 10, 10),
-  rl.Vector3(0, 0, 0),
-  rl.Vector3(0, 1, 0),
-  45,
-  rl.CAMERA_PERSPECTIVE
-)
+local camera = rl.Camera3D(rl.Vector3(0, 10, 10), rl.Vector3(0, 0, 0), rl.Vector3(0, 1, 0), 45, rl.CAMERA_PERSPECTIVE)
 
 while not rl.WindowShouldClose() do
   rl.BeginDrawing()

@@ -1,5 +1,5 @@
-local ffi = require('ffi')
-local rl = require('raylib')
+local ffi = require("ffi")
+local rl = require("raylib")
 
 local screenWidth = 1920
 local screenHeight = 1080
@@ -12,7 +12,7 @@ local presets = {
   { 1.7, "Balanced" },
   { 1.5, "Quality" },
   { 1.3, "Ultra Quality" },
-  { 1.0, "Custom (Native)" }
+  { 1.0, "Custom (Native)" },
 }
 
 local use_fsr = true
@@ -53,13 +53,7 @@ local sharpness = ffi.new("float[1]", default_sharpness)
 rl.SetShaderValue(rcas_shader, sharpness_loc, sharpness, rl.SHADER_UNIFORM_FLOAT)
 rl.SetShaderValue(rcas_shader, size_loc, screenSize, rl.SHADER_UNIFORM_VEC2)
 
-local camera = rl.Camera3D(
-  rl.Vector3(30, 20, 30),
-  rl.Vector3(0, 0, 0),
-  rl.Vector3(0, 1, 0),
-  70,
-  rl.CAMERA_PERSPECTIVE
-)
+local camera = rl.Camera3D(rl.Vector3(30, 20, 30), rl.Vector3(0, 0, 0), rl.Vector3(0, 1, 0), 70, rl.CAMERA_PERSPECTIVE)
 
 local enable_easu = false
 local enable_rcas = false
@@ -76,7 +70,7 @@ while not rl.WindowShouldClose() do
 
   local scale = (2.0 + math.sin(t)) * 0.7
   local camera_time = t * 0.3
-  
+
   camera.position.x = math.cos(camera_time) * 40.0
   camera.position.z = math.sin(camera_time) * 40.0
 
@@ -85,26 +79,25 @@ while not rl.WindowShouldClose() do
   else
     rl.BeginDrawing()
   end
-  
+
   rl.BeginMode3D(camera)
   rl.ClearBackground(rl.RAYWHITE)
-  
+
   rl.DrawGrid(10, 5.0)
 
-  for x=0,num_blocks-1 do
-    for y=0,num_blocks-1 do
-      for z=0,num_blocks-1 do
+  for x = 0, num_blocks - 1 do
+    for y = 0, num_blocks - 1 do
+      for z = 0, num_blocks - 1 do
         local block_scale = (x + y + z) / 30
         local scatter = math.sin(block_scale * 20.0 + t * 4.0)
 
         local cube_pos = rl.Vector3(
           (x - num_blocks / 2) * (scale * 3.0) + scatter,
           (y - num_blocks / 2) * (scale * 2.0) + scatter,
-          (z - num_blocks / 2) * (scale * 3.0) + scatter)
-
-        local cube_color = rl.ColorFromHSV(
-          (((x + y + z) * 18) % 360), 0.75, 0.9
+          (z - num_blocks / 2) * (scale * 3.0) + scatter
         )
+
+        local cube_color = rl.ColorFromHSV((((x + y + z) * 18) % 360), 0.75, 0.9)
 
         local cube_size = (2.4 - scale) * block_scale
 
@@ -114,7 +107,7 @@ while not rl.WindowShouldClose() do
   end
 
   rl.EndMode3D()
-  
+
   if use_fsr then
     rl.EndTextureMode()
 
@@ -165,7 +158,7 @@ while not rl.WindowShouldClose() do
   if rl.IsKeyPressed(rl.KEY_R) then
     enable_rcas = not enable_rcas
   end
-  
+
   if rl.IsKeyPressed(rl.KEY_N) then
     use_fsr = not use_fsr
   end
@@ -179,14 +172,13 @@ while not rl.WindowShouldClose() do
     sharpness[0] = math.min(2.0, sharpness[0] + 0.1)
     rl.SetShaderValue(rcas_shader, sharpness_loc, sharpness, rl.SHADER_UNIFORM_FLOAT)
   end
-  
+
   if rl.IsKeyPressed(rl.KEY_F) then
     bilinear = not bilinear
-  
-    rl.SetTextureFilter(render_texture.texture,
-      bilinear and rl.TEXTURE_FILTER_BILINEAR or rl.TEXTURE_FILTER_POINT)
+
+    rl.SetTextureFilter(render_texture.texture, bilinear and rl.TEXTURE_FILTER_BILINEAR or rl.TEXTURE_FILTER_POINT)
   end
-  
+
   local preset_changed = false
   if rl.IsKeyPressed(rl.KEY_UP) then
     preset_changed = true
@@ -203,30 +195,27 @@ while not rl.WindowShouldClose() do
       preset = #presets
     end
   end
-  
+
   if rl.IsKeyPressed(rl.KEY_S) then
     stop_animation = not stop_animation
   end
-  
+
   if rl.IsKeyPressed(rl.KEY_F11) then
     rl.ToggleFullscreen()
   end
 
-  
   if preset_changed then
     ratio = presets[preset][1]
     fbWidth = screenWidth / ratio
     fbHeight = screenHeight / ratio
 
     fbSize = rl.Vector2(fbWidth, fbHeight)
-    
+
     rl.UnloadRenderTexture(render_texture)
-    
+
     render_texture = rl.LoadRenderTexture(fbWidth, fbHeight)
 
-    
-    rl.SetTextureFilter(render_texture.texture,
-      bilinear and rl.TEXTURE_FILTER_BILINEAR or rl.TEXTURE_FILTER_POINT)
+    rl.SetTextureFilter(render_texture.texture, bilinear and rl.TEXTURE_FILTER_BILINEAR or rl.TEXTURE_FILTER_POINT)
   end
 end
 

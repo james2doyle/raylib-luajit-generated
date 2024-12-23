@@ -36,7 +36,7 @@ applications, and to alter it and redistribute it freely, subject to the followi
  3. This notice may not be removed or altered from any source distribution.
 ]]
 
-local rl = require('raylib')
+local rl = require("raylib")
 
 local windowWidth = 512
 local windowHeight = 512
@@ -57,30 +57,56 @@ while not rl.WindowShouldClose() do
 
   rl.BeginDrawing()
 
-    rl.BeginTextureMode(target)
-      rl.ClearBackground(rl.WHITE)
-      rl.DrawTextEx(rl.GetFontDefault(), "Hello", rl.Vector2(4, 0), rl.GetFontDefault().baseSize, 1, rl.Color(0, 64, 255, 255))
-      rl.DrawTextEx(rl.GetFontDefault(), "it's", rl.Vector2(8, 10), rl.GetFontDefault().baseSize, 1, rl.Color(0, 64, 255, 255))
-      rl.DrawTextEx(rl.GetFontDefault(), "raylua", rl.Vector2(0, 20), rl.GetFontDefault().baseSize, 1, rl.Color(0, 64, 255, 255))
+  rl.BeginTextureMode(target)
+  rl.ClearBackground(rl.WHITE)
+  rl.DrawTextEx(
+    rl.GetFontDefault(),
+    "Hello",
+    rl.Vector2(4, 0),
+    rl.GetFontDefault().baseSize,
+    1,
+    rl.Color(0, 64, 255, 255)
+  )
+  rl.DrawTextEx(
+    rl.GetFontDefault(),
+    "it's",
+    rl.Vector2(8, 10),
+    rl.GetFontDefault().baseSize,
+    1,
+    rl.Color(0, 64, 255, 255)
+  )
+  rl.DrawTextEx(
+    rl.GetFontDefault(),
+    "raylua",
+    rl.Vector2(0, 20),
+    rl.GetFontDefault().baseSize,
+    1,
+    rl.Color(0, 64, 255, 255)
+  )
 
-    rl.EndTextureMode()
+  rl.EndTextureMode()
 
-    rl.DrawTexturePro(
-      target.texture,
-      rl.Rectangle(0, 0, target.texture.width, -target.texture.height),
-      rl.Rectangle(        (rl.GetScreenWidth() - gameScreenWidth * scale) * 0.5,
-        (rl.GetScreenHeight() - gameScreenHeight * scale) * 0.5,
-        gameScreenWidth * scale, gameScreenHeight * scale
-      ), rl.Vector2(0, 0), 0, rl.WHITE
-    )
+  rl.DrawTexturePro(
+    target.texture,
+    rl.Rectangle(0, 0, target.texture.width, -target.texture.height),
+    rl.Rectangle(
+      (rl.GetScreenWidth() - gameScreenWidth * scale) * 0.5,
+      (rl.GetScreenHeight() - gameScreenHeight * scale) * 0.5,
+      gameScreenWidth * scale,
+      gameScreenHeight * scale
+    ),
+    rl.Vector2(0, 0),
+    0,
+    rl.WHITE
+  )
 
-    for x=0,rl.GetScreenWidth(),16 do
-      rl.DrawRectangle(x, 0, 4, rl.GetScreenHeight(), rl.BLACK)
-    end
+  for x = 0, rl.GetScreenWidth(), 16 do
+    rl.DrawRectangle(x, 0, 4, rl.GetScreenHeight(), rl.BLACK)
+  end
 
-    for y=0,rl.GetScreenHeight(),16 do
-      rl.DrawRectangle(0, y, rl.GetScreenWidth(), 4, rl.BLACK)
-    end
+  for y = 0, rl.GetScreenHeight(), 16 do
+    rl.DrawRectangle(0, y, rl.GetScreenWidth(), 4, rl.BLACK)
+  end
   rl.EndDrawing()
 end
 

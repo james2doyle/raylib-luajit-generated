@@ -1,4 +1,4 @@
-local rl = require('raylib')
+local rl = require("raylib")
 
 local MAX_BUNNIES = 100000
 
@@ -12,7 +12,7 @@ Bunny.__index = Bunny
 
 function Bunny:new(pos, spd, col)
   local bunny = {}
-  setmetatable(bunny,Bunny)
+  setmetatable(bunny, Bunny)
   bunny.position = pos
   bunny.speed = spd
   bunny.color = col
@@ -22,12 +22,13 @@ end
 function Bunny:update(texture)
   self.position.x = self.position.x + self.speed.x
   self.position.y = self.position.y + self.speed.y
-  if ((self.position.x + texture.width/2) > rl.GetScreenWidth())
-    or ((self.position.x + texture.width/2) < 0) then
+  if ((self.position.x + texture.width / 2) > rl.GetScreenWidth()) or ((self.position.x + texture.width / 2) < 0) then
     self.speed.x = self.speed.x * -1
   end
-  if ((self.position.y + texture.height/2) > rl.GetScreenHeight())
-    or ((self.position.y + texture.height/2 - 40) < 0) then
+  if
+    ((self.position.y + texture.height / 2) > rl.GetScreenHeight())
+    or ((self.position.y + texture.height / 2 - 40) < 0)
+  then
     self.speed.y = self.speed.y * -1
   end
 end
@@ -45,7 +46,7 @@ local texBunny = rl.LoadTexture("examples/resources/wabbit_alpha.png")
 local bunnies = {}
 
 -- Main game loop
-while not rl.WindowShouldClose() do    -- Detect window close button or ESC key
+while not rl.WindowShouldClose() do -- Detect window close button or ESC key
   -- Update
   if rl.IsMouseButtonDown(rl.MOUSE_BUTTON_LEFT) then
     -- Create more bunnies
@@ -59,7 +60,7 @@ while not rl.WindowShouldClose() do    -- Detect window close button or ESC key
   end
 
   -- Update bunnies
-  for i=1,#bunnies do
+  for i = 1, #bunnies do
     bunnies[i]:update(texBunny)
   end
 
@@ -68,14 +69,14 @@ while not rl.WindowShouldClose() do    -- Detect window close button or ESC key
 
   rl.ClearBackground(rl.RAYWHITE)
 
-  for i=1,#bunnies do
+  for i = 1, #bunnies do
     -- NOTE: When internal batch buffer limit is reached (MAX_BATCH_ELEMENTS),
     -- a draw call is launched and buffer starts being filled again;
     -- before issuing a draw call, updated vertex data from internal CPU buffer is send to GPU...
     -- Process of sending data is costly and it could happen that GPU data has not been completely
     -- processed for drawing while new data is tried to be sent (updating current in-use buffers)
     -- it could generates a stall and consequently a frame drop, limiting the number of drawn bunnies
-    rl.DrawTexture(texBunny, bunnies[i].position.x, bunnies[i].position.y, bunnies[i].color);
+    rl.DrawTexture(texBunny, bunnies[i].position.x, bunnies[i].position.y, bunnies[i].color)
   end
 
   rl.DrawRectangle(0, 0, screenWidth, 40, rl.BLACK)

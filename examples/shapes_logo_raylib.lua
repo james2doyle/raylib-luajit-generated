@@ -1,6 +1,6 @@
-local rl = require('raylib')
+local rl = require("raylib")
 
-local lua_color =	rl.Color(3, 3, 128, 255)
+local lua_color = rl.Color(3, 3, 128, 255)
 
 local width, height = 800, 450
 
@@ -8,7 +8,7 @@ rl.SetConfigFlags(rl.FLAG_VSYNC_HINT)
 rl.InitWindow(800, 450, "raylib [shapes] example - raylib logo")
 
 while not rl.WindowShouldClose() do
-	rl.BeginDrawing()
+  rl.BeginDrawing()
 
   rl.ClearBackground(rl.RAYWHITE)
 
