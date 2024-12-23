@@ -329,7 +329,7 @@ local footer = [[
   ---@param check any the value to compare
   ---@return boolean
   function rl.IsRenderTexture(check)
-    return type(check) == "cdata" and ffi.istype("struct RenderTexture", ffi.typeof(value))
+    return type(check) == "cdata" and ffi.istype("struct RenderTexture", ffi.typeof(check))
   end
 
   --- val if the given value is of type "NPatchInfo"
