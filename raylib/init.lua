@@ -1,11 +1,7 @@
 local ffi = require("ffi")
 local lib = ffi.load("libraylib")
 
-local generated = io.open("raylib/generated.h", "r")
-
-if generated == nil then
-  error("Cannot find generated.h")
-end
+local generated = assert(io.open("raylib/generated.h", "r"), "Cannot find generated.h")
 
 ffi.cdef(generated:read("*all"))
 
@@ -8702,7 +8698,7 @@ end
 ---@param check any the value to compare
 ---@return boolean
 function rl.IsRenderTexture(check)
-  return type(check) == "cdata" and ffi.istype("struct RenderTexture", ffi.typeof(value))
+  return type(check) == "cdata" and ffi.istype("struct RenderTexture", ffi.typeof(check))
 end
 
 --- val if the given value is of type "NPatchInfo"

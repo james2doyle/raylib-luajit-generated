@@ -3,12 +3,13 @@ local Lust = require("api/Lust")
 -- the list of API files to load
 local raylibApi = require("api/raylib_api")
 local rlglApi = require("api/rlgl_api")
+-- right now, the raylib_parser does not output the full raygui code
 -- local rayguiApi = require("api/raygui_api")
 
 local apiFiles = {
   raylibApi,
   rlglApi,
-  -- rayguiApi
+  -- rayguiApi,
 }
 
 local function table_contains(table, value)
@@ -82,7 +83,7 @@ local function type_map(check)
 end
 
 -- Open the file in write mode
-local file = assert(io.open("init.lua", "w"))
+local file = assert(io.open("init.lua", "w"), "Could not load init.lua")
 
 -- Check if the file was successfully opened
 if file == nil then
@@ -93,15 +94,11 @@ local header = [[
 local ffi = require("ffi")
 local lib = ffi.load("libraylib")
 
-local generated = io.open("raylib/generated.h", "r")
-
-if generated == nil then
-  error("Cannot find generated.h")
-end
+local generated = assert(io.open("raylib/generated.h", "r"), "Cannot find generated.h")
 
 ffi.cdef(generated:read("*all"))
 
-local mt = {__index = lib}
+local mt = { __index = lib }
 local rl = setmetatable({}, mt)
 
 local raygui = require("raylib/raygui")
