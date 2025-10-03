@@ -24,7 +24,7 @@ while not exit_window and not rl.WindowShouldClose() do
   end
 
   if drag_window then
-    window_pos = window_pos + mouse_pos - pan_offset
+    window_pos = rl.Vector2Add(window_pos, rl.Vector2Subtract(mouse_pos, pan_offset))
 
     if rl.IsMouseButtonReleased(rl.MOUSE_BUTTON_RIGHT) then
       drag_window = false
@@ -36,7 +36,7 @@ while not exit_window and not rl.WindowShouldClose() do
   rl.BeginDrawing()
 
   rl.ClearBackground(rl.RAYWHITE)
-  exit_window = rl.GuiWindowBox(rl.Rectangle(0, 0, width, height), "PORTABLE WINDOW")
+  exit_window = rl.GuiWindowBox(rl.Rectangle(0, 0, width, height), "PORTABLE WINDOW") ~= nil
   rl.DrawText(string.format("Mouse Position: [ %.0f, %.0f ]", mouse_pos.x, mouse_pos.y), 10, 40, 10, rl.DARKGRAY)
 
   rl.EndDrawing()

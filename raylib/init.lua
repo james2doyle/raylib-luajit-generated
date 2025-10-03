@@ -8962,5 +8962,112 @@ rl = raygui(rl)
     return type(check) == "cdata" and ffi.istype("struct AutomationEventList", ffi.typeof(check))
   end
 
+  --- Get vector length (magnitude)
+  ---@param v Vector2
+  ---@return number
+  function rl.Vector2Length(v)
+    return math.sqrt(v.x * v.x + v.y * v.y)
+  end
+
+  --- Add two vectors (v1 + v2)
+  ---@param v1 Vector2
+  ---@param v2 Vector2
+  ---@return Vector2
+  function rl.Vector2Add(v1, v2)
+    return rl.Vector2(v1.x + v2.x, v1.y + v2.y)
+  end
+
+  --- Subtract two vectors (v1 - v2)
+  ---@param v1 Vector2
+  ---@param v2 Vector2
+  ---@return Vector2
+  function rl.Vector2Subtract(v1, v2)
+    return rl.Vector2(v1.x - v2.x, v1.y - v2.y)
+  end
+
+  --- Calculate cross product of two vectors (Vector2Cross)
+  --- The 2D 'cross product' is equivalent to the Z-component of the 3D cross product.
+  ---@param v1 Vector2
+  ---@param v2 Vector2
+  ---@return number
+  function rl.Vector2Cross(v1, v2)
+    return v1.x * v2.y - v1.y * v2.x
+  end
+
+  --- Normalize provided vector
+  ---@param v Vector2
+  ---@return Vector2
+  function rl.Vector2Normalize(v)
+    local length = rl.Vector2Length(v)
+    if length == 0 then
+      -- Return a zero vector if the length is zero to avoid division by zero.
+      return rl.Vector2(0, 0)
+    end
+    local invLength = 1 / length
+    return rl.Vector2(v.x * invLength, v.y * invLength)
+  end
+
+  --- Scale vector (multiply by value)
+  ---@param v Vector2
+  ---@param scale number
+  ---@return Vector2
+  function rl.Vector2Scale(v, scale)
+    return rl.Vector2(v.x * scale, v.y * scale)
+  end
+
+  --- Calculate the length (magnitude) of a Vector3
+  ---@param v Vector3 The vector to calculate the length of.
+  ---@return number
+  function rl.Vector3Length(v)
+    return math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
+  end
+
+  --- Add two Vector3 vectors (v1 + v2)
+  ---@param v1 Vector3 The first vector.
+  ---@param v2 Vector3 The second vector.
+  ---@return Vector3
+  function rl.Vector3Add(v1, v2)
+    return rl.Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z)
+  end
+
+  --- Subtract two Vector3 vectors (v1 - v2)
+  ---@param v1 Vector3 The first vector (minuend).
+  ---@param v2 Vector3 The second vector (subtrahend).
+  ---@return Vector3
+  function rl.Vector3Subtract(v1, v2)
+    return rl.Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z)
+  end
+
+  --- Calculate the cross product of two Vector3 vectors (v1 x v2)
+  ---@param v1 Vector3 The first vector.
+  ---@param v2 Vector3 The second vector.
+  ---@return Vector3
+  function rl.Vector3Cross(v1, v2)
+    local x = v1.y * v2.z - v1.z * v2.y
+    local y = v1.z * v2.x - v1.x * v2.z
+    local z = v1.x * v2.y - v1.y * v2.x
+    return rl.Vector3(x, y, z)
+  end
+
+  --- Normalize a Vector3 (set its magnitude to 1.0)
+  ---@param v Vector3 The vector to normalize.
+  ---@return Vector3
+  function rl.Vector3Normalize(v)
+    local length = rl.Vector3Length(v)
+    if length == 0 then
+      return rl.Vector3(0, 0, 0)
+    else
+      return rl.Vector3(v.x / length, v.y / length, v.z / length)
+    end
+  end
+
+  --- Scale a Vector3 (multiply by a value)
+  ---@param v Vector3 The vector to scale.
+  ---@param scale number The scalar value to multiply the vector components by.
+  ---@return Vector3
+  function rl.Vector3Scale(v, scale)
+    return rl.Vector3(v.x * scale, v.y * scale, v.z * scale)
+  end
+
 
   return rl
