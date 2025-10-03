@@ -8,8 +8,8 @@ Raylib LuaJit 5.5
 - [x] `raylib.h` code-gen to lua using `raylib_api.lua`
 - [x] `rlgl.h` code-gen to lua using `rlgl_api.lua`
 - [x] `raygui.h` code-gen to lua using `raygui_api.lua`
-- [ ] `config.h` code-gen to lua using `config_api.lua`
-- [ ] `raymath.h` code-gen to lua using `raymath_api.lua`
+- [x] `raymath.h` code-gen to lua using `raymath_api.lua`
+- [x] `config.h` code-gen to lua using `config_api.lua`
 
 ##### PROS:
 

@@ -3,12 +3,16 @@ local Lust = require("api/Lust")
 -- the list of API files to load
 local raylibApi = require("api/raylib_api")
 local rlglApi = require("api/rlgl_api")
+local raymathApi = require("api/raymath_api")
+local configApi = require("api/config_api")
 -- right now, the raylib_parser does not output the full raygui code
 -- local rayguiApi = require("api/raygui_api")
 
 local apiFiles = {
   raylibApi,
   rlglApi,
+  raymathApi,
+  configApi,
   -- rayguiApi,
 }
 
@@ -26,10 +30,29 @@ local function skipped_types(check)
     "GUARD",
     "MACRO",
     "UNKNOWN",
-    "FLOAT_MATH",
   }
 
   return table_contains(t, check)
+end
+
+--- Converts a C-style constant math expression string to a Lua expression string
+--- using the simplified rule: remove the float suffix, then prefix constants with 'rl.'.
+---@param c_style_math_string string The C-style math string (e.g., "(PI/180.0f)").
+---@return string The converted Lua expression string (e.g., "rl.PI / 180").
+local function convert_c_math_to_lua(c_style_math_string)
+    -- 1. Remove the floating point suffix '.0f' or '.0F' and spaces, preserving only the integer.
+    -- We target the specific patterns as requested by the user, and spaces.
+    local temp_string = c_style_math_string:gsub("%.%d+[fF]", ""):gsub("%s*", "")
+
+    -- 2. Remove outer parentheses.
+    temp_string = temp_string:gsub("^%s*%((.+?)%)%s*$", "%1")
+
+    -- 3. Replace uppercase constant names with the 'rl.' prefix.
+    -- We look for single or multi-letter words consisting entirely of uppercase letters (A-Z).
+    local lua_expression = temp_string:gsub("([A-Z_]+)", "rl.%1")
+
+    -- 4. Re-add spaces around the division symbol for readability.
+    return lua_expression:gsub("/", " / ")
 end
 
 local tableReturnTemplate = Lust({ [[@map{ n=argList, _separator=", " }:{{$n}}]] })
@@ -113,28 +136,39 @@ local definesTemplate = Lust({ [[$entry.description
 
 ]] })
 
+-- bucket to make sure structs aren't doubled
+local loadedDefines = {}
+
 for _, targetApi in pairs(apiFiles) do
   for _, entry in pairs(targetApi.defines) do
-    if skipped_types(entry.type) == false and entry.value ~= "" then
-      if entry.description ~= "" then
-        entry.description = "--- " .. entry.description
+    if table_contains(loadedDefines, entry.name) == false then
+      if skipped_types(entry.type) == false and entry.value ~= "" then
+        if entry.description ~= "" then
+          entry.description = "--- " .. entry.description
+        end
+
+        if type(entry.value) == "string" then
+          entry.value = entry.value:gsub("CLITERAL%(Color%)", "")
+        end
+
+        if entry.type == "STRING" then
+          entry.value = string.format("%q", entry.value)
+        end
+
+        if entry.type == "FLOAT_MATH" then
+          entry.value = convert_c_math_to_lua(entry.value)
+        end
+
+        local output = definesTemplate:gen({ entry = entry })
+
+        local formattedOutput = string.format("  %s", output)
+
+        -- print(formattedOutput)
+
+        file:write(formattedOutput)
+
+        table.insert(loadedDefines, entry.name)
       end
-
-      if type(entry.value) == "string" then
-        entry.value = entry.value:gsub("CLITERAL%(Color%)", "")
-      end
-
-      if entry.type == "STRING" then
-        entry.value = string.format("%q", entry.value)
-      end
-
-      local output = definesTemplate:gen({ entry = entry })
-
-      local formattedOutput = string.format("  %s", output)
-
-      -- print(formattedOutput)
-
-      file:write(formattedOutput)
     end
   end
 end
@@ -516,6 +550,113 @@ local footer = [[
   ---@return boolean
   function rl.IsAutomationEventList(check)
     return type(check) == "cdata" and ffi.istype("struct AutomationEventList", ffi.typeof(check))
+  end
+
+  --- Get vector length (magnitude)
+  ---@param v Vector2
+  ---@return number
+  function rl.Vector2Length(v)
+    return math.sqrt(v.x * v.x + v.y * v.y)
+  end
+
+  --- Add two vectors (v1 + v2)
+  ---@param v1 Vector2
+  ---@param v2 Vector2
+  ---@return Vector2
+  function rl.Vector2Add(v1, v2)
+    return rl.Vector2(v1.x + v2.x, v1.y + v2.y)
+  end
+
+  --- Subtract two vectors (v1 - v2)
+  ---@param v1 Vector2
+  ---@param v2 Vector2
+  ---@return Vector2
+  function rl.Vector2Subtract(v1, v2)
+    return rl.Vector2(v1.x - v2.x, v1.y - v2.y)
+  end
+
+  --- Calculate cross product of two vectors (Vector2Cross)
+  --- The 2D 'cross product' is equivalent to the Z-component of the 3D cross product.
+  ---@param v1 Vector2
+  ---@param v2 Vector2
+  ---@return number
+  function rl.Vector2Cross(v1, v2)
+    return v1.x * v2.y - v1.y * v2.x
+  end
+
+  --- Normalize provided vector
+  ---@param v Vector2
+  ---@return Vector2
+  function rl.Vector2Normalize(v)
+    local length = rl.Vector2Length(v)
+    if length == 0 then
+      -- Return a zero vector if the length is zero to avoid division by zero.
+      return rl.Vector2(0, 0)
+    end
+    local invLength = 1 / length
+    return rl.Vector2(v.x * invLength, v.y * invLength)
+  end
+
+  --- Scale vector (multiply by value)
+  ---@param v Vector2
+  ---@param scale number
+  ---@return Vector2
+  function rl.Vector2Scale(v, scale)
+    return rl.Vector2(v.x * scale, v.y * scale)
+  end
+
+  --- Calculate the length (magnitude) of a Vector3
+  ---@param v Vector3 The vector to calculate the length of.
+  ---@return number
+  function rl.Vector3Length(v)
+    return math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
+  end
+
+  --- Add two Vector3 vectors (v1 + v2)
+  ---@param v1 Vector3 The first vector.
+  ---@param v2 Vector3 The second vector.
+  ---@return Vector3
+  function rl.Vector3Add(v1, v2)
+    return rl.Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z)
+  end
+
+  --- Subtract two Vector3 vectors (v1 - v2)
+  ---@param v1 Vector3 The first vector (minuend).
+  ---@param v2 Vector3 The second vector (subtrahend).
+  ---@return Vector3
+  function rl.Vector3Subtract(v1, v2)
+    return rl.Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z)
+  end
+
+  --- Calculate the cross product of two Vector3 vectors (v1 x v2)
+  ---@param v1 Vector3 The first vector.
+  ---@param v2 Vector3 The second vector.
+  ---@return Vector3
+  function rl.Vector3Cross(v1, v2)
+    local x = v1.y * v2.z - v1.z * v2.y
+    local y = v1.z * v2.x - v1.x * v2.z
+    local z = v1.x * v2.y - v1.y * v2.x
+    return rl.Vector3(x, y, z)
+  end
+
+  --- Normalize a Vector3 (set its magnitude to 1.0)
+  ---@param v Vector3 The vector to normalize.
+  ---@return Vector3
+  function rl.Vector3Normalize(v)
+    local length = rl.Vector3Length(v)
+    if length == 0 then
+      return rl.Vector3(0, 0, 0)
+    else
+      return rl.Vector3(v.x / length, v.y / length, v.z / length)
+    end
+  end
+
+  --- Scale a Vector3 (multiply by a value)
+  ---@param v Vector3 The vector to scale.
+  ---@param scale number The scalar value to multiply the vector components by.
+  ---@return Vector3
+  function rl.Vector3Scale(v, scale)
+    return rl.Vector3(v.x * scale, v.y * scale, v.z * scale)
   end
 
 
