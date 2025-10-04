@@ -1,42 +1,52 @@
-error("Example not implemented!")
 local rl = require("raylib")
 
 local screenWidth = 800
 local screenHeight = 450
 
 rl.SetConfigFlags(rl.FLAG_MSAA_4X_HINT)
+rl.SetTargetFPS(60)
 
 rl.InitWindow(screenWidth, screenHeight, "Physac [raylua] - Physics demo")
+
+rl.InitPhysics()
+
 local logoX = screenWidth - rl.MeasureText("Physac", 30) - 10
 local logoY = 15
 
 local needsReset = false
 
-rl.InitPhysics()
+local floorPos = rl.Vector2(screenWidth / 2, screenHeight)
+local circlePos = rl.Vector2(screenWidth / 2, screenHeight / 2)
 
-local floor = rl.CreatePhysicsBodyRectangle({ screenWidth / 2, screenHeight }, 500, 100, 10)
-floor.enabled = false
+local floor = rl.CreatePhysicsBodyRectangle(floorPos, 500, 100, 10)
+floor.enabled = false -- Disable body state to convert it to static (no dynamics, but collisions)
 
-local circle = rl.CreatePhysicsBodyCircle({ screenWidth / 2, screenHeight / 2 }, 45, 10)
-circle.enabled = false
+local circle = rl.CreatePhysicsBodyCircle(circlePos, 45, 10)
+circle.enabled = false -- Disable body state to convert it to static (no dynamics, but collisions)
 
-rl.SetTargetFPS(60)
+local function log(str)
+  rl.TraceLog(rl.LOG_INFO, str, nil)
+end
 
 while not rl.WindowShouldClose() do
-  rl.UpdatePhysics()
-
   if needsReset then
-    floor = rl.CreatePhysicsBodyRectangle({ screenWidth / 2, screenHeight }, 500, 100, 10)
-    circle = rl.CreatePhysicsBodyCircle({ screenWidth / 2, screenHeight / 2 }, 45, 10)
+    needsReset = false
+
+    rl.ResetPhysics()
+
+    -- recreate the collision objects
+    floor = rl.CreatePhysicsBodyRectangle(floorPos, 500, 100, 10)
+    floor.enabled = false -- Disable body state to convert it to static (no dynamics, but collisions)
+    circle = rl.CreatePhysicsBodyCircle(circlePos, 45, 10)
+    circle.enabled = false -- Disable body state to convert it to static (no dynamics, but collisions)
 
     floor.enabled = false
     circle.enabled = false
 
-    needsReset = false
+    log("Reset!")
   end
 
-  if rl.IsKeyPressed(string.byte("R")) then
-    rl.ResetPhysics()
+  if rl.IsKeyPressed(rl.KEY_R) then
     needsReset = true
   end
 
@@ -51,9 +61,12 @@ while not rl.WindowShouldClose() do
   for i = 0, bodiesCount do
     local body = rl.GetPhysicsBody(i)
 
-    if body ~= nil and (body.position.y > screenHeight * 2) then
-      print("Destroyed " .. tostring(body))
-      rl.DestroyPhysicsBody(body)
+    if body ~= nil then
+      -- destroy the bodies that fall off the screen
+      if body.position.y > screenHeight * 2 then
+        log("Destroyed " .. tostring(body.id))
+        rl.DestroyPhysicsBody(body)
+      end
     end
   end
 
@@ -64,6 +77,7 @@ while not rl.WindowShouldClose() do
   for i = 0, bodiesCount - 1 do
     local body = rl.GetPhysicsBody(i)
 
+    -- outlines all the bodies
     if body ~= nil then
       local vertexCount = rl.GetPhysicsShapeVerticesCount(i)
       for j = 0, vertexCount - 1 do

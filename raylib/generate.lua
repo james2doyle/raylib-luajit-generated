@@ -126,6 +126,9 @@ local rl = setmetatable({}, mt)
 
 local raygui = require("raylib/raygui")
 rl = raygui(rl)
+
+local physac = require("raylib/physac")
+rl = physac(rl)
 ]]
 
 file:write(header)

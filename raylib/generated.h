@@ -2162,3 +2162,78 @@ int GuiColorBarAlpha(Rectangle bounds, const char *text, float *alpha);         
 int GuiColorBarHue(Rectangle bounds, const char *text, float *value);                        // Color Bar Hue control
 int GuiColorPickerHSV(Rectangle bounds, const char *text, Vector3 *colorHsv);                // Color Picker control that avoids conversion to RGB on each call (multiple color controls)
 int GuiColorPanelHSV(Rectangle bounds, const char *text, Vector3 *colorHsv);                 // Color Panel control that updates Hue-Saturation-Value color value, used by GuiColorPickerHSV()
+
+//----------------------------------------------------------------------------------
+// Physac definitions
+// NOTE: These are manually copied from victorfisac/physac/Physac-587b63926010593eedf29ef74e3aa22c1a507925/src/physac.h
+//----------------------------------------------------------------------------------
+
+typedef enum PhysicsShapeType { PHYSICS_CIRCLE, PHYSICS_POLYGON } PhysicsShapeType;
+
+typedef struct Mat2 {
+    float m00;
+    float m01;
+    float m10;
+    float m11;
+} Mat2;
+
+typedef struct PolygonData {
+    unsigned int vertexCount;
+    Vector2 positions[24];
+    Vector2 normals[24];
+} PolygonData;
+
+// Forward declaration
+typedef struct PhysicsBodyData *PhysicsBody;
+
+typedef struct PhysicsShape {
+    PhysicsShapeType type;
+    PhysicsBody body;
+    float radius;
+    Mat2 transform;
+    PolygonData vertexData;
+} PhysicsShape;
+
+typedef struct PhysicsBodyData {
+    unsigned int id;
+    bool enabled;
+    Vector2 position;
+    Vector2 velocity;
+    Vector2 force;
+    float angularVelocity;
+    float torque;
+    float orient;
+    float inertia;
+    float inverseInertia;
+    float mass;
+    float inverseMass;
+    float staticFriction;
+    float dynamicFriction;
+    float restitution;
+    bool useGravity;
+    bool isGrounded;
+    bool freezeOrient;
+    PhysicsShape shape;
+} PhysicsBodyData;
+
+// Physac function prototypes (as they appear with PHYSACDEF)
+void InitPhysics(void);
+void RunPhysicsStep(void);
+void SetPhysicsTimeStep(double delta);
+bool IsPhysicsEnabled(void);
+void SetPhysicsGravity(float x, float y);
+PhysicsBody CreatePhysicsBodyCircle(Vector2 pos, float radius, float density);
+PhysicsBody CreatePhysicsBodyRectangle(Vector2 pos, float width, float height, float density);
+PhysicsBody CreatePhysicsBodyPolygon(Vector2 pos, float radius, int sides, float density);
+void PhysicsAddForce(PhysicsBody body, Vector2 force);
+void PhysicsAddTorque(PhysicsBody body, float amount);
+void PhysicsShatter(PhysicsBody body, Vector2 position, float force);
+int GetPhysicsBodiesCount(void);
+PhysicsBody GetPhysicsBody(int index);
+int GetPhysicsShapeType(int index);
+int GetPhysicsShapeVerticesCount(int index);
+Vector2 GetPhysicsShapeVertex(PhysicsBody body, int vertex);
+void SetPhysicsBodyRotation(PhysicsBody body, float radians);
+void DestroyPhysicsBody(PhysicsBody body);
+void ClosePhysics(void);
+//----------------------------------------------------------------------------------

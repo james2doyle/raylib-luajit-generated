@@ -10,15 +10,16 @@ Raylib LuaJit 5.5
 - [x] `raygui.h` code-gen to lua using `raygui_api.lua`
 - [x] `raymath.h` code-gen to lua using `raymath_api.lua`
 - [x] `config.h` code-gen to lua using `config_api.lua`
+- [x] `physac.h` ffi bindings to lua using `physac.lua`
 
-##### PROS:
+### PROS:
 
 - Simple lua files (except for the compiled Raylib binaries/libraries/header)
 - Works as an actual lib instead of a runner
 - No build required in order to use this
 - Really easy to update
 
-##### CONS:
+### CONS:
 
 - You need the LuaJIT and Raylib compiled binaries/libraries
 - Building a binary to distribute is a chore
@@ -82,6 +83,32 @@ You don't need Lune or Luau installed to use this library
 cd raylib/
 luarocks install lpeg
 lua generate.lua
+```
+
+## Building Physac:
+
+Copy `physac.h` from [victorfisac/Physac](https://github.com/victorfisac/Physac) to `raylib/physac.h`.
+
+Create a `pyhsac.c` in `raylib/`:
+
+```c
+// raylib/physac.c
+#define PHYSAC_IMPLEMENTATION
+#define PHYSAC_STANDALONE
+// from: https://github.com/victorfisac/Physac
+#include "physac.h"
+```
+
+Build the `libphysac.dylib`:
+
+```sh
+# Assuming physac.c and libraylib.dylib are accessible (from: https://github.com/victorfisac/Physac)
+# Use clang (the default C compiler on macOS)
+cd raylib
+clang -o ../libphysac.dylib physac.c -dynamiclib \
+  -I. -I/opt/homebrew/Cellar/raylib/5.5/include/ \
+  -L/opt/homebrew/Cellar/raylib/5.5/lib/ -lraylib \
+  -lpthread
 ```
 
 ### Thank you to the following projects

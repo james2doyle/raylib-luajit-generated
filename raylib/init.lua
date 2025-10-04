@@ -10,6 +10,9 @@ local rl = setmetatable({}, mt)
 
 local raygui = require("raylib/raygui")
 rl = raygui(rl)
+
+local physac = require("raylib/physac")
+rl = physac(rl)
   
   rl.RAYLIB_VERSION_MAJOR = 5
 
