@@ -77,8 +77,6 @@ This is a work in progress as well. It uses regular Lua 5.4 to generate the file
 
 It is super rough right now but it does work and generates a `init.lua` file with comments and [docblocks](https://stevedonovan.github.io/ldoc/manual/doc.md.html)!
 
-You don't need Lune or Luau installed to use this library
-
 ```sh
 cd raylib/
 luarocks install lpeg
