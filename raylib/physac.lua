@@ -135,8 +135,49 @@ return function(rl)
   ---@param freezeOrient boolean
   ---@param shape PhysicsShape
   ---@return PhysicsBodyData
-  function rl.PhysicsBodyData(id, enabled, position, velocity, force, angularVelocity, torque, orient, inertia, inverseInertia, mass, inverseMass, staticFriction, dynamicFriction, restitution, useGravity, isGrounded, freezeOrient, shape)
-    return ffi.new("PhysicsBodyData", id, enabled, position, velocity, force, angularVelocity, torque, orient, inertia, inverseInertia, mass, inverseMass, staticFriction, dynamicFriction, restitution, useGravity, isGrounded, freezeOrient, shape)
+  function rl.PhysicsBodyData(
+    id,
+    enabled,
+    position,
+    velocity,
+    force,
+    angularVelocity,
+    torque,
+    orient,
+    inertia,
+    inverseInertia,
+    mass,
+    inverseMass,
+    staticFriction,
+    dynamicFriction,
+    restitution,
+    useGravity,
+    isGrounded,
+    freezeOrient,
+    shape
+  )
+    return ffi.new(
+      "PhysicsBodyData",
+      id,
+      enabled,
+      position,
+      velocity,
+      force,
+      angularVelocity,
+      torque,
+      orient,
+      inertia,
+      inverseInertia,
+      mass,
+      inverseMass,
+      staticFriction,
+      dynamicFriction,
+      restitution,
+      useGravity,
+      isGrounded,
+      freezeOrient,
+      shape
+    )
   end
 
   ---@alias Quaternion Vector4
@@ -145,11 +186,7 @@ return function(rl)
   ---@alias RenderTexture2D RenderTexture
   ---@alias Camera Camera3D
 
-
-
   ---@alias Quaternion Vector4
-
-
 
   ---@alias PhysicsBody PhysicsBodyData *
 

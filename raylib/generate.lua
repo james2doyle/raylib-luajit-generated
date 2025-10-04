@@ -40,19 +40,19 @@ end
 ---@param c_style_math_string string The C-style math string (e.g., "(PI/180.0f)").
 ---@return string The converted Lua expression string (e.g., "rl.PI / 180").
 local function convert_c_math_to_lua(c_style_math_string)
-    -- 1. Remove the floating point suffix '.0f' or '.0F' and spaces, preserving only the integer.
-    -- We target the specific patterns as requested by the user, and spaces.
-    local temp_string = c_style_math_string:gsub("%.%d+[fF]", ""):gsub("%s*", "")
+  -- 1. Remove the floating point suffix '.0f' or '.0F' and spaces, preserving only the integer.
+  -- We target the specific patterns as requested by the user, and spaces.
+  local temp_string = c_style_math_string:gsub("%.%d+[fF]", ""):gsub("%s*", "")
 
-    -- 2. Remove outer parentheses.
-    temp_string = temp_string:gsub("^%s*%((.+?)%)%s*$", "%1")
+  -- 2. Remove outer parentheses.
+  temp_string = temp_string:gsub("^%s*%((.+?)%)%s*$", "%1")
 
-    -- 3. Replace uppercase constant names with the 'rl.' prefix.
-    -- We look for single or multi-letter words consisting entirely of uppercase letters (A-Z).
-    local lua_expression = temp_string:gsub("([A-Z_]+)", "rl.%1")
+  -- 3. Replace uppercase constant names with the 'rl.' prefix.
+  -- We look for single or multi-letter words consisting entirely of uppercase letters (A-Z).
+  local lua_expression = temp_string:gsub("([A-Z_]+)", "rl.%1")
 
-    -- 4. Re-add spaces around the division symbol for readability.
-    return lua_expression:gsub("/", " / ")
+  -- 4. Re-add spaces around the division symbol for readability.
+  return lua_expression:gsub("/", " / ")
 end
 
 local tableReturnTemplate = Lust({ [[@map{ n=argList, _separator=", " }:{{$n}}]] })

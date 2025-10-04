@@ -8,8 +8,13 @@ rl.SetConfigFlags(rl.FLAG_MSAA_4X_HINT)
 rl.InitWindow(screenWidth, screenHeight, "raylib [core] example - infinite ground grid")
 rl.SetTargetFPS(60)
 
-local camera =
-  rl.Camera3D(rl.Vector3(0.0, 10.0, 10.0), rl.Vector3(0.0, 0.0, 0.0), rl.Vector3(0.0, 1.0, 0.0), 45.0, rl.CAMERA_PERSPECTIVE)
+local camera = rl.Camera3D(
+  rl.Vector3(0.0, 10.0, 10.0),
+  rl.Vector3(0.0, 0.0, 0.0),
+  rl.Vector3(0.0, 1.0, 0.0),
+  45.0,
+  rl.CAMERA_PERSPECTIVE
+)
 
 local cameraSpeed = 0.1
 local gridSize = 100 -- The grid size
