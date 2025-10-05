@@ -52,6 +52,10 @@ rl.CloseWindow()
 
 - Run `luajit main.lua`
 
+## Building
+
+You can build a standalone binary. You can see the details in [`example-build/build.sh`](example-build/build.sh)
+
 ## Examples
 
 *Examples are pulled from [TSnake41/raylib-lua](https://github.com/TSnake41/raylib-lua/tree/master/examples)*
