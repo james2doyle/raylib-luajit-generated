@@ -1,12 +1,12 @@
-local Lust = require("api/Lust")
+local Lust = require("api.Lust")
 
 -- the list of API files to load
-local raylibApi = require("api/raylib_api")
-local rlglApi = require("api/rlgl_api")
-local raymathApi = require("api/raymath_api")
-local configApi = require("api/config_api")
+local raylibApi = require("api.raylib_api")
+local rlglApi = require("api.rlgl_api")
+local raymathApi = require("api.raymath_api")
+local configApi = require("api.config_api")
 -- right now, the raylib_parser does not output the full raygui code
--- local rayguiApi = require("api/raygui_api")
+-- local rayguiApi = require("api.raygui_api")
 
 local apiFiles = {
   raylibApi,
@@ -124,10 +124,10 @@ ffi.cdef(generated:read("*all"))
 local mt = { __index = lib }
 local rl = setmetatable({}, mt)
 
-local raygui = require("raylib/raygui")
+local raygui = require("raylib.raygui")
 rl = raygui(rl)
 
-local physac = require("raylib/physac")
+local physac = require("raylib.physac")
 rl = physac(rl)
 ]]
 
