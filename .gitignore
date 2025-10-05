@@ -1,3 +1,6 @@
 libraylib.*
 libphysac.*
 raylib/*.h
+
+example-build/*
+!example-build/build.sh
